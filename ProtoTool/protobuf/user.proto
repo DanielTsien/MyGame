@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package MyGame.Proto;
+
+option csharp_namespace = "MyGame.Proto";
+option cc_enable_arenas = true;
+
+import "Enum.proto";
+
+message UserInfo {
+	int32 userId = 1;
+	PlayerInfo player = 2;
+}
+
+message PlayerInfo {
+	int32 playerId = 1;
+	repeated CharacterInfo characters = 2;
+}
+
+message CharacterInfo {
+	int32 id = 1;
+	int32 playerId = 2;
+	string name = 3;
+	CharacterType type = 4;
+	CharacterClass class = 5;
+	int32 level = 6;
+}
+
+message UserRegisterRequest
+{
+	string username = 1;
+	string passward = 2;
+}
+
+message UserRegisterResponse {
+	Result result = 1;
+	string errormsg = 2;
+	UserInfo userinfo = 3;
+}
+
+message UserLoginRequest {
+	string username = 1;
+	string passward = 2;
+}
+
+message UserLoginResponse {
+	Result result = 1;
+	string errormsg = 2;
+	UserInfo userinfo = 3;
+}
+
+message UserCreateCharacterRequest
+{
+	string name = 1;
+	CharacterClass class = 2;
+}
+
+message UserCreateCharacterResponse {
+	Result result = 1;
+	string errormsg = 2;
+	repeated CharacterInfo characters = 3;
+}
+
+message UserGameEnterRequest
+{
+	int32 characterIdx = 1;
+}
+
+message UserGameEnterResponse {
+	Result result = 1;
+	string errormsg = 2;
+	CharacterInfo character = 3;
+}
+
+message UserGameLeaveRequest
+{
+}
+
+message UserGameLeaveResponse {
+	Result result = 1;
+	string errormsg = 2;
+}

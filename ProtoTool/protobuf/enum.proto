@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package MyGame.Proto;
+
+option csharp_namespace = "MyGame.Proto";
+option cc_enable_arenas = true;
+
+enum Result
+{
+	SUCCESS = 0;
+	FAILED = 1;
+}
+
+enum CharacterType
+{
+	PLAYER = 0;
+	NPC = 1;
+	Monster = 2;
+}
+
+enum CharacterClass
+{
+	WARRIOR = 0;
+	WIZARD = 1;
+	ARCHER = 2;
+}

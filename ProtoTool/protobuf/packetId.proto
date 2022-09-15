@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package MyGame.Proto;
+
+option csharp_namespace = "MyGame.Proto";
+option cc_enable_arenas = true;
+
+
+enum PacketId
+{
+	NONE = 0;
+	
+	USER_REGISTER_REQUEST = 1;
+	USER_REGISTER_RESPONSE = 2;
+	
+	USER_LOGIN_REQUEST = 3;
+	USER_LOGIN_RESPONSE = 4;
+	
+	USER_CREATE_CHARACTER_REQUEST = 5;
+	USER_CREATE_CHARACTER_RESPONSE = 6;
+	
+	USER_GAME_ENTER_REQUEST = 7;
+	USER_GAME_ENTER_RESPONSE = 8;
+	
+	USER_GAME_LEAVE_REQUEST = 9;
+	USER_GAME_LEAVE_RESPONSE = 10;
+}
