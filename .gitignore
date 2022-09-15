@@ -1,7 +1,15 @@
 # Visual Studio cache directory
 .vs/
 
+# Rider
+.idea/
+
 # server
 /Server/packages/
 /Server/MyGame/bin
 /Server/MyGame/obj
+
+# client
+/Client/Library
+/Client/Logs
+/Client/obj
