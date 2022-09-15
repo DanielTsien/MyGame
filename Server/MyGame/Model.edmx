@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MyGameModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="MyGameModelStoreContainer">
+    <EntitySet Name="TCharacters" EntityType="MyGameModel.Store.TCharacters" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TPlayers" EntityType="MyGameModel.Store.TPlayers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TUsers" EntityType="MyGameModel.Store.TUsers" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="TUserTPlayer" Association="MyGameModel.Store.TUserTPlayer">
+      <End Role="TUser" EntitySet="TUsers" />
+      <End Role="TPlayer" EntitySet="TPlayers" />
+    </AssociationSet>
+    <AssociationSet Name="TPlayerTCharacter" Association="MyGameModel.Store.TPlayerTCharacter">
+      <End Role="TPlayer" EntitySet="TPlayers" />
+      <End Role="TCharacter" EntitySet="TCharacters" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="TCharacters">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Class" Type="int" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="TPlayer_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TPlayers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="TUser_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="TUserTPlayer">
+    <End Role="TUser" Type="MyGameModel.Store.TUsers" Multiplicity="1" />
+    <End Role="TPlayer" Type="MyGameModel.Store.TPlayers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TPlayer">
+        <PropertyRef Name="TUser_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TPlayerTCharacter">
+    <End Role="TPlayer" Type="MyGameModel.Store.TPlayers" Multiplicity="1" />
+    <End Role="TCharacter" Type="MyGameModel.Store.TCharacters" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TPlayer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TCharacter">
+        <PropertyRef Name="TPlayer_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MyGameModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TCharacter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Class" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TPlayer" Relationship="MyGameModel.TPlayerTCharacter" FromRole="TCharacter" ToRole="TPlayer" />
+        </EntityType>
+        <EntityType Name="TPlayer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TUser" Relationship="MyGameModel.TUserTPlayer" FromRole="TPlayer" ToRole="TUser" />
+          <NavigationProperty Name="TCharacters" Relationship="MyGameModel.TPlayerTCharacter" FromRole="TPlayer" ToRole="TCharacter" />
+        </EntityType>
+        <EntityType Name="TUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TPlayer" Relationship="MyGameModel.TUserTPlayer" FromRole="TUser" ToRole="TPlayer" />
+        </EntityType>
+        <EntityContainer Name="MyGameEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TCharacters" EntityType="Self.TCharacter" />
+          <EntitySet Name="TPlayers" EntityType="Self.TPlayer" />
+          <EntitySet Name="TUsers" EntityType="Self.TUser" />
+          <AssociationSet Name="TUserTPlayer" Association="MyGameModel.TUserTPlayer">
+            <End Role="TUser" EntitySet="TUsers" />
+            <End Role="TPlayer" EntitySet="TPlayers" />
+          </AssociationSet>
+          <AssociationSet Name="TPlayerTCharacter" Association="MyGameModel.TPlayerTCharacter">
+            <End Role="TPlayer" EntitySet="TPlayers" />
+            <End Role="TCharacter" EntitySet="TCharacters" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="TUserTPlayer">
+          <End Type="MyGameModel.TUser" Role="TUser" Multiplicity="1" />
+          <End Type="MyGameModel.TPlayer" Role="TPlayer" Multiplicity="0..1" />
+        </Association>
+        <Association Name="TPlayerTCharacter">
+          <End Type="MyGameModel.TPlayer" Role="TPlayer" Multiplicity="1" />
+          <End Type="MyGameModel.TCharacter" Role="TCharacter" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MyGameModelStoreContainer" CdmEntityContainer="MyGameEntities">
+    <EntitySetMapping Name="TCharacters">
+      <EntityTypeMapping TypeName="IsTypeOf(MyGameModel.TCharacter)">
+        <MappingFragment StoreEntitySet="TCharacters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TPlayers">
+      <EntityTypeMapping TypeName="IsTypeOf(MyGameModel.TPlayer)">
+        <MappingFragment StoreEntitySet="TPlayers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TUsers">
+      <EntityTypeMapping TypeName="IsTypeOf(MyGameModel.TUser)">
+        <MappingFragment StoreEntitySet="TUsers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="TUserTPlayer" TypeName="MyGameModel.TUserTPlayer" StoreEntitySet="TPlayers">
+      <EndProperty Name="TUser">
+        <ScalarProperty Name="Id" ColumnName="TUser_Id" />
+      </EndProperty>
+      <EndProperty Name="TPlayer">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TPlayerTCharacter" TypeName="MyGameModel.TPlayerTCharacter" StoreEntitySet="TCharacters">
+      <EndProperty Name="TPlayer">
+        <ScalarProperty Name="Id" ColumnName="TPlayer_Id" />
+      </EndProperty>
+      <EndProperty Name="TCharacter">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
