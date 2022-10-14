@@ -24,3 +24,12 @@ enum CharacterClass
 	WIZARD = 1;
 	ARCHER = 2;
 }
+
+enum ENTITY_EVENT
+{
+	NONE = 0;
+	IDLE = 1;
+	MOVE_FWD = 2;
+	MOVE_BACK = 3;
+	JUMP = 4;
+}

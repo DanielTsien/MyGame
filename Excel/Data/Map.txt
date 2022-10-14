@@ -1,0 +1,42 @@
+{
+  "1": {
+    "ID": 1,
+    "Name": "Twilight Keep",
+    "Type": "Normal",
+    "SubType": "Normal",
+    "PKMode": false,
+    "Resource": "MainCity",
+    "MiniMap": "buluzheng",
+    "Music": "bgm-town"
+  },
+  "2": {
+    "ID": 2,
+    "Name": "Amethyst Pit",
+    "Type": "Normal",
+    "SubType": "Normal",
+    "PKMode": false,
+    "Resource": "Map01",
+    "MiniMap": "luorisenl",
+    "Music": "bgm-map01"
+  },
+  "3": {
+    "ID": 3,
+    "Name": "Barrens",
+    "Type": "Normal",
+    "SubType": "Normal",
+    "PKMode": false,
+    "Resource": "Map02",
+    "MiniMap": "luorisenl",
+    "Music": "bgm-map02"
+  },
+  "4": {
+    "ID": 4,
+    "Name": "Ahoy Bay",
+    "Type": "Normal",
+    "SubType": "Normal",
+    "PKMode": false,
+    "Resource": "Map03",
+    "MiniMap": "luoriyuhui",
+    "Music": "bgm-map02"
+  }
+}

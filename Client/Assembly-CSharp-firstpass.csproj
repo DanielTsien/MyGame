@@ -41,7 +41,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <None Include="Assets\Plugins\Google.Protobuf.xml" />
+     <None Include="Assets\Plugins\Spine\version.txt" />
+     <None Include="Assets\Plugins\Spine\package.json" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity 2021.3.8f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

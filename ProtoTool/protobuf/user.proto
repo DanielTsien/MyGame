@@ -6,6 +6,7 @@ option csharp_namespace = "MyGame.Proto";
 option cc_enable_arenas = true;
 
 import "Enum.proto";
+import "Entity.proto";
 
 message UserInfo {
 	int32 userId = 1;
@@ -24,6 +25,8 @@ message CharacterInfo {
 	CharacterType type = 4;
 	CharacterClass class = 5;
 	int32 level = 6;
+	int32 mapId = 7;
+	NEntity entity = 8;
 }
 
 message UserRegisterRequest

@@ -27,11 +27,12 @@ namespace MyGame.Proto {
             "CgplbnVtLnByb3RvEgxNeUdhbWUuUHJvdG8qIQoGUmVzdWx0EgsKB1NVQ0NF",
             "U1MQABIKCgZGQUlMRUQQASoxCg1DaGFyYWN0ZXJUeXBlEgoKBlBMQVlFUhAA",
             "EgcKA05QQxABEgsKB01vbnN0ZXIQAio1Cg5DaGFyYWN0ZXJDbGFzcxILCgdX",
-            "QVJSSU9SEAASCgoGV0laQVJEEAESCgoGQVJDSEVSEAJCEvgBAaoCDE15R2Ft",
-            "ZS5Qcm90b2IGcHJvdG8z"));
+            "QVJSSU9SEAASCgoGV0laQVJEEAESCgoGQVJDSEVSEAIqSQoMRU5USVRZX0VW",
+            "RU5UEggKBE5PTkUQABIICgRJRExFEAESDAoITU9WRV9GV0QQAhINCglNT1ZF",
+            "X0JBQ0sQAxIICgRKVU1QEARCEvgBAaoCDE15R2FtZS5Qcm90b2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MyGame.Proto.Result), typeof(global::MyGame.Proto.CharacterType), typeof(global::MyGame.Proto.CharacterClass), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MyGame.Proto.Result), typeof(global::MyGame.Proto.CharacterType), typeof(global::MyGame.Proto.CharacterClass), typeof(global::MyGame.Proto.ENTITY_EVENT), }, null, null));
     }
     #endregion
 
@@ -52,6 +53,14 @@ namespace MyGame.Proto {
     [pbr::OriginalName("WARRIOR")] Warrior = 0,
     [pbr::OriginalName("WIZARD")] Wizard = 1,
     [pbr::OriginalName("ARCHER")] Archer = 2,
+  }
+
+  public enum ENTITY_EVENT {
+    [pbr::OriginalName("NONE")] None = 0,
+    [pbr::OriginalName("IDLE")] Idle = 1,
+    [pbr::OriginalName("MOVE_FWD")] MoveFwd = 2,
+    [pbr::OriginalName("MOVE_BACK")] MoveBack = 3,
+    [pbr::OriginalName("JUMP")] Jump = 4,
   }
 
   #endregion

@@ -24,40 +24,42 @@ namespace MyGame.Proto {
     static UserReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgp1c2VyLnByb3RvEgxNeUdhbWUuUHJvdG8aCkVudW0ucHJvdG8iRAoIVXNl",
-            "ckluZm8SDgoGdXNlcklkGAEgASgFEigKBnBsYXllchgCIAEoCzIYLk15R2Ft",
-            "ZS5Qcm90by5QbGF5ZXJJbmZvIk8KClBsYXllckluZm8SEAoIcGxheWVySWQY",
-            "ASABKAUSLwoKY2hhcmFjdGVycxgCIAMoCzIbLk15R2FtZS5Qcm90by5DaGFy",
-            "YWN0ZXJJbmZvIqIBCg1DaGFyYWN0ZXJJbmZvEgoKAmlkGAEgASgFEhAKCHBs",
-            "YXllcklkGAIgASgFEgwKBG5hbWUYAyABKAkSKQoEdHlwZRgEIAEoDjIbLk15",
-            "R2FtZS5Qcm90by5DaGFyYWN0ZXJUeXBlEisKBWNsYXNzGAUgASgOMhwuTXlH",
-            "YW1lLlByb3RvLkNoYXJhY3RlckNsYXNzEg0KBWxldmVsGAYgASgFIjkKE1Vz",
-            "ZXJSZWdpc3RlclJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dh",
-            "cmQYAiABKAkieAoUVXNlclJlZ2lzdGVyUmVzcG9uc2USJAoGcmVzdWx0GAEg",
-            "ASgOMhQuTXlHYW1lLlByb3RvLlJlc3VsdBIQCghlcnJvcm1zZxgCIAEoCRIo",
-            "Cgh1c2VyaW5mbxgDIAEoCzIWLk15R2FtZS5Qcm90by5Vc2VySW5mbyI2ChBV",
-            "c2VyTG9naW5SZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3YXJk",
-            "GAIgASgJInUKEVVzZXJMb2dpblJlc3BvbnNlEiQKBnJlc3VsdBgBIAEoDjIU",
-            "Lk15R2FtZS5Qcm90by5SZXN1bHQSEAoIZXJyb3Jtc2cYAiABKAkSKAoIdXNl",
-            "cmluZm8YAyABKAsyFi5NeUdhbWUuUHJvdG8uVXNlckluZm8iVwoaVXNlckNy",
-            "ZWF0ZUNoYXJhY3RlclJlcXVlc3QSDAoEbmFtZRgBIAEoCRIrCgVjbGFzcxgC",
-            "IAEoDjIcLk15R2FtZS5Qcm90by5DaGFyYWN0ZXJDbGFzcyKGAQobVXNlckNy",
-            "ZWF0ZUNoYXJhY3RlclJlc3BvbnNlEiQKBnJlc3VsdBgBIAEoDjIULk15R2Ft",
-            "ZS5Qcm90by5SZXN1bHQSEAoIZXJyb3Jtc2cYAiABKAkSLwoKY2hhcmFjdGVy",
-            "cxgDIAMoCzIbLk15R2FtZS5Qcm90by5DaGFyYWN0ZXJJbmZvIiwKFFVzZXJH",
-            "YW1lRW50ZXJSZXF1ZXN0EhQKDGNoYXJhY3RlcklkeBgBIAEoBSJ/ChVVc2Vy",
-            "R2FtZUVudGVyUmVzcG9uc2USJAoGcmVzdWx0GAEgASgOMhQuTXlHYW1lLlBy",
-            "b3RvLlJlc3VsdBIQCghlcnJvcm1zZxgCIAEoCRIuCgljaGFyYWN0ZXIYAyAB",
-            "KAsyGy5NeUdhbWUuUHJvdG8uQ2hhcmFjdGVySW5mbyIWChRVc2VyR2FtZUxl",
-            "YXZlUmVxdWVzdCJPChVVc2VyR2FtZUxlYXZlUmVzcG9uc2USJAoGcmVzdWx0",
-            "GAEgASgOMhQuTXlHYW1lLlByb3RvLlJlc3VsdBIQCghlcnJvcm1zZxgCIAEo",
-            "CUIS+AEBqgIMTXlHYW1lLlByb3RvYgZwcm90bzM="));
+            "Cgp1c2VyLnByb3RvEgxNeUdhbWUuUHJvdG8aCkVudW0ucHJvdG8aDEVudGl0",
+            "eS5wcm90byJECghVc2VySW5mbxIOCgZ1c2VySWQYASABKAUSKAoGcGxheWVy",
+            "GAIgASgLMhguTXlHYW1lLlByb3RvLlBsYXllckluZm8iTwoKUGxheWVySW5m",
+            "bxIQCghwbGF5ZXJJZBgBIAEoBRIvCgpjaGFyYWN0ZXJzGAIgAygLMhsuTXlH",
+            "YW1lLlByb3RvLkNoYXJhY3RlckluZm8i2AEKDUNoYXJhY3RlckluZm8SCgoC",
+            "aWQYASABKAUSEAoIcGxheWVySWQYAiABKAUSDAoEbmFtZRgDIAEoCRIpCgR0",
+            "eXBlGAQgASgOMhsuTXlHYW1lLlByb3RvLkNoYXJhY3RlclR5cGUSKwoFY2xh",
+            "c3MYBSABKA4yHC5NeUdhbWUuUHJvdG8uQ2hhcmFjdGVyQ2xhc3MSDQoFbGV2",
+            "ZWwYBiABKAUSDQoFbWFwSWQYByABKAUSJQoGZW50aXR5GAggASgLMhUuTXlH",
+            "YW1lLlByb3RvLk5FbnRpdHkiOQoTVXNlclJlZ2lzdGVyUmVxdWVzdBIQCgh1",
+            "c2VybmFtZRgBIAEoCRIQCghwYXNzd2FyZBgCIAEoCSJ4ChRVc2VyUmVnaXN0",
+            "ZXJSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdhbWUuUHJvdG8uUmVz",
+            "dWx0EhAKCGVycm9ybXNnGAIgASgJEigKCHVzZXJpbmZvGAMgASgLMhYuTXlH",
+            "YW1lLlByb3RvLlVzZXJJbmZvIjYKEFVzZXJMb2dpblJlcXVlc3QSEAoIdXNl",
+            "cm5hbWUYASABKAkSEAoIcGFzc3dhcmQYAiABKAkidQoRVXNlckxvZ2luUmVz",
+            "cG9uc2USJAoGcmVzdWx0GAEgASgOMhQuTXlHYW1lLlByb3RvLlJlc3VsdBIQ",
+            "CghlcnJvcm1zZxgCIAEoCRIoCgh1c2VyaW5mbxgDIAEoCzIWLk15R2FtZS5Q",
+            "cm90by5Vc2VySW5mbyJXChpVc2VyQ3JlYXRlQ2hhcmFjdGVyUmVxdWVzdBIM",
+            "CgRuYW1lGAEgASgJEisKBWNsYXNzGAIgASgOMhwuTXlHYW1lLlByb3RvLkNo",
+            "YXJhY3RlckNsYXNzIoYBChtVc2VyQ3JlYXRlQ2hhcmFjdGVyUmVzcG9uc2US",
+            "JAoGcmVzdWx0GAEgASgOMhQuTXlHYW1lLlByb3RvLlJlc3VsdBIQCghlcnJv",
+            "cm1zZxgCIAEoCRIvCgpjaGFyYWN0ZXJzGAMgAygLMhsuTXlHYW1lLlByb3Rv",
+            "LkNoYXJhY3RlckluZm8iLAoUVXNlckdhbWVFbnRlclJlcXVlc3QSFAoMY2hh",
+            "cmFjdGVySWR4GAEgASgFIn8KFVVzZXJHYW1lRW50ZXJSZXNwb25zZRIkCgZy",
+            "ZXN1bHQYASABKA4yFC5NeUdhbWUuUHJvdG8uUmVzdWx0EhAKCGVycm9ybXNn",
+            "GAIgASgJEi4KCWNoYXJhY3RlchgDIAEoCzIbLk15R2FtZS5Qcm90by5DaGFy",
+            "YWN0ZXJJbmZvIhYKFFVzZXJHYW1lTGVhdmVSZXF1ZXN0Ik8KFVVzZXJHYW1l",
+            "TGVhdmVSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdhbWUuUHJvdG8u",
+            "UmVzdWx0EhAKCGVycm9ybXNnGAIgASgJQhL4AQGqAgxNeUdhbWUuUHJvdG9i",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::MyGame.Proto.EnumReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::MyGame.Proto.EnumReflection.Descriptor, global::MyGame.Proto.EntityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserInfo), global::MyGame.Proto.UserInfo.Parser, new[]{ "UserId", "Player" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.PlayerInfo), global::MyGame.Proto.PlayerInfo.Parser, new[]{ "PlayerId", "Characters" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.CharacterInfo), global::MyGame.Proto.CharacterInfo.Parser, new[]{ "Id", "PlayerId", "Name", "Type", "Class", "Level" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.CharacterInfo), global::MyGame.Proto.CharacterInfo.Parser, new[]{ "Id", "PlayerId", "Name", "Type", "Class", "Level", "MapId", "Entity" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserRegisterRequest), global::MyGame.Proto.UserRegisterRequest.Parser, new[]{ "Username", "Passward" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserRegisterResponse), global::MyGame.Proto.UserRegisterResponse.Parser, new[]{ "Result", "Errormsg", "Userinfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserLoginRequest), global::MyGame.Proto.UserLoginRequest.Parser, new[]{ "Username", "Passward" }, null, null, null, null),
@@ -564,6 +566,8 @@ namespace MyGame.Proto {
       type_ = other.type_;
       class_ = other.class_;
       level_ = other.level_;
+      mapId_ = other.mapId_;
+      entity_ = other.entity_ != null ? other.entity_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -645,6 +649,30 @@ namespace MyGame.Proto {
       }
     }
 
+    /// <summary>Field number for the "mapId" field.</summary>
+    public const int MapIdFieldNumber = 7;
+    private int mapId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int MapId {
+      get { return mapId_; }
+      set {
+        mapId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "entity" field.</summary>
+    public const int EntityFieldNumber = 8;
+    private global::MyGame.Proto.NEntity entity_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::MyGame.Proto.NEntity Entity {
+      get { return entity_; }
+      set {
+        entity_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -666,6 +694,8 @@ namespace MyGame.Proto {
       if (Type != other.Type) return false;
       if (Class != other.Class) return false;
       if (Level != other.Level) return false;
+      if (MapId != other.MapId) return false;
+      if (!object.Equals(Entity, other.Entity)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -679,6 +709,8 @@ namespace MyGame.Proto {
       if (Type != global::MyGame.Proto.CharacterType.Player) hash ^= Type.GetHashCode();
       if (Class != global::MyGame.Proto.CharacterClass.Warrior) hash ^= Class.GetHashCode();
       if (Level != 0) hash ^= Level.GetHashCode();
+      if (MapId != 0) hash ^= MapId.GetHashCode();
+      if (entity_ != null) hash ^= Entity.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -721,6 +753,14 @@ namespace MyGame.Proto {
         output.WriteRawTag(48);
         output.WriteInt32(Level);
       }
+      if (MapId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(MapId);
+      }
+      if (entity_ != null) {
+        output.WriteRawTag(66);
+        output.WriteMessage(Entity);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -755,6 +795,14 @@ namespace MyGame.Proto {
         output.WriteRawTag(48);
         output.WriteInt32(Level);
       }
+      if (MapId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(MapId);
+      }
+      if (entity_ != null) {
+        output.WriteRawTag(66);
+        output.WriteMessage(Entity);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -782,6 +830,12 @@ namespace MyGame.Proto {
       }
       if (Level != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Level);
+      }
+      if (MapId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MapId);
+      }
+      if (entity_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Entity);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -812,6 +866,15 @@ namespace MyGame.Proto {
       }
       if (other.Level != 0) {
         Level = other.Level;
+      }
+      if (other.MapId != 0) {
+        MapId = other.MapId;
+      }
+      if (other.entity_ != null) {
+        if (entity_ == null) {
+          Entity = new global::MyGame.Proto.NEntity();
+        }
+        Entity.MergeFrom(other.Entity);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -852,6 +915,17 @@ namespace MyGame.Proto {
             Level = input.ReadInt32();
             break;
           }
+          case 56: {
+            MapId = input.ReadInt32();
+            break;
+          }
+          case 66: {
+            if (entity_ == null) {
+              Entity = new global::MyGame.Proto.NEntity();
+            }
+            input.ReadMessage(Entity);
+            break;
+          }
         }
       }
     #endif
@@ -889,6 +963,17 @@ namespace MyGame.Proto {
           }
           case 48: {
             Level = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            MapId = input.ReadInt32();
+            break;
+          }
+          case 66: {
+            if (entity_ == null) {
+              Entity = new global::MyGame.Proto.NEntity();
+            }
+            input.ReadMessage(Entity);
             break;
           }
         }

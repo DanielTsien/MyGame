@@ -49,7 +49,9 @@
      <Compile Include="Assets\Scripts\Protobuf\User.cs" />
      <Compile Include="Assets\Scripts\UI\Login\LoginPanel.cs" />
      <Compile Include="Assets\Scripts\Model\Base\IGetModel.cs" />
+     <Compile Include="Assets\Scripts\Protobuf\Entity.cs" />
      <Compile Include="Assets\Scripts\Event\Base\EventSystem.cs" />
+     <Compile Include="Assets\Scripts\Utilities\UGUIExtension.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\Event\Base\Registration.cs" />
      <Compile Include="Assets\Scripts\Utility\IGetUtility.cs" />
@@ -76,10 +78,12 @@
      <Compile Include="Assets\Scripts\Command\Base\ISendCommand.cs" />
      <Compile Include="Assets\Scripts\Utilities\UpdateBehaviour.cs" />
      <Compile Include="Assets\Scripts\Network\INetworkSystem.cs" />
+     <Compile Include="Assets\Scripts\FootballTest.cs" />
      <Compile Include="Assets\Scripts\Protobuf\PacketId.cs" />
      <Compile Include="Assets\Scripts\Model\Base\ModelBase.cs" />
      <Compile Include="Assets\Scripts\Event\Base\IEventSystem.cs" />
      <Compile Include="Assets\Scripts\Network\ProtobufDescriptor.cs" />
+     <Compile Include="Assets\Scripts\HeroTest.cs" />
      <Compile Include="Assets\Scripts\Command\Base\ICommand.cs" />
      <Compile Include="Assets\Scripts\Base\Architecture.cs" />
      <Compile Include="Assets\Scripts\Network\NetErrorConstant.cs" />
@@ -92,10 +96,10 @@
      <Compile Include="Assets\Scripts\UI\PanelBase.cs" />
      <Compile Include="Assets\Scripts\Network\PacketParser.cs" />
      <Compile Include="Assets\Scripts\Singleton\Singleton.cs" />
-     <Compile Include="Assets\Scripts\Utilities\UGUIExtension.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+     <None Include="Assets\Map\scene_ZhuQiuChang_fight.atlas.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
@@ -106,6 +110,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+     <None Include="Assets\Entity\Hero\10041\1004100\model\spine_10041.atlas.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\Shaders\UI-Gray.shader" />
@@ -823,6 +828,14 @@
      </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="spine-unity.csproj">
+      <Project>{ead7a9e8-f873-f5b7-1b4d-6e7800e3a064}</Project>
+      <Name>spine-unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="spine-unity-editor.csproj">
+      <Project>{aab14240-606c-adbd-1ee0-4ecb41011df5}</Project>
+      <Name>spine-unity-editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -81,5 +81,5 @@ public class SelectCharacterPanel : PanelBase
         CharacterItem[idx].SetSelected(true);
         CharacterGos[idx].SetActive(true);
     }
-    
+     
 }

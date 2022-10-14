@@ -14,6 +14,7 @@ namespace MyGame
             MessageDistributer.Instance.Subscribe<UserLoginRequest>(OnLogin);
             MessageDistributer.Instance.Subscribe<UserRegisterRequest>(OnRegister);
             MessageDistributer.Instance.Subscribe<UserCreateCharacterRequest>(OnCreateCharacter);
+            MessageDistributer.Instance.Subscribe<UserGameEnterRequest>(OnUserGameEnter);
         }
 
         private void OnCreateCharacter(NetConnection sender, IMessage message)
@@ -109,6 +110,15 @@ namespace MyGame
                 info.Level = character.Level;
                 CharacterInfos.Add(info);
             }
+        }
+
+        private void OnUserGameEnter(NetConnection sender, IMessage message)
+        {
+            var msg = message as UserGameEnterRequest;
+
+            UserGameEnterResponse responMsg = new UserGameEnterResponse();
+            
+            sender.SendMessage(PacketId.UserGameEnterResponse, responMsg);
         }
     }
 }

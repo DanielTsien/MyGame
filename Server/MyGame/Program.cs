@@ -1,23 +1,26 @@
-﻿namespace MyGame
+﻿using MyGame.Manager;
+
+namespace MyGame
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Log.Init("GameServer");
+            DataManager.Instance.Load();
+            //Log.Init("GameServer");
 
-            Log.Warn("Game Server Init");
+            //Log.Warn("Game Server Init");
 
-            GameServer server = new GameServer();
+            //GameServer server = new GameServer();
 
-            server.Start();
-            Log.Warn("Game Server Runing...");
+            //server.Start();
+            //Log.Warn("Game Server Runing...");
 
-            CmdHelper.Run();
+            //CmdHelper.Run();
 
-            Log.Info("Game Server Exiting...");
-            server.Stop();
-            Log.Info("Game Server Exited");
+            //Log.Info("Game Server Exiting...");
+            //server.Stop();
+            //Log.Info("Game Server Exited");
         }
     }
 }
