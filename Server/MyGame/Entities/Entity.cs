@@ -8,61 +8,74 @@ namespace MyGame.Entities
         public int EntityId => EntityData.Id;
 
 
+        private NEntity m_entityData;
         public NEntity EntityData
         {
             get
             {
-                return EntityData;
+                return m_entityData;
             }
             set 
-            { 
-                EntityData = value;
+            {
+                m_entityData = value;
                 SetEntityData(value);
             }
         }
 
+        private Vector3Int m_position;
         public Vector3Int Position 
         {
             get 
             {
-                return Position;
+                return m_position;
             }
             set 
             {
-                Position = value;
+                m_position = value;
                 EntityData.Position = value;
             }
         }
 
+        private Vector3Int m_dirction;
         public Vector3Int Direction
         {
             get
             {
-                return Direction;
+                return m_dirction;
             }
             set
             {
-                Direction = value;
+                m_dirction = value;
                 EntityData.Direction = value;
             }
         }
 
+        private int m_speed;
         public int Speed
         {
             get
             {
-                return Speed;
+                return m_speed;
             }
             set
             {
-                Speed = value;
+                m_speed = value;
                 EntityData.Speed = value;
             }
         }
 
+        public Entity(Vector3Int pos, Vector3Int dir)
+        {
+            m_entityData = new NEntity();
+            m_entityData.Position = pos;
+            m_entityData.Direction = dir;
+            SetEntityData(m_entityData);
+        }
+
+
         public Entity(NEntity entityData)
         {
-            EntityData = entityData;
+            m_entityData = entityData;
         }
 
         public void SetEntityData(NEntity entity)

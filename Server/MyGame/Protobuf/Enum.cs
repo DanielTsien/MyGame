@@ -24,43 +24,49 @@ namespace MyGame.Proto {
     static EnumReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgplbnVtLnByb3RvEgxNeUdhbWUuUHJvdG8qIQoGUmVzdWx0EgsKB1NVQ0NF",
-            "U1MQABIKCgZGQUlMRUQQASoxCg1DaGFyYWN0ZXJUeXBlEgoKBlBMQVlFUhAA",
-            "EgcKA05QQxABEgsKB01vbnN0ZXIQAio1Cg5DaGFyYWN0ZXJDbGFzcxILCgdX",
-            "QVJSSU9SEAASCgoGV0laQVJEEAESCgoGQVJDSEVSEAIqSQoMRU5USVRZX0VW",
-            "RU5UEggKBE5PTkUQABIICgRJRExFEAESDAoITU9WRV9GV0QQAhINCglNT1ZF",
-            "X0JBQ0sQAxIICgRKVU1QEARCEvgBAaoCDE15R2FtZS5Qcm90b2IGcHJvdG8z"));
+            "CgplbnVtLnByb3RvEgxNeUdhbWUuUHJvdG8qLwoGUkVTVUxUEhIKDlJFU1VM",
+            "VF9TVUNDRVNTEAASEQoNUkVTVUxUX0ZBSUxFRBABKl8KDkNIQVJBQ1RFUl9U",
+            "WVBFEhkKFUNIQVJBQ1RFUl9UWVBFX1BMQVlFUhAAEhYKEkNIQVJBQ1RFUl9U",
+            "WVBFX05QQxABEhoKFkNIQVJBQ1RFUl9UWVBFX01vbnN0ZXIQAiqAAQoPQ0hB",
+            "UkFDVEVSX0NMQVNTEhgKFENIQVJBQ1RFUl9DTEFTU19OT05FEAASGwoXQ0hB",
+            "UkFDVEVSX0NMQVNTX1dBUlJJT1IQARIaChZDSEFSQUNURVJfQ0xBU1NfV0la",
+            "QVJEEAISGgoWQ0hBUkFDVEVSX0NMQVNTX0FSQ0hFUhADKooBCgxFTlRJVFlf",
+            "RVZFTlQSFQoRRU5USVRZX0VWRU5UX05PTkUQABIVChFFTlRJVFlfRVZFTlRf",
+            "SURMRRABEhkKFUVOVElUWV9FVkVOVF9NT1ZFX0ZXRBACEhoKFkVOVElUWV9F",
+            "VkVOVF9NT1ZFX0JBQ0sQAxIVChFFTlRJVFlfRVZFTlRfSlVNUBAEQhL4AQGq",
+            "AgxNeUdhbWUuUHJvdG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MyGame.Proto.Result), typeof(global::MyGame.Proto.CharacterType), typeof(global::MyGame.Proto.CharacterClass), typeof(global::MyGame.Proto.ENTITY_EVENT), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MyGame.Proto.RESULT), typeof(global::MyGame.Proto.CHARACTER_TYPE), typeof(global::MyGame.Proto.CHARACTER_CLASS), typeof(global::MyGame.Proto.ENTITY_EVENT), }, null, null));
     }
     #endregion
 
   }
   #region Enums
-  public enum Result {
-    [pbr::OriginalName("SUCCESS")] Success = 0,
-    [pbr::OriginalName("FAILED")] Failed = 1,
+  public enum RESULT {
+    [pbr::OriginalName("RESULT_SUCCESS")] Success = 0,
+    [pbr::OriginalName("RESULT_FAILED")] Failed = 1,
   }
 
-  public enum CharacterType {
-    [pbr::OriginalName("PLAYER")] Player = 0,
-    [pbr::OriginalName("NPC")] Npc = 1,
-    [pbr::OriginalName("Monster")] Monster = 2,
+  public enum CHARACTER_TYPE {
+    [pbr::OriginalName("CHARACTER_TYPE_PLAYER")] Player = 0,
+    [pbr::OriginalName("CHARACTER_TYPE_NPC")] Npc = 1,
+    [pbr::OriginalName("CHARACTER_TYPE_Monster")] Monster = 2,
   }
 
-  public enum CharacterClass {
-    [pbr::OriginalName("WARRIOR")] Warrior = 0,
-    [pbr::OriginalName("WIZARD")] Wizard = 1,
-    [pbr::OriginalName("ARCHER")] Archer = 2,
+  public enum CHARACTER_CLASS {
+    [pbr::OriginalName("CHARACTER_CLASS_NONE")] None = 0,
+    [pbr::OriginalName("CHARACTER_CLASS_WARRIOR")] Warrior = 1,
+    [pbr::OriginalName("CHARACTER_CLASS_WIZARD")] Wizard = 2,
+    [pbr::OriginalName("CHARACTER_CLASS_ARCHER")] Archer = 3,
   }
 
   public enum ENTITY_EVENT {
-    [pbr::OriginalName("NONE")] None = 0,
-    [pbr::OriginalName("IDLE")] Idle = 1,
-    [pbr::OriginalName("MOVE_FWD")] MoveFwd = 2,
-    [pbr::OriginalName("MOVE_BACK")] MoveBack = 3,
-    [pbr::OriginalName("JUMP")] Jump = 4,
+    [pbr::OriginalName("ENTITY_EVENT_NONE")] None = 0,
+    [pbr::OriginalName("ENTITY_EVENT_IDLE")] Idle = 1,
+    [pbr::OriginalName("ENTITY_EVENT_MOVE_FWD")] MoveFwd = 2,
+    [pbr::OriginalName("ENTITY_EVENT_MOVE_BACK")] MoveBack = 3,
+    [pbr::OriginalName("ENTITY_EVENT_JUMP")] Jump = 4,
   }
 
   #endregion

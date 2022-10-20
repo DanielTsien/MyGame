@@ -26,6 +26,11 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Class" Type="int" Nullable="false" />
     <Property Name="Level" Type="int" Nullable="false" />
+    <Property Name="ConfigId" Type="int" Nullable="false" />
+    <Property Name="MapId" Type="int" Nullable="false" />
+    <Property Name="PosX" Type="int" Nullable="false" />
+    <Property Name="PosY" Type="int" Nullable="false" />
+    <Property Name="PosZ" Type="int" Nullable="false" />
     <Property Name="TPlayer_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TPlayers">
@@ -80,6 +85,11 @@
           <Property Name="Class" Type="Int32" Nullable="false" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TPlayer" Relationship="MyGameModel.TPlayerTCharacter" FromRole="TCharacter" ToRole="TPlayer" />
+          <Property Name="ConfigId" Type="Int32" Nullable="false" />
+          <Property Name="MapId" Type="Int32" Nullable="false" />
+          <Property Name="PosX" Type="Int32" Nullable="false" />
+          <Property Name="PosY" Type="Int32" Nullable="false" />
+          <Property Name="PosZ" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TPlayer">
           <Key>
@@ -132,6 +142,11 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Class" ColumnName="Class" />
           <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="ConfigId" ColumnName="ConfigId" />
+          <ScalarProperty Name="MapId" ColumnName="MapId" />
+          <ScalarProperty Name="PosX" ColumnName="PosX" />
+          <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="PosZ" ColumnName="PosZ" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

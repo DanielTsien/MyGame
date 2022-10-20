@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 09/15/2022 17:20:27
+-- Date Created: 10/20/2022 11:03:04
 -- Generated from EDMX file: D:\MyGame\Server\MyGame\Model.edmx
 -- --------------------------------------------------
 
@@ -48,6 +48,11 @@ CREATE TABLE [dbo].[TCharacters] (
     [Name] nvarchar(max)  NOT NULL,
     [Class] int  NOT NULL,
     [Level] int  NOT NULL,
+    [ConfigId] int  NOT NULL,
+    [MapId] int  NOT NULL,
+    [PosX] int  NOT NULL,
+    [PosY] int  NOT NULL,
+    [PosZ] int  NOT NULL,
     [TPlayer_Id] int  NOT NULL
 );
 GO

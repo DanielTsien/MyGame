@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using MyGame.Proto;
 using Network;
+using UnityEngine;
 
 namespace MyGame
 {
@@ -17,11 +18,27 @@ namespace MyGame
             this.RegisterNetEvent(PacketId.UserRegisterResponse, OnRegisterResp);
             this.RegisterNetEvent(PacketId.UserCreateCharacterResponse, OnCreateCharacterResp);
             this.RegisterNetEvent(PacketId.UserGameEnterResponse, OnGameEnterResp);
+            this.RegisterNetEvent(PacketId.UserGameLeaveResponse, OnGameLeaveResp);
+        }
+
+        private void OnGameLeaveResp(IMessage msg)
+        {
+            if (msg is not UserGameLeaveResponse message) return;
+            
+            if (message.Result == RESULT.Success)
+            {
+                
+            }
         }
 
         private void OnGameEnterResp(IMessage msg)
         {
-            
+            if (msg is not UserGameEnterResponse message) return;
+
+            if (message.Result == RESULT.Success)
+            {
+                
+            }
         }
 
         private void OnCreateCharacterResp(IMessage msg)
@@ -37,7 +54,8 @@ namespace MyGame
         private void OnLoginResp(IMessage msg)
         {
             if (msg is not UserLoginResponse message) return;
-            if (message.Result == Result.Success)
+            
+            if (message.Result == RESULT.Success)
             {
                 var userModel = this.GetModel<IUserModel>();
                 this.GetModel<IUserModel>().UserId = message.Userinfo.UserId;

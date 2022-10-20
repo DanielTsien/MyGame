@@ -29,7 +29,8 @@ namespace MyGame.Network
 
         private bool ParsePackage()
         {
-            if(m_readOffset + NetConstant.PACKET_HEAD_LENGTH < m_stream.Position)
+            //加上等于号 如果是个空包（参数值为默认值，eg：0）
+            if(m_readOffset + NetConstant.PACKET_HEAD_LENGTH <= m_stream.Position)
             {
                 short packetId = BitConverter.ToInt16(m_stream.GetBuffer(), m_readOffset);
                 short packageSize = BitConverter.ToInt16(m_stream.GetBuffer(), m_readOffset + NetConstant.PACKET_ID_BITS);

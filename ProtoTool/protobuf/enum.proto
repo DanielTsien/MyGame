@@ -5,31 +5,33 @@ package MyGame.Proto;
 option csharp_namespace = "MyGame.Proto";
 option cc_enable_arenas = true;
 
-enum Result
+enum RESULT
 {
-	SUCCESS = 0;
-	FAILED = 1;
+	RESULT_SUCCESS = 0;
+	RESULT_FAILED = 1;
 }
 
-enum CharacterType
+//在生成C#代码时，会忽略掉等同于CHARACTER_TYPE的前缀
+enum CHARACTER_TYPE
 {
-	PLAYER = 0;
-	NPC = 1;
-	Monster = 2;
+	CHARACTER_TYPE_PLAYER = 0;
+	CHARACTER_TYPE_NPC = 1;
+	CHARACTER_TYPE_Monster = 2;
 }
 
-enum CharacterClass
+enum CHARACTER_CLASS
 {
-	WARRIOR = 0;
-	WIZARD = 1;
-	ARCHER = 2;
+	CHARACTER_CLASS_NONE = 0;
+	CHARACTER_CLASS_WARRIOR = 1;
+	CHARACTER_CLASS_WIZARD = 2;
+	CHARACTER_CLASS_ARCHER = 3;
 }
 
 enum ENTITY_EVENT
 {
-	NONE = 0;
-	IDLE = 1;
-	MOVE_FWD = 2;
-	MOVE_BACK = 3;
-	JUMP = 4;
+	ENTITY_EVENT_NONE = 0;
+	ENTITY_EVENT_IDLE = 1;
+	ENTITY_EVENT_MOVE_FWD = 2;
+	ENTITY_EVENT_MOVE_BACK = 3;
+	ENTITY_EVENT_JUMP = 4;
 }

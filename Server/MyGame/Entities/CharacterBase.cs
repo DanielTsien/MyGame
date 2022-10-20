@@ -1,5 +1,7 @@
 ﻿using MyGame.Data;
+using MyGame.Manager;
 using MyGame.Proto;
+using MyGame.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +16,23 @@ namespace MyGame.Entities
         public int Id { get; set; }
         public string Name => Info.Name;
         public CharacterInfo Info;
-        public CharacterDefine Define;
+        public CharacterConfig Config;
 
-        public CharacterBase(NEntity entityData) : base(entityData)
+        public CharacterBase(Vector3Int pos, Vector3Int dir) : base(pos, dir)
         {
 
+        }
+
+        public CharacterBase(CHARACTER_TYPE type, int configId, int level, Vector3Int pos, Vector3Int dir) : base(pos ,dir)
+        {
+            Info = new CharacterInfo();
+            Info.Type = type;
+            Info.Level = level;
+            Info.Entity = EntityData;
+            Info.EntityId = EntityId;
+            Info.ConfigId = configId;
+            Config = DataManager.Instance.Characters[configId];
+            Info.Name = Config.Name;
         }
     }
 }

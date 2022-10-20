@@ -16,6 +16,8 @@ namespace UI
 
         private void Start()
         {
+            UsernameInput.text = PlayerPrefs.GetString("username");
+            PasswordInput.text = PlayerPrefs.GetString("password");
             this.RegisterNetEvent(PacketId.UserLoginResponse, OnLoginResp);
         }
 
@@ -23,7 +25,7 @@ namespace UI
         {
             if (msg is not UserLoginResponse message) return;
 
-            if (message.Result == Result.Success)
+            if (message.Result == RESULT.Success)
             {
                 SceneManager.LoadScene("CreateCharacter");
             }
@@ -42,6 +44,8 @@ namespace UI
                     Username = UsernameInput.text,
                     Passward = PasswordInput.text
                 });
+                PlayerPrefs.SetString("username", UsernameInput.text);
+                PlayerPrefs.SetString("password", PasswordInput.text);
                 UsernameInput.text = "";
                 PasswordInput.text = "";
             }

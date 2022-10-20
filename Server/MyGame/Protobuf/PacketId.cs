@@ -24,15 +24,19 @@ namespace MyGame.Proto {
     static PacketIdReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5wYWNrZXRJZC5wcm90bxIMTXlHYW1lLlByb3RvKrkCCghQYWNrZXRJZBII",
+            "Cg5wYWNrZXRJZC5wcm90bxIMTXlHYW1lLlByb3RvKvcDCghQYWNrZXRJZBII",
             "CgROT05FEAASGQoVVVNFUl9SRUdJU1RFUl9SRVFVRVNUEAESGgoWVVNFUl9S",
             "RUdJU1RFUl9SRVNQT05TRRACEhYKElVTRVJfTE9HSU5fUkVRVUVTVBADEhcK",
             "E1VTRVJfTE9HSU5fUkVTUE9OU0UQBBIhCh1VU0VSX0NSRUFURV9DSEFSQUNU",
             "RVJfUkVRVUVTVBAFEiIKHlVTRVJfQ1JFQVRFX0NIQVJBQ1RFUl9SRVNQT05T",
             "RRAGEhsKF1VTRVJfR0FNRV9FTlRFUl9SRVFVRVNUEAcSHAoYVVNFUl9HQU1F",
             "X0VOVEVSX1JFU1BPTlNFEAgSGwoXVVNFUl9HQU1FX0xFQVZFX1JFUVVFU1QQ",
-            "CRIcChhVU0VSX0dBTUVfTEVBVkVfUkVTUE9OU0UQCkIS+AEBqgIMTXlHYW1l",
-            "LlByb3RvYgZwcm90bzM="));
+            "CRIcChhVU0VSX0dBTUVfTEVBVkVfUkVTUE9OU0UQChIfChtNQVBfQ0hBUkFD",
+            "VEVSX0VOVEVSX1JFUVVFU1QQCxIgChxNQVBfQ0hBUkFDVEVSX0VOVEVSX1JF",
+            "U1BPTlNFEAwSIAocTUFQX0NIQVJBQ1RFUl9MRUFWRV9SRVNQT05TRRANEhsK",
+            "F01BUF9FTlRJVFlfU1lOQ19SRVFVRVNUEA4SHAoYTUFQX0VOVElUWV9TWU5D",
+            "X1JFU1BPTlNFEA8SHAoYTUFQX0VOVElUWV9TWVNOQ19SRVFVRVNUEBBCEvgB",
+            "AaoCDE15R2FtZS5Qcm90b2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::MyGame.Proto.PacketId), }, null, null));
@@ -53,6 +57,12 @@ namespace MyGame.Proto {
     [pbr::OriginalName("USER_GAME_ENTER_RESPONSE")] UserGameEnterResponse = 8,
     [pbr::OriginalName("USER_GAME_LEAVE_REQUEST")] UserGameLeaveRequest = 9,
     [pbr::OriginalName("USER_GAME_LEAVE_RESPONSE")] UserGameLeaveResponse = 10,
+    [pbr::OriginalName("MAP_CHARACTER_ENTER_REQUEST")] MapCharacterEnterRequest = 11,
+    [pbr::OriginalName("MAP_CHARACTER_ENTER_RESPONSE")] MapCharacterEnterResponse = 12,
+    [pbr::OriginalName("MAP_CHARACTER_LEAVE_RESPONSE")] MapCharacterLeaveResponse = 13,
+    [pbr::OriginalName("MAP_ENTITY_SYNC_REQUEST")] MapEntitySyncRequest = 14,
+    [pbr::OriginalName("MAP_ENTITY_SYNC_RESPONSE")] MapEntitySyncResponse = 15,
+    [pbr::OriginalName("MAP_ENTITY_SYSNC_REQUEST")] MapEntitySysncRequest = 16,
   }
 
   #endregion

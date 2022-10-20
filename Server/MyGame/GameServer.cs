@@ -1,6 +1,7 @@
 ﻿using MyGame.Proto;
 using MyGame.Network;
 using System.Threading;
+using MyGame.Manager;
 
 namespace MyGame
 {
@@ -14,6 +15,8 @@ namespace MyGame
             m_netService = new NetService();
             MessageSubscribes();
             DatabaseManager.Instance.Init();
+            DataManager.Instance.Load();
+            MapManager.Instance.Init();
             m_thread = new Thread(new ThreadStart(Update));
         }
 

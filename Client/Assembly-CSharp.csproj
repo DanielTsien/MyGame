@@ -59,11 +59,14 @@
      <Compile Include="Assets\Scripts\Event\Base\ISendEvent.cs" />
      <Compile Include="Assets\Scripts\Event\Base\IRegisterEvent.cs" />
      <Compile Include="Assets\Scripts\Network\NetConstant.cs" />
+     <Compile Include="Assets\Scripts\Protobuf\Map.cs" />
      <Compile Include="Assets\Scripts\Singleton\MonoSingleton.cs" />
      <Compile Include="Assets\Scripts\System\Base\IGetSystem.cs" />
      <Compile Include="Assets\Scripts\System\Base\ISystem.cs" />
      <Compile Include="Assets\Scripts\UI\CreateCharacter\CreateCharacterPanel.cs" />
+     <Compile Include="Assets\Scripts\System\MapSystem.cs" />
      <Compile Include="Assets\Scripts\Network\ISendNetMessage.cs" />
+     <Compile Include="Assets\Scripts\Model\Config\CharacterConfigModel.cs" />
      <Compile Include="Assets\Scripts\Controller\Base\IController.cs" />
      <Compile Include="Assets\Scripts\Command\Base\CommandBase.cs" />
      <Compile Include="Assets\Scripts\Base\ISetArchitecture.cs" />
@@ -71,6 +74,7 @@
      <Compile Include="Assets\Scripts\Model\Base\IModel.cs" />
      <Compile Include="Assets\Scripts\Protobuf\Enum.cs" />
      <Compile Include="Assets\Scripts\GameStart.cs" />
+     <Compile Include="Assets\Scripts\Model\Config\MapConfig.cs" />
      <Compile Include="Assets\Scripts\Base\IGetArchitecture.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkSystem.cs" />
      <Compile Include="Assets\Scripts\UI\CreateCharacter\CharacterSoltItem.cs" />
@@ -91,10 +95,12 @@
      <Compile Include="Assets\Scripts\Utilities\Loom.cs" />
      <Compile Include="Assets\Scripts\Utilities\IOCContainer.cs" />
      <Compile Include="Assets\Scripts\Network\IRegisterNetEvent.cs" />
+     <Compile Include="Assets\Scripts\Model\Config\CharacterConfig.cs" />
      <Compile Include="Assets\Scripts\UI\Login\RegisterPanel.cs" />
      <Compile Include="Assets\Scripts\Event\Base\IUnregister.cs" />
      <Compile Include="Assets\Scripts\UI\PanelBase.cs" />
      <Compile Include="Assets\Scripts\Network\PacketParser.cs" />
+     <Compile Include="Assets\Scripts\Model\Config\MapConfigModel.cs" />
      <Compile Include="Assets\Scripts\Singleton\Singleton.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />

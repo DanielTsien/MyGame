@@ -4,6 +4,8 @@ using Google.Protobuf;
 using System.Linq;
 using System.Collections.Generic;
 using Google.Protobuf.Collections;
+using MyGame.Entities;
+using MyGame.Manager;
 
 namespace MyGame
 {
@@ -26,15 +28,17 @@ namespace MyGame
             TCharacter character = DatabaseManager.Instance.Entities.TCharacters.Add(new TCharacter
             {
                 Name = msg.Name,
+                ConfigId = (int)msg.Class,
                 Class = (int)msg.Class,
-                Level = 1
+                Level = 1,
+                MapId = 1,
             });
 
             sender.Session.User.TPlayer.TCharacters.Add(character);
             DatabaseManager.Instance.Save(false);
-
+            
             responMsg.Errormsg = "None";
-            responMsg.Result = Result.Success;
+            responMsg.Result = RESULT.Success;
             AddCharacter(sender.Session.User.TPlayer.TCharacters, responMsg.Characters);
 
             sender.SendMessage(PacketId.UserCreateCharacterResponse, responMsg);
@@ -47,7 +51,7 @@ namespace MyGame
 
             var responMsg = new UserRegisterResponse();
             responMsg.Errormsg = "None";
-            responMsg.Result = Result.Failed;
+            responMsg.Result = RESULT.Failed;
             TUser user = DatabaseManager.Instance.Entities.TUsers.Where(u => u.Username == msg.Username).FirstOrDefault();
             if(user != null)
             {
@@ -55,7 +59,7 @@ namespace MyGame
             }
             else
             {
-                responMsg.Result = Result.Success;
+                responMsg.Result = RESULT.Success;
                 TPlayer player = DatabaseManager.Instance.Entities.TPlayers.Add(new TPlayer());
                 user = DatabaseManager.Instance.Entities.TUsers.Add(new TUser { Username = msg.Username, Password = msg.Passward, TPlayer = player});
                 responMsg.Userinfo = new UserInfo { UserId = user.Id, Player = new PlayerInfo { PlayerId = player.Id} };
@@ -73,7 +77,7 @@ namespace MyGame
 
             var responMsg = new UserLoginResponse();
             responMsg.Errormsg = "None";
-            responMsg.Result = Result.Failed;
+            responMsg.Result = RESULT.Failed;
             TUser user = DatabaseManager.Instance.Entities.TUsers.Where(u => u.Username == msg.Username).FirstOrDefault();
             if (user == null)
             {
@@ -85,7 +89,7 @@ namespace MyGame
             }
             else
             {
-                responMsg.Result = Result.Success;
+                responMsg.Result = RESULT.Success;
 
                 responMsg.Userinfo = new UserInfo
                 {
@@ -106,7 +110,7 @@ namespace MyGame
                 CharacterInfo info = new CharacterInfo();
                 info.Id = character.Id;
                 info.Name = character.Name;
-                info.Class = (CharacterClass)character.Class;
+                info.Class = (CHARACTER_CLASS)character.Class;
                 info.Level = character.Level;
                 CharacterInfos.Add(info);
             }
@@ -115,10 +119,18 @@ namespace MyGame
         private void OnUserGameEnter(NetConnection sender, IMessage message)
         {
             var msg = message as UserGameEnterRequest;
+            TCharacter dbcCharacter = sender.Session.User.TPlayer.TCharacters.ElementAt(msg.CharacterIdx);
+            Log.Info($"UserGameEnterRequest: characterID:{dbcCharacter.Id}:{dbcCharacter.Name} Map:{dbcCharacter.MapId}");
+
+            Character character = CharacterManager.Instance.AddCharacter(dbcCharacter);
 
             UserGameEnterResponse responMsg = new UserGameEnterResponse();
-            
+            responMsg.Result = RESULT.Success;
+            responMsg.Errormsg = "None";
             sender.SendMessage(PacketId.UserGameEnterResponse, responMsg);
+
+            sender.Session.Character = character;
+            MapManager.Instance[dbcCharacter.MapId].CharacterEnter(sender, character);
         }
     }
 }

@@ -28,38 +28,38 @@ namespace MyGame.Proto {
             "eS5wcm90byJECghVc2VySW5mbxIOCgZ1c2VySWQYASABKAUSKAoGcGxheWVy",
             "GAIgASgLMhguTXlHYW1lLlByb3RvLlBsYXllckluZm8iTwoKUGxheWVySW5m",
             "bxIQCghwbGF5ZXJJZBgBIAEoBRIvCgpjaGFyYWN0ZXJzGAIgAygLMhsuTXlH",
-            "YW1lLlByb3RvLkNoYXJhY3RlckluZm8i2AEKDUNoYXJhY3RlckluZm8SCgoC",
-            "aWQYASABKAUSEAoIcGxheWVySWQYAiABKAUSDAoEbmFtZRgDIAEoCRIpCgR0",
-            "eXBlGAQgASgOMhsuTXlHYW1lLlByb3RvLkNoYXJhY3RlclR5cGUSKwoFY2xh",
-            "c3MYBSABKA4yHC5NeUdhbWUuUHJvdG8uQ2hhcmFjdGVyQ2xhc3MSDQoFbGV2",
-            "ZWwYBiABKAUSDQoFbWFwSWQYByABKAUSJQoGZW50aXR5GAggASgLMhUuTXlH",
-            "YW1lLlByb3RvLk5FbnRpdHkiOQoTVXNlclJlZ2lzdGVyUmVxdWVzdBIQCgh1",
-            "c2VybmFtZRgBIAEoCRIQCghwYXNzd2FyZBgCIAEoCSJ4ChRVc2VyUmVnaXN0",
-            "ZXJSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdhbWUuUHJvdG8uUmVz",
-            "dWx0EhAKCGVycm9ybXNnGAIgASgJEigKCHVzZXJpbmZvGAMgASgLMhYuTXlH",
-            "YW1lLlByb3RvLlVzZXJJbmZvIjYKEFVzZXJMb2dpblJlcXVlc3QSEAoIdXNl",
-            "cm5hbWUYASABKAkSEAoIcGFzc3dhcmQYAiABKAkidQoRVXNlckxvZ2luUmVz",
-            "cG9uc2USJAoGcmVzdWx0GAEgASgOMhQuTXlHYW1lLlByb3RvLlJlc3VsdBIQ",
-            "CghlcnJvcm1zZxgCIAEoCRIoCgh1c2VyaW5mbxgDIAEoCzIWLk15R2FtZS5Q",
-            "cm90by5Vc2VySW5mbyJXChpVc2VyQ3JlYXRlQ2hhcmFjdGVyUmVxdWVzdBIM",
-            "CgRuYW1lGAEgASgJEisKBWNsYXNzGAIgASgOMhwuTXlHYW1lLlByb3RvLkNo",
-            "YXJhY3RlckNsYXNzIoYBChtVc2VyQ3JlYXRlQ2hhcmFjdGVyUmVzcG9uc2US",
-            "JAoGcmVzdWx0GAEgASgOMhQuTXlHYW1lLlByb3RvLlJlc3VsdBIQCghlcnJv",
-            "cm1zZxgCIAEoCRIvCgpjaGFyYWN0ZXJzGAMgAygLMhsuTXlHYW1lLlByb3Rv",
-            "LkNoYXJhY3RlckluZm8iLAoUVXNlckdhbWVFbnRlclJlcXVlc3QSFAoMY2hh",
-            "cmFjdGVySWR4GAEgASgFIn8KFVVzZXJHYW1lRW50ZXJSZXNwb25zZRIkCgZy",
-            "ZXN1bHQYASABKA4yFC5NeUdhbWUuUHJvdG8uUmVzdWx0EhAKCGVycm9ybXNn",
-            "GAIgASgJEi4KCWNoYXJhY3RlchgDIAEoCzIbLk15R2FtZS5Qcm90by5DaGFy",
-            "YWN0ZXJJbmZvIhYKFFVzZXJHYW1lTGVhdmVSZXF1ZXN0Ik8KFVVzZXJHYW1l",
-            "TGVhdmVSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdhbWUuUHJvdG8u",
-            "UmVzdWx0EhAKCGVycm9ybXNnGAIgASgJQhL4AQGqAgxNeUdhbWUuUHJvdG9i",
-            "BnByb3RvMw=="));
+            "YW1lLlByb3RvLkNoYXJhY3RlckluZm8i7AEKDUNoYXJhY3RlckluZm8SCgoC",
+            "aWQYASABKAUSEAoIY29uZmlnSWQYAiABKAUSEAoIZW50aXR5SWQYAyABKAUS",
+            "DAoEbmFtZRgEIAEoCRIqCgR0eXBlGAUgASgOMhwuTXlHYW1lLlByb3RvLkNI",
+            "QVJBQ1RFUl9UWVBFEiwKBWNsYXNzGAYgASgOMh0uTXlHYW1lLlByb3RvLkNI",
+            "QVJBQ1RFUl9DTEFTUxINCgVsZXZlbBgHIAEoBRINCgVtYXBJZBgIIAEoBRIl",
+            "CgZlbnRpdHkYCSABKAsyFS5NeUdhbWUuUHJvdG8uTkVudGl0eSI5ChNVc2Vy",
+            "UmVnaXN0ZXJSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3YXJk",
+            "GAIgASgJIngKFFVzZXJSZWdpc3RlclJlc3BvbnNlEiQKBnJlc3VsdBgBIAEo",
+            "DjIULk15R2FtZS5Qcm90by5SRVNVTFQSEAoIZXJyb3Jtc2cYAiABKAkSKAoI",
+            "dXNlcmluZm8YAyABKAsyFi5NeUdhbWUuUHJvdG8uVXNlckluZm8iNgoQVXNl",
+            "ckxvZ2luUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCRIQCghwYXNzd2FyZBgC",
+            "IAEoCSJ1ChFVc2VyTG9naW5SZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5N",
+            "eUdhbWUuUHJvdG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJEigKCHVzZXJp",
+            "bmZvGAMgASgLMhYuTXlHYW1lLlByb3RvLlVzZXJJbmZvIlgKGlVzZXJDcmVh",
+            "dGVDaGFyYWN0ZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLAoFY2xhc3MYAiAB",
+            "KA4yHS5NeUdhbWUuUHJvdG8uQ0hBUkFDVEVSX0NMQVNTIoYBChtVc2VyQ3Jl",
+            "YXRlQ2hhcmFjdGVyUmVzcG9uc2USJAoGcmVzdWx0GAEgASgOMhQuTXlHYW1l",
+            "LlByb3RvLlJFU1VMVBIQCghlcnJvcm1zZxgCIAEoCRIvCgpjaGFyYWN0ZXJz",
+            "GAMgAygLMhsuTXlHYW1lLlByb3RvLkNoYXJhY3RlckluZm8iLAoUVXNlckdh",
+            "bWVFbnRlclJlcXVlc3QSFAoMY2hhcmFjdGVySWR4GAEgASgFIn8KFVVzZXJH",
+            "YW1lRW50ZXJSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdhbWUuUHJv",
+            "dG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJEi4KCWNoYXJhY3RlchgDIAEo",
+            "CzIbLk15R2FtZS5Qcm90by5DaGFyYWN0ZXJJbmZvIhYKFFVzZXJHYW1lTGVh",
+            "dmVSZXF1ZXN0Ik8KFVVzZXJHYW1lTGVhdmVSZXNwb25zZRIkCgZyZXN1bHQY",
+            "ASABKA4yFC5NeUdhbWUuUHJvdG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJ",
+            "QhL4AQGqAgxNeUdhbWUuUHJvdG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::MyGame.Proto.EnumReflection.Descriptor, global::MyGame.Proto.EntityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserInfo), global::MyGame.Proto.UserInfo.Parser, new[]{ "UserId", "Player" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.PlayerInfo), global::MyGame.Proto.PlayerInfo.Parser, new[]{ "PlayerId", "Characters" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.CharacterInfo), global::MyGame.Proto.CharacterInfo.Parser, new[]{ "Id", "PlayerId", "Name", "Type", "Class", "Level", "MapId", "Entity" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.CharacterInfo), global::MyGame.Proto.CharacterInfo.Parser, new[]{ "Id", "ConfigId", "EntityId", "Name", "Type", "Class", "Level", "MapId", "Entity" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserRegisterRequest), global::MyGame.Proto.UserRegisterRequest.Parser, new[]{ "Username", "Passward" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserRegisterResponse), global::MyGame.Proto.UserRegisterResponse.Parser, new[]{ "Result", "Errormsg", "Userinfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserLoginRequest), global::MyGame.Proto.UserLoginRequest.Parser, new[]{ "Username", "Passward" }, null, null, null, null),
@@ -561,7 +561,8 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CharacterInfo(CharacterInfo other) : this() {
       id_ = other.id_;
-      playerId_ = other.playerId_;
+      configId_ = other.configId_;
+      entityId_ = other.entityId_;
       name_ = other.name_;
       type_ = other.type_;
       class_ = other.class_;
@@ -589,20 +590,32 @@ namespace MyGame.Proto {
       }
     }
 
-    /// <summary>Field number for the "playerId" field.</summary>
-    public const int PlayerIdFieldNumber = 2;
-    private int playerId_;
+    /// <summary>Field number for the "configId" field.</summary>
+    public const int ConfigIdFieldNumber = 2;
+    private int configId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int PlayerId {
-      get { return playerId_; }
+    public int ConfigId {
+      get { return configId_; }
       set {
-        playerId_ = value;
+        configId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "entityId" field.</summary>
+    public const int EntityIdFieldNumber = 3;
+    private int entityId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int EntityId {
+      get { return entityId_; }
+      set {
+        entityId_ = value;
       }
     }
 
     /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 3;
+    public const int NameFieldNumber = 4;
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -614,11 +627,11 @@ namespace MyGame.Proto {
     }
 
     /// <summary>Field number for the "type" field.</summary>
-    public const int TypeFieldNumber = 4;
-    private global::MyGame.Proto.CharacterType type_ = global::MyGame.Proto.CharacterType.Player;
+    public const int TypeFieldNumber = 5;
+    private global::MyGame.Proto.CHARACTER_TYPE type_ = global::MyGame.Proto.CHARACTER_TYPE.Player;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.CharacterType Type {
+    public global::MyGame.Proto.CHARACTER_TYPE Type {
       get { return type_; }
       set {
         type_ = value;
@@ -626,11 +639,11 @@ namespace MyGame.Proto {
     }
 
     /// <summary>Field number for the "class" field.</summary>
-    public const int ClassFieldNumber = 5;
-    private global::MyGame.Proto.CharacterClass class_ = global::MyGame.Proto.CharacterClass.Warrior;
+    public const int ClassFieldNumber = 6;
+    private global::MyGame.Proto.CHARACTER_CLASS class_ = global::MyGame.Proto.CHARACTER_CLASS.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.CharacterClass Class {
+    public global::MyGame.Proto.CHARACTER_CLASS Class {
       get { return class_; }
       set {
         class_ = value;
@@ -638,7 +651,7 @@ namespace MyGame.Proto {
     }
 
     /// <summary>Field number for the "level" field.</summary>
-    public const int LevelFieldNumber = 6;
+    public const int LevelFieldNumber = 7;
     private int level_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -650,7 +663,7 @@ namespace MyGame.Proto {
     }
 
     /// <summary>Field number for the "mapId" field.</summary>
-    public const int MapIdFieldNumber = 7;
+    public const int MapIdFieldNumber = 8;
     private int mapId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -662,7 +675,7 @@ namespace MyGame.Proto {
     }
 
     /// <summary>Field number for the "entity" field.</summary>
-    public const int EntityFieldNumber = 8;
+    public const int EntityFieldNumber = 9;
     private global::MyGame.Proto.NEntity entity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -689,7 +702,8 @@ namespace MyGame.Proto {
         return true;
       }
       if (Id != other.Id) return false;
-      if (PlayerId != other.PlayerId) return false;
+      if (ConfigId != other.ConfigId) return false;
+      if (EntityId != other.EntityId) return false;
       if (Name != other.Name) return false;
       if (Type != other.Type) return false;
       if (Class != other.Class) return false;
@@ -704,10 +718,11 @@ namespace MyGame.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Id != 0) hash ^= Id.GetHashCode();
-      if (PlayerId != 0) hash ^= PlayerId.GetHashCode();
+      if (ConfigId != 0) hash ^= ConfigId.GetHashCode();
+      if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Type != global::MyGame.Proto.CharacterType.Player) hash ^= Type.GetHashCode();
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) hash ^= Class.GetHashCode();
+      if (Type != global::MyGame.Proto.CHARACTER_TYPE.Player) hash ^= Type.GetHashCode();
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) hash ^= Class.GetHashCode();
       if (Level != 0) hash ^= Level.GetHashCode();
       if (MapId != 0) hash ^= MapId.GetHashCode();
       if (entity_ != null) hash ^= Entity.GetHashCode();
@@ -733,32 +748,36 @@ namespace MyGame.Proto {
         output.WriteRawTag(8);
         output.WriteInt32(Id);
       }
-      if (PlayerId != 0) {
+      if (ConfigId != 0) {
         output.WriteRawTag(16);
-        output.WriteInt32(PlayerId);
+        output.WriteInt32(ConfigId);
+      }
+      if (EntityId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(EntityId);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteString(Name);
       }
-      if (Type != global::MyGame.Proto.CharacterType.Player) {
-        output.WriteRawTag(32);
+      if (Type != global::MyGame.Proto.CHARACTER_TYPE.Player) {
+        output.WriteRawTag(40);
         output.WriteEnum((int) Type);
       }
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) {
-        output.WriteRawTag(40);
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
+        output.WriteRawTag(48);
         output.WriteEnum((int) Class);
       }
       if (Level != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteInt32(Level);
       }
       if (MapId != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteInt32(MapId);
       }
       if (entity_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteMessage(Entity);
       }
       if (_unknownFields != null) {
@@ -775,32 +794,36 @@ namespace MyGame.Proto {
         output.WriteRawTag(8);
         output.WriteInt32(Id);
       }
-      if (PlayerId != 0) {
+      if (ConfigId != 0) {
         output.WriteRawTag(16);
-        output.WriteInt32(PlayerId);
+        output.WriteInt32(ConfigId);
+      }
+      if (EntityId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(EntityId);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteString(Name);
       }
-      if (Type != global::MyGame.Proto.CharacterType.Player) {
-        output.WriteRawTag(32);
+      if (Type != global::MyGame.Proto.CHARACTER_TYPE.Player) {
+        output.WriteRawTag(40);
         output.WriteEnum((int) Type);
       }
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) {
-        output.WriteRawTag(40);
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
+        output.WriteRawTag(48);
         output.WriteEnum((int) Class);
       }
       if (Level != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteInt32(Level);
       }
       if (MapId != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteInt32(MapId);
       }
       if (entity_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteMessage(Entity);
       }
       if (_unknownFields != null) {
@@ -816,16 +839,19 @@ namespace MyGame.Proto {
       if (Id != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Id);
       }
-      if (PlayerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PlayerId);
+      if (ConfigId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ConfigId);
+      }
+      if (EntityId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(EntityId);
       }
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Type != global::MyGame.Proto.CharacterType.Player) {
+      if (Type != global::MyGame.Proto.CHARACTER_TYPE.Player) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) {
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Class);
       }
       if (Level != 0) {
@@ -852,16 +878,19 @@ namespace MyGame.Proto {
       if (other.Id != 0) {
         Id = other.Id;
       }
-      if (other.PlayerId != 0) {
-        PlayerId = other.PlayerId;
+      if (other.ConfigId != 0) {
+        ConfigId = other.ConfigId;
+      }
+      if (other.EntityId != 0) {
+        EntityId = other.EntityId;
       }
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.Type != global::MyGame.Proto.CharacterType.Player) {
+      if (other.Type != global::MyGame.Proto.CHARACTER_TYPE.Player) {
         Type = other.Type;
       }
-      if (other.Class != global::MyGame.Proto.CharacterClass.Warrior) {
+      if (other.Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
         Class = other.Class;
       }
       if (other.Level != 0) {
@@ -896,30 +925,34 @@ namespace MyGame.Proto {
             break;
           }
           case 16: {
-            PlayerId = input.ReadInt32();
+            ConfigId = input.ReadInt32();
             break;
           }
-          case 26: {
+          case 24: {
+            EntityId = input.ReadInt32();
+            break;
+          }
+          case 34: {
             Name = input.ReadString();
             break;
           }
-          case 32: {
-            Type = (global::MyGame.Proto.CharacterType) input.ReadEnum();
-            break;
-          }
           case 40: {
-            Class = (global::MyGame.Proto.CharacterClass) input.ReadEnum();
+            Type = (global::MyGame.Proto.CHARACTER_TYPE) input.ReadEnum();
             break;
           }
           case 48: {
-            Level = input.ReadInt32();
+            Class = (global::MyGame.Proto.CHARACTER_CLASS) input.ReadEnum();
             break;
           }
           case 56: {
+            Level = input.ReadInt32();
+            break;
+          }
+          case 64: {
             MapId = input.ReadInt32();
             break;
           }
-          case 66: {
+          case 74: {
             if (entity_ == null) {
               Entity = new global::MyGame.Proto.NEntity();
             }
@@ -946,30 +979,34 @@ namespace MyGame.Proto {
             break;
           }
           case 16: {
-            PlayerId = input.ReadInt32();
+            ConfigId = input.ReadInt32();
             break;
           }
-          case 26: {
+          case 24: {
+            EntityId = input.ReadInt32();
+            break;
+          }
+          case 34: {
             Name = input.ReadString();
             break;
           }
-          case 32: {
-            Type = (global::MyGame.Proto.CharacterType) input.ReadEnum();
-            break;
-          }
           case 40: {
-            Class = (global::MyGame.Proto.CharacterClass) input.ReadEnum();
+            Type = (global::MyGame.Proto.CHARACTER_TYPE) input.ReadEnum();
             break;
           }
           case 48: {
-            Level = input.ReadInt32();
+            Class = (global::MyGame.Proto.CHARACTER_CLASS) input.ReadEnum();
             break;
           }
           case 56: {
+            Level = input.ReadInt32();
+            break;
+          }
+          case 64: {
             MapId = input.ReadInt32();
             break;
           }
-          case 66: {
+          case 74: {
             if (entity_ == null) {
               Entity = new global::MyGame.Proto.NEntity();
             }
@@ -1257,10 +1294,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "result" field.</summary>
     public const int ResultFieldNumber = 1;
-    private global::MyGame.Proto.Result result_ = global::MyGame.Proto.Result.Success;
+    private global::MyGame.Proto.RESULT result_ = global::MyGame.Proto.RESULT.Success;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.Result Result {
+    public global::MyGame.Proto.RESULT Result {
       get { return result_; }
       set {
         result_ = value;
@@ -1316,7 +1353,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Result != global::MyGame.Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (Result != global::MyGame.Proto.RESULT.Success) hash ^= Result.GetHashCode();
       if (Errormsg.Length != 0) hash ^= Errormsg.GetHashCode();
       if (userinfo_ != null) hash ^= Userinfo.GetHashCode();
       if (_unknownFields != null) {
@@ -1337,7 +1374,7 @@ namespace MyGame.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -1359,7 +1396,7 @@ namespace MyGame.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -1381,7 +1418,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
       }
       if (Errormsg.Length != 0) {
@@ -1402,7 +1439,7 @@ namespace MyGame.Proto {
       if (other == null) {
         return;
       }
-      if (other.Result != global::MyGame.Proto.Result.Success) {
+      if (other.Result != global::MyGame.Proto.RESULT.Success) {
         Result = other.Result;
       }
       if (other.Errormsg.Length != 0) {
@@ -1430,7 +1467,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -1460,7 +1497,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -1755,10 +1792,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "result" field.</summary>
     public const int ResultFieldNumber = 1;
-    private global::MyGame.Proto.Result result_ = global::MyGame.Proto.Result.Success;
+    private global::MyGame.Proto.RESULT result_ = global::MyGame.Proto.RESULT.Success;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.Result Result {
+    public global::MyGame.Proto.RESULT Result {
       get { return result_; }
       set {
         result_ = value;
@@ -1814,7 +1851,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Result != global::MyGame.Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (Result != global::MyGame.Proto.RESULT.Success) hash ^= Result.GetHashCode();
       if (Errormsg.Length != 0) hash ^= Errormsg.GetHashCode();
       if (userinfo_ != null) hash ^= Userinfo.GetHashCode();
       if (_unknownFields != null) {
@@ -1835,7 +1872,7 @@ namespace MyGame.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -1857,7 +1894,7 @@ namespace MyGame.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -1879,7 +1916,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
       }
       if (Errormsg.Length != 0) {
@@ -1900,7 +1937,7 @@ namespace MyGame.Proto {
       if (other == null) {
         return;
       }
-      if (other.Result != global::MyGame.Proto.Result.Success) {
+      if (other.Result != global::MyGame.Proto.RESULT.Success) {
         Result = other.Result;
       }
       if (other.Errormsg.Length != 0) {
@@ -1928,7 +1965,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -1958,7 +1995,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2038,10 +2075,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "class" field.</summary>
     public const int ClassFieldNumber = 2;
-    private global::MyGame.Proto.CharacterClass class_ = global::MyGame.Proto.CharacterClass.Warrior;
+    private global::MyGame.Proto.CHARACTER_CLASS class_ = global::MyGame.Proto.CHARACTER_CLASS.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.CharacterClass Class {
+    public global::MyGame.Proto.CHARACTER_CLASS Class {
       get { return class_; }
       set {
         class_ = value;
@@ -2073,7 +2110,7 @@ namespace MyGame.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) hash ^= Class.GetHashCode();
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) hash ^= Class.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2096,7 +2133,7 @@ namespace MyGame.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) {
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Class);
       }
@@ -2114,7 +2151,7 @@ namespace MyGame.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) {
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Class);
       }
@@ -2131,7 +2168,7 @@ namespace MyGame.Proto {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Class != global::MyGame.Proto.CharacterClass.Warrior) {
+      if (Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Class);
       }
       if (_unknownFields != null) {
@@ -2149,7 +2186,7 @@ namespace MyGame.Proto {
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.Class != global::MyGame.Proto.CharacterClass.Warrior) {
+      if (other.Class != global::MyGame.Proto.CHARACTER_CLASS.None) {
         Class = other.Class;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2172,7 +2209,7 @@ namespace MyGame.Proto {
             break;
           }
           case 16: {
-            Class = (global::MyGame.Proto.CharacterClass) input.ReadEnum();
+            Class = (global::MyGame.Proto.CHARACTER_CLASS) input.ReadEnum();
             break;
           }
         }
@@ -2195,7 +2232,7 @@ namespace MyGame.Proto {
             break;
           }
           case 16: {
-            Class = (global::MyGame.Proto.CharacterClass) input.ReadEnum();
+            Class = (global::MyGame.Proto.CHARACTER_CLASS) input.ReadEnum();
             break;
           }
         }
@@ -2253,10 +2290,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "result" field.</summary>
     public const int ResultFieldNumber = 1;
-    private global::MyGame.Proto.Result result_ = global::MyGame.Proto.Result.Success;
+    private global::MyGame.Proto.RESULT result_ = global::MyGame.Proto.RESULT.Success;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.Result Result {
+    public global::MyGame.Proto.RESULT Result {
       get { return result_; }
       set {
         result_ = value;
@@ -2311,7 +2348,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Result != global::MyGame.Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (Result != global::MyGame.Proto.RESULT.Success) hash ^= Result.GetHashCode();
       if (Errormsg.Length != 0) hash ^= Errormsg.GetHashCode();
       hash ^= characters_.GetHashCode();
       if (_unknownFields != null) {
@@ -2332,7 +2369,7 @@ namespace MyGame.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -2351,7 +2388,7 @@ namespace MyGame.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -2370,7 +2407,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
       }
       if (Errormsg.Length != 0) {
@@ -2389,7 +2426,7 @@ namespace MyGame.Proto {
       if (other == null) {
         return;
       }
-      if (other.Result != global::MyGame.Proto.Result.Success) {
+      if (other.Result != global::MyGame.Proto.RESULT.Success) {
         Result = other.Result;
       }
       if (other.Errormsg.Length != 0) {
@@ -2412,7 +2449,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2439,7 +2476,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2694,10 +2731,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "result" field.</summary>
     public const int ResultFieldNumber = 1;
-    private global::MyGame.Proto.Result result_ = global::MyGame.Proto.Result.Success;
+    private global::MyGame.Proto.RESULT result_ = global::MyGame.Proto.RESULT.Success;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.Result Result {
+    public global::MyGame.Proto.RESULT Result {
       get { return result_; }
       set {
         result_ = value;
@@ -2753,7 +2790,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Result != global::MyGame.Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (Result != global::MyGame.Proto.RESULT.Success) hash ^= Result.GetHashCode();
       if (Errormsg.Length != 0) hash ^= Errormsg.GetHashCode();
       if (character_ != null) hash ^= Character.GetHashCode();
       if (_unknownFields != null) {
@@ -2774,7 +2811,7 @@ namespace MyGame.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -2796,7 +2833,7 @@ namespace MyGame.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -2818,7 +2855,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
       }
       if (Errormsg.Length != 0) {
@@ -2839,7 +2876,7 @@ namespace MyGame.Proto {
       if (other == null) {
         return;
       }
-      if (other.Result != global::MyGame.Proto.Result.Success) {
+      if (other.Result != global::MyGame.Proto.RESULT.Success) {
         Result = other.Result;
       }
       if (other.Errormsg.Length != 0) {
@@ -2867,7 +2904,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2897,7 +2934,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -3117,10 +3154,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "result" field.</summary>
     public const int ResultFieldNumber = 1;
-    private global::MyGame.Proto.Result result_ = global::MyGame.Proto.Result.Success;
+    private global::MyGame.Proto.RESULT result_ = global::MyGame.Proto.RESULT.Success;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.Result Result {
+    public global::MyGame.Proto.RESULT Result {
       get { return result_; }
       set {
         result_ = value;
@@ -3163,7 +3200,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Result != global::MyGame.Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (Result != global::MyGame.Proto.RESULT.Success) hash ^= Result.GetHashCode();
       if (Errormsg.Length != 0) hash ^= Errormsg.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3183,7 +3220,7 @@ namespace MyGame.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -3201,7 +3238,7 @@ namespace MyGame.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
@@ -3219,7 +3256,7 @@ namespace MyGame.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Result != global::MyGame.Proto.Result.Success) {
+      if (Result != global::MyGame.Proto.RESULT.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
       }
       if (Errormsg.Length != 0) {
@@ -3237,7 +3274,7 @@ namespace MyGame.Proto {
       if (other == null) {
         return;
       }
-      if (other.Result != global::MyGame.Proto.Result.Success) {
+      if (other.Result != global::MyGame.Proto.RESULT.Success) {
         Result = other.Result;
       }
       if (other.Errormsg.Length != 0) {
@@ -3259,7 +3296,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {
@@ -3282,7 +3319,7 @@ namespace MyGame.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Result = (global::MyGame.Proto.Result) input.ReadEnum();
+            Result = (global::MyGame.Proto.RESULT) input.ReadEnum();
             break;
           }
           case 18: {

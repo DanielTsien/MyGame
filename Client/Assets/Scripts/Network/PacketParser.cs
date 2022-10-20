@@ -23,7 +23,7 @@ namespace Network
 
         public void ReceiveBuffer(byte[] buffer, int length)
         {
-            if (m_curPosition + length > m_recvBuffer.Length)
+            if (m_curPosition + length >= m_recvBuffer.Length)
             {
                 byte[] oldRecvBuffer = m_recvBuffer;
                 m_recvBuffer = new byte[m_curPosition + length];

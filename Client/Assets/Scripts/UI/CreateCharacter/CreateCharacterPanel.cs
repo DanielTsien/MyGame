@@ -45,7 +45,7 @@ public class CreateCharacterPanel : PanelBase
         
         this.SendNetMessage(PacketId.UserCreateCharacterRequest, new UserCreateCharacterRequest
         {
-            Class = (CharacterClass)m_curIdx,
+            Class = (CHARACTER_CLASS)(m_curIdx + 1),
             Name = NameInput.text,
         });
 

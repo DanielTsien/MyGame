@@ -18,6 +18,11 @@ namespace MyGame
         public string Name { get; set; }
         public int Class { get; set; }
         public int Level { get; set; }
+        public int ConfigId { get; set; }
+        public int MapId { get; set; }
+        public int PosX { get; set; }
+        public int PosY { get; set; }
+        public int PosZ { get; set; }
     
         public virtual TPlayer TPlayer { get; set; }
     }

@@ -20,6 +20,9 @@ namespace Network
             {PacketId.UserGameEnterResponse, (buffer,offset,size) => UserGameEnterResponse.Descriptor.Parser.ParseFrom(buffer,offset,size)},
             {PacketId.UserGameLeaveRequest, (buffer,offset,size) => UserGameLeaveRequest.Descriptor.Parser.ParseFrom(buffer,offset,size)},
             {PacketId.UserGameLeaveResponse, (buffer,offset,size) => UserGameLeaveResponse.Descriptor.Parser.ParseFrom(buffer,offset,size)},
+            {PacketId.MapCharacterEnterRequest, (buffer,offset,size) => MapCharacterEnterRequest.Descriptor.Parser.ParseFrom(buffer,offset,size)},
+            {PacketId.MapCharacterEnterResponse, (buffer,offset,size) => MapCharacterEnterResponse.Descriptor.Parser.ParseFrom(buffer,offset,size)},
+            {PacketId.MapCharacterLeaveResponse, (buffer,offset,size) => MapCharacterLeaveResponse.Descriptor.Parser.ParseFrom(buffer,offset,size)},
         };
         
         public static IMessage ParserFrom(PacketId id, byte[] buffer,int offset,int size) {

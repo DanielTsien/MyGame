@@ -23,7 +23,7 @@ namespace UI
         {
             if (msg is not UserRegisterResponse message) return;
             
-            if (message.Result == Result.Success)
+            if (message.Result == RESULT.Success)
             {
                 SceneManager.LoadScene("CreateCharacter");
             }

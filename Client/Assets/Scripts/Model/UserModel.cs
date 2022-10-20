@@ -19,10 +19,11 @@ namespace MyGame
     public struct Character
     {
         public int Id;
-        public int PlayerId;
+        public int ConfigId;
+        public int EntityId;
         public string Name;
-        public CharacterType Type;
-        public CharacterClass Class;
+        public CHARACTER_TYPE Type;
+        public CHARACTER_CLASS Class;
         public int Level;
     }
 
@@ -55,7 +56,8 @@ namespace MyGame
                 m_characters.Add(new Character
                 {
                     Id = character.Id,
-                    PlayerId = character.PlayerId,
+                    ConfigId = character.ConfigId,
+                    EntityId = character.EntityId,
                     Name = character.Name,
                     Type = character.Type,
                     Class = character.Class,
