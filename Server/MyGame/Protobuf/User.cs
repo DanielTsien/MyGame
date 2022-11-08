@@ -26,40 +26,40 @@ namespace MyGame.Proto {
           string.Concat(
             "Cgp1c2VyLnByb3RvEgxNeUdhbWUuUHJvdG8aCkVudW0ucHJvdG8aDEVudGl0",
             "eS5wcm90byJECghVc2VySW5mbxIOCgZ1c2VySWQYASABKAUSKAoGcGxheWVy",
-            "GAIgASgLMhguTXlHYW1lLlByb3RvLlBsYXllckluZm8iTwoKUGxheWVySW5m",
-            "bxIQCghwbGF5ZXJJZBgBIAEoBRIvCgpjaGFyYWN0ZXJzGAIgAygLMhsuTXlH",
-            "YW1lLlByb3RvLkNoYXJhY3RlckluZm8i7AEKDUNoYXJhY3RlckluZm8SCgoC",
-            "aWQYASABKAUSEAoIY29uZmlnSWQYAiABKAUSEAoIZW50aXR5SWQYAyABKAUS",
-            "DAoEbmFtZRgEIAEoCRIqCgR0eXBlGAUgASgOMhwuTXlHYW1lLlByb3RvLkNI",
-            "QVJBQ1RFUl9UWVBFEiwKBWNsYXNzGAYgASgOMh0uTXlHYW1lLlByb3RvLkNI",
-            "QVJBQ1RFUl9DTEFTUxINCgVsZXZlbBgHIAEoBRINCgVtYXBJZBgIIAEoBRIl",
-            "CgZlbnRpdHkYCSABKAsyFS5NeUdhbWUuUHJvdG8uTkVudGl0eSI5ChNVc2Vy",
-            "UmVnaXN0ZXJSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3YXJk",
-            "GAIgASgJIngKFFVzZXJSZWdpc3RlclJlc3BvbnNlEiQKBnJlc3VsdBgBIAEo",
-            "DjIULk15R2FtZS5Qcm90by5SRVNVTFQSEAoIZXJyb3Jtc2cYAiABKAkSKAoI",
-            "dXNlcmluZm8YAyABKAsyFi5NeUdhbWUuUHJvdG8uVXNlckluZm8iNgoQVXNl",
-            "ckxvZ2luUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCRIQCghwYXNzd2FyZBgC",
-            "IAEoCSJ1ChFVc2VyTG9naW5SZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5N",
-            "eUdhbWUuUHJvdG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJEigKCHVzZXJp",
-            "bmZvGAMgASgLMhYuTXlHYW1lLlByb3RvLlVzZXJJbmZvIlgKGlVzZXJDcmVh",
-            "dGVDaGFyYWN0ZXJSZXF1ZXN0EgwKBG5hbWUYASABKAkSLAoFY2xhc3MYAiAB",
-            "KA4yHS5NeUdhbWUuUHJvdG8uQ0hBUkFDVEVSX0NMQVNTIoYBChtVc2VyQ3Jl",
-            "YXRlQ2hhcmFjdGVyUmVzcG9uc2USJAoGcmVzdWx0GAEgASgOMhQuTXlHYW1l",
-            "LlByb3RvLlJFU1VMVBIQCghlcnJvcm1zZxgCIAEoCRIvCgpjaGFyYWN0ZXJz",
-            "GAMgAygLMhsuTXlHYW1lLlByb3RvLkNoYXJhY3RlckluZm8iLAoUVXNlckdh",
-            "bWVFbnRlclJlcXVlc3QSFAoMY2hhcmFjdGVySWR4GAEgASgFIn8KFVVzZXJH",
-            "YW1lRW50ZXJSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdhbWUuUHJv",
-            "dG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJEi4KCWNoYXJhY3RlchgDIAEo",
-            "CzIbLk15R2FtZS5Qcm90by5DaGFyYWN0ZXJJbmZvIhYKFFVzZXJHYW1lTGVh",
-            "dmVSZXF1ZXN0Ik8KFVVzZXJHYW1lTGVhdmVSZXNwb25zZRIkCgZyZXN1bHQY",
-            "ASABKA4yFC5NeUdhbWUuUHJvdG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJ",
-            "QhL4AQGqAgxNeUdhbWUuUHJvdG9iBnByb3RvMw=="));
+            "GAIgASgLMhguTXlHYW1lLlByb3RvLlBsYXllckluZm8iUAoKUGxheWVySW5m",
+            "bxIQCghwbGF5ZXJJZBgBIAEoBRIwCgpjaGFyYWN0ZXJzGAIgAygLMhwuTXlH",
+            "YW1lLlByb3RvLk5DaGFyYWN0ZXJJbmZvIu0BCg5OQ2hhcmFjdGVySW5mbxIK",
+            "CgJpZBgBIAEoBRIQCghjb25maWdJZBgCIAEoBRIQCghlbnRpdHlJZBgDIAEo",
+            "BRIMCgRuYW1lGAQgASgJEioKBHR5cGUYBSABKA4yHC5NeUdhbWUuUHJvdG8u",
+            "Q0hBUkFDVEVSX1RZUEUSLAoFY2xhc3MYBiABKA4yHS5NeUdhbWUuUHJvdG8u",
+            "Q0hBUkFDVEVSX0NMQVNTEg0KBWxldmVsGAcgASgFEg0KBW1hcElkGAggASgF",
+            "EiUKBmVudGl0eRgJIAEoCzIVLk15R2FtZS5Qcm90by5ORW50aXR5IjkKE1Vz",
+            "ZXJSZWdpc3RlclJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkSEAoIcGFzc3dh",
+            "cmQYAiABKAkieAoUVXNlclJlZ2lzdGVyUmVzcG9uc2USJAoGcmVzdWx0GAEg",
+            "ASgOMhQuTXlHYW1lLlByb3RvLlJFU1VMVBIQCghlcnJvcm1zZxgCIAEoCRIo",
+            "Cgh1c2VyaW5mbxgDIAEoCzIWLk15R2FtZS5Qcm90by5Vc2VySW5mbyI2ChBV",
+            "c2VyTG9naW5SZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3YXJk",
+            "GAIgASgJInUKEVVzZXJMb2dpblJlc3BvbnNlEiQKBnJlc3VsdBgBIAEoDjIU",
+            "Lk15R2FtZS5Qcm90by5SRVNVTFQSEAoIZXJyb3Jtc2cYAiABKAkSKAoIdXNl",
+            "cmluZm8YAyABKAsyFi5NeUdhbWUuUHJvdG8uVXNlckluZm8iWAoaVXNlckNy",
+            "ZWF0ZUNoYXJhY3RlclJlcXVlc3QSDAoEbmFtZRgBIAEoCRIsCgVjbGFzcxgC",
+            "IAEoDjIdLk15R2FtZS5Qcm90by5DSEFSQUNURVJfQ0xBU1MihwEKG1VzZXJD",
+            "cmVhdGVDaGFyYWN0ZXJSZXNwb25zZRIkCgZyZXN1bHQYASABKA4yFC5NeUdh",
+            "bWUuUHJvdG8uUkVTVUxUEhAKCGVycm9ybXNnGAIgASgJEjAKCmNoYXJhY3Rl",
+            "cnMYAyADKAsyHC5NeUdhbWUuUHJvdG8uTkNoYXJhY3RlckluZm8iLAoUVXNl",
+            "ckdhbWVFbnRlclJlcXVlc3QSFAoMY2hhcmFjdGVySWR4GAEgASgFIoABChVV",
+            "c2VyR2FtZUVudGVyUmVzcG9uc2USJAoGcmVzdWx0GAEgASgOMhQuTXlHYW1l",
+            "LlByb3RvLlJFU1VMVBIQCghlcnJvcm1zZxgCIAEoCRIvCgljaGFyYWN0ZXIY",
+            "AyABKAsyHC5NeUdhbWUuUHJvdG8uTkNoYXJhY3RlckluZm8iFgoUVXNlckdh",
+            "bWVMZWF2ZVJlcXVlc3QiTwoVVXNlckdhbWVMZWF2ZVJlc3BvbnNlEiQKBnJl",
+            "c3VsdBgBIAEoDjIULk15R2FtZS5Qcm90by5SRVNVTFQSEAoIZXJyb3Jtc2cY",
+            "AiABKAlCEvgBAaoCDE15R2FtZS5Qcm90b2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::MyGame.Proto.EnumReflection.Descriptor, global::MyGame.Proto.EntityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserInfo), global::MyGame.Proto.UserInfo.Parser, new[]{ "UserId", "Player" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.PlayerInfo), global::MyGame.Proto.PlayerInfo.Parser, new[]{ "PlayerId", "Characters" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.CharacterInfo), global::MyGame.Proto.CharacterInfo.Parser, new[]{ "Id", "ConfigId", "EntityId", "Name", "Type", "Class", "Level", "MapId", "Entity" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.NCharacterInfo), global::MyGame.Proto.NCharacterInfo.Parser, new[]{ "Id", "ConfigId", "EntityId", "Name", "Type", "Class", "Level", "MapId", "Entity" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserRegisterRequest), global::MyGame.Proto.UserRegisterRequest.Parser, new[]{ "Username", "Passward" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserRegisterResponse), global::MyGame.Proto.UserRegisterResponse.Parser, new[]{ "Result", "Errormsg", "Userinfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::MyGame.Proto.UserLoginRequest), global::MyGame.Proto.UserLoginRequest.Parser, new[]{ "Username", "Passward" }, null, null, null, null),
@@ -370,12 +370,12 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "characters" field.</summary>
     public const int CharactersFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::MyGame.Proto.CharacterInfo> _repeated_characters_codec
-        = pb::FieldCodec.ForMessage(18, global::MyGame.Proto.CharacterInfo.Parser);
-    private readonly pbc::RepeatedField<global::MyGame.Proto.CharacterInfo> characters_ = new pbc::RepeatedField<global::MyGame.Proto.CharacterInfo>();
+    private static readonly pb::FieldCodec<global::MyGame.Proto.NCharacterInfo> _repeated_characters_codec
+        = pb::FieldCodec.ForMessage(18, global::MyGame.Proto.NCharacterInfo.Parser);
+    private readonly pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo> characters_ = new pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::MyGame.Proto.CharacterInfo> Characters {
+    public pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo> Characters {
       get { return characters_; }
     }
 
@@ -526,16 +526,16 @@ namespace MyGame.Proto {
 
   }
 
-  public sealed partial class CharacterInfo : pb::IMessage<CharacterInfo>
+  public sealed partial class NCharacterInfo : pb::IMessage<NCharacterInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<CharacterInfo> _parser = new pb::MessageParser<CharacterInfo>(() => new CharacterInfo());
+    private static readonly pb::MessageParser<NCharacterInfo> _parser = new pb::MessageParser<NCharacterInfo>(() => new NCharacterInfo());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<CharacterInfo> Parser { get { return _parser; } }
+    public static pb::MessageParser<NCharacterInfo> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -551,7 +551,7 @@ namespace MyGame.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CharacterInfo() {
+    public NCharacterInfo() {
       OnConstruction();
     }
 
@@ -559,7 +559,7 @@ namespace MyGame.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CharacterInfo(CharacterInfo other) : this() {
+    public NCharacterInfo(NCharacterInfo other) : this() {
       id_ = other.id_;
       configId_ = other.configId_;
       entityId_ = other.entityId_;
@@ -574,8 +574,8 @@ namespace MyGame.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CharacterInfo Clone() {
-      return new CharacterInfo(this);
+    public NCharacterInfo Clone() {
+      return new NCharacterInfo(this);
     }
 
     /// <summary>Field number for the "id" field.</summary>
@@ -689,12 +689,12 @@ namespace MyGame.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as CharacterInfo);
+      return Equals(other as NCharacterInfo);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(CharacterInfo other) {
+    public bool Equals(NCharacterInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -871,7 +871,7 @@ namespace MyGame.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(CharacterInfo other) {
+    public void MergeFrom(NCharacterInfo other) {
       if (other == null) {
         return;
       }
@@ -2314,12 +2314,12 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "characters" field.</summary>
     public const int CharactersFieldNumber = 3;
-    private static readonly pb::FieldCodec<global::MyGame.Proto.CharacterInfo> _repeated_characters_codec
-        = pb::FieldCodec.ForMessage(26, global::MyGame.Proto.CharacterInfo.Parser);
-    private readonly pbc::RepeatedField<global::MyGame.Proto.CharacterInfo> characters_ = new pbc::RepeatedField<global::MyGame.Proto.CharacterInfo>();
+    private static readonly pb::FieldCodec<global::MyGame.Proto.NCharacterInfo> _repeated_characters_codec
+        = pb::FieldCodec.ForMessage(26, global::MyGame.Proto.NCharacterInfo.Parser);
+    private readonly pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo> characters_ = new pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::MyGame.Proto.CharacterInfo> Characters {
+    public pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo> Characters {
       get { return characters_; }
     }
 
@@ -2755,10 +2755,10 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "character" field.</summary>
     public const int CharacterFieldNumber = 3;
-    private global::MyGame.Proto.CharacterInfo character_;
+    private global::MyGame.Proto.NCharacterInfo character_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::MyGame.Proto.CharacterInfo Character {
+    public global::MyGame.Proto.NCharacterInfo Character {
       get { return character_; }
       set {
         character_ = value;
@@ -2884,7 +2884,7 @@ namespace MyGame.Proto {
       }
       if (other.character_ != null) {
         if (character_ == null) {
-          Character = new global::MyGame.Proto.CharacterInfo();
+          Character = new global::MyGame.Proto.NCharacterInfo();
         }
         Character.MergeFrom(other.Character);
       }
@@ -2913,7 +2913,7 @@ namespace MyGame.Proto {
           }
           case 26: {
             if (character_ == null) {
-              Character = new global::MyGame.Proto.CharacterInfo();
+              Character = new global::MyGame.Proto.NCharacterInfo();
             }
             input.ReadMessage(Character);
             break;
@@ -2943,7 +2943,7 @@ namespace MyGame.Proto {
           }
           case 26: {
             if (character_ == null) {
-              Character = new global::MyGame.Proto.CharacterInfo();
+              Character = new global::MyGame.Proto.NCharacterInfo();
             }
             input.ReadMessage(Character);
             break;

@@ -16,7 +16,7 @@ message MapCharacterEnterRequest
 message MapCharacterEnterResponse
 {
 	int32 mapId = 1;
-	repeated CharacterInfo characters = 2;
+	repeated NCharacterInfo characters = 2;
 }
 
 message MapCharacterLeaveResponse

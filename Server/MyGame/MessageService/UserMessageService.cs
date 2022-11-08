@@ -103,11 +103,11 @@ namespace MyGame
             sender.SendMessage(PacketId.UserLoginResponse, responMsg);
         }
 
-        private void AddCharacter(ICollection<TCharacter> characters, RepeatedField<CharacterInfo> CharacterInfos)
+        private void AddCharacter(ICollection<TCharacter> characters, RepeatedField<NCharacterInfo> CharacterInfos)
         {
             foreach (var character in characters)
             {
-                CharacterInfo info = new CharacterInfo();
+                NCharacterInfo info = new NCharacterInfo();
                 info.Id = character.Id;
                 info.Name = character.Name;
                 info.Class = (CHARACTER_CLASS)character.Class;

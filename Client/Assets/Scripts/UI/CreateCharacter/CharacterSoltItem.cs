@@ -1,7 +1,6 @@
-using MyGame;
+using MyGame.Proto;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CharacterSoltItem : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class CharacterSoltItem : MonoBehaviour
         m_selectedGo = transform.Find("Selected").gameObject;
     }
     
-    public void Init(Character info)
+    public void Init(NCharacterInfo info)
     {
         m_isEmpty = false;
         m_addGo.SetActive(false);

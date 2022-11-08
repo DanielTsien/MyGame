@@ -15,10 +15,10 @@ message UserInfo {
 
 message PlayerInfo {
 	int32 playerId = 1;
-	repeated CharacterInfo characters = 2;
+	repeated NCharacterInfo characters = 2;
 }
 
-message CharacterInfo {
+message NCharacterInfo {
 	int32 id = 1;
 	int32 configId = 2;
 	int32 entityId = 3;
@@ -62,7 +62,7 @@ message UserCreateCharacterRequest
 message UserCreateCharacterResponse {
 	RESULT result = 1;
 	string errormsg = 2;
-	repeated CharacterInfo characters = 3;
+	repeated NCharacterInfo characters = 3;
 }
 
 message UserGameEnterRequest
@@ -73,7 +73,7 @@ message UserGameEnterRequest
 message UserGameEnterResponse {
 	RESULT result = 1;
 	string errormsg = 2;
-	CharacterInfo character = 3;
+	NCharacterInfo character = 3;
 }
 
 message UserGameLeaveRequest

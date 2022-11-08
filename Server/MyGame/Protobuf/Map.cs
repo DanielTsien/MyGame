@@ -26,14 +26,15 @@ namespace MyGame.Proto {
           string.Concat(
             "CgltYXAucHJvdG8SDE15R2FtZS5Qcm90bxoKVXNlci5wcm90bxoMRW50aXR5",
             "LnByb3RvIikKGE1hcENoYXJhY3RlckVudGVyUmVxdWVzdBINCgVtYXBJZBgB",
-            "IAEoBSJbChlNYXBDaGFyYWN0ZXJFbnRlclJlc3BvbnNlEg0KBW1hcElkGAEg",
-            "ASgFEi8KCmNoYXJhY3RlcnMYAiADKAsyGy5NeUdhbWUuUHJvdG8uQ2hhcmFj",
-            "dGVySW5mbyItChlNYXBDaGFyYWN0ZXJMZWF2ZVJlc3BvbnNlEhAKCGVudGl0",
-            "eUlkGAEgASgFIkUKFE1hcEVudGl0eVN5bmNSZXF1ZXN0Ei0KCmVudGl0eVN5",
-            "bmMYASABKAsyGS5NeUdhbWUuUHJvdG8uTkVudGl0eVN5bmMiRwoVTWFwRW50",
-            "aXR5U3luY1Jlc3BvbnNlEi4KC2VudGl0eVN5bmNzGAIgAygLMhkuTXlHYW1l",
-            "LlByb3RvLk5FbnRpdHlTeW5jIioKEk1hcFRlbGVwb3J0UmVxdWVzdBIUCgx0",
-            "ZWxlcG9ydGVySWQYASABKAVCEvgBAaoCDE15R2FtZS5Qcm90b2IGcHJvdG8z"));
+            "IAEoBSJcChlNYXBDaGFyYWN0ZXJFbnRlclJlc3BvbnNlEg0KBW1hcElkGAEg",
+            "ASgFEjAKCmNoYXJhY3RlcnMYAiADKAsyHC5NeUdhbWUuUHJvdG8uTkNoYXJh",
+            "Y3RlckluZm8iLQoZTWFwQ2hhcmFjdGVyTGVhdmVSZXNwb25zZRIQCghlbnRp",
+            "dHlJZBgBIAEoBSJFChRNYXBFbnRpdHlTeW5jUmVxdWVzdBItCgplbnRpdHlT",
+            "eW5jGAEgASgLMhkuTXlHYW1lLlByb3RvLk5FbnRpdHlTeW5jIkcKFU1hcEVu",
+            "dGl0eVN5bmNSZXNwb25zZRIuCgtlbnRpdHlTeW5jcxgCIAMoCzIZLk15R2Ft",
+            "ZS5Qcm90by5ORW50aXR5U3luYyIqChJNYXBUZWxlcG9ydFJlcXVlc3QSFAoM",
+            "dGVsZXBvcnRlcklkGAEgASgFQhL4AQGqAgxNeUdhbWUuUHJvdG9iBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::MyGame.Proto.UserReflection.Descriptor, global::MyGame.Proto.EntityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -297,12 +298,12 @@ namespace MyGame.Proto {
 
     /// <summary>Field number for the "characters" field.</summary>
     public const int CharactersFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::MyGame.Proto.CharacterInfo> _repeated_characters_codec
-        = pb::FieldCodec.ForMessage(18, global::MyGame.Proto.CharacterInfo.Parser);
-    private readonly pbc::RepeatedField<global::MyGame.Proto.CharacterInfo> characters_ = new pbc::RepeatedField<global::MyGame.Proto.CharacterInfo>();
+    private static readonly pb::FieldCodec<global::MyGame.Proto.NCharacterInfo> _repeated_characters_codec
+        = pb::FieldCodec.ForMessage(18, global::MyGame.Proto.NCharacterInfo.Parser);
+    private readonly pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo> characters_ = new pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::MyGame.Proto.CharacterInfo> Characters {
+    public pbc::RepeatedField<global::MyGame.Proto.NCharacterInfo> Characters {
       get { return characters_; }
     }
 

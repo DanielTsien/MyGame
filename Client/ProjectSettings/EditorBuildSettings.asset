@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CreateCharacter.unity
     guid: 5bca905b591d6dc4db05cff403bb034d
+  - enabled: 1
+    path: Assets/Scenes/MainCity.unity
+    guid: 115c7b24ff5d6bc46a6c6ffe0d7fb96d
   m_configObjects: {}

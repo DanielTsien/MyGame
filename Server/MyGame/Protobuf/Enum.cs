@@ -48,6 +48,9 @@ namespace MyGame.Proto {
     [pbr::OriginalName("RESULT_FAILED")] Failed = 1,
   }
 
+  /// <summary>
+  ///在生成C#代码时，会忽略掉等同于CHARACTER_TYPE的前缀
+  /// </summary>
   public enum CHARACTER_TYPE {
     [pbr::OriginalName("CHARACTER_TYPE_PLAYER")] Player = 0,
     [pbr::OriginalName("CHARACTER_TYPE_NPC")] Npc = 1,

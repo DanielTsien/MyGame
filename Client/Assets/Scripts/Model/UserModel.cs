@@ -9,60 +9,28 @@ namespace MyGame
     {
         public int UserId { get; set; }
         public int PlayerId { get; set; }
-
+        public NCharacterInfo CurCharacterInfo{ get; set; }
         
-        Character? GetCharacterById(int id);
-        List<Character> GetCharacters();
-        void SetCharacters(RepeatedField<CharacterInfo> playerCharacters);
+        void SetCharacters(RepeatedField<NCharacterInfo> playerCharacters);
+        List<NCharacterInfo> GetCharacters();
     }
     
-    public struct Character
-    {
-        public int Id;
-        public int ConfigId;
-        public int EntityId;
-        public string Name;
-        public CHARACTER_TYPE Type;
-        public CHARACTER_CLASS Class;
-        public int Level;
-    }
-
     public class UserModel : ModelBase, IUserModel
     {
-        private readonly List<Character> m_characters = new();
-        
+        private readonly List<NCharacterInfo> m_characters = new();
+
         public int UserId { get; set; }
         public int PlayerId { get; set; }
-        
-        public Character? GetCharacterById(int id)
-        {
-            foreach (var character in m_characters)
-            {
-                if (character.Id == id)
-                {
-                    return character;
-                }
-            }
 
-            return null;
-        }
+        public NCharacterInfo CurCharacterInfo { get; set; }
+        public List<NCharacterInfo> GetCharacters() => m_characters;
         
-        public List<Character> GetCharacters() => m_characters;
-        public void SetCharacters(RepeatedField<CharacterInfo> playerCharacters)
+        public void SetCharacters(RepeatedField<NCharacterInfo> playerCharacters)
         {
             m_characters.Clear();
             foreach (var character in playerCharacters)
             {
-                m_characters.Add(new Character
-                {
-                    Id = character.Id,
-                    ConfigId = character.ConfigId,
-                    EntityId = character.EntityId,
-                    Name = character.Name,
-                    Type = character.Type,
-                    Class = character.Class,
-                    Level = character.Level
-                });
+                m_characters.Add(character);
             }
         }
     }

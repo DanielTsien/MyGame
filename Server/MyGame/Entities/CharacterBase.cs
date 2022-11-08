@@ -15,7 +15,7 @@ namespace MyGame.Entities
     {
         public int Id { get; set; }
         public string Name => Info.Name;
-        public CharacterInfo Info;
+        public NCharacterInfo Info;
         public CharacterConfig Config;
 
         public CharacterBase(Vector3Int pos, Vector3Int dir) : base(pos, dir)
@@ -25,7 +25,7 @@ namespace MyGame.Entities
 
         public CharacterBase(CHARACTER_TYPE type, int configId, int level, Vector3Int pos, Vector3Int dir) : base(pos ,dir)
         {
-            Info = new CharacterInfo();
+            Info = new NCharacterInfo();
             Info.Type = type;
             Info.Level = level;
             Info.Entity = EntityData;

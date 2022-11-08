@@ -33,12 +33,17 @@ namespace MyGame
 
         private void OnGameEnterResp(IMessage msg)
         {
-            if (msg is not UserGameEnterResponse message) return;
-
-            if (message.Result == RESULT.Success)
+            if (msg is not UserGameEnterResponse message)
             {
-                
+                return;
             }
+
+            if (message.Result != RESULT.Success)
+            {
+                return;
+            }
+
+            this.GetModel<IUserModel>().CurCharacterInfo = message.Character;
         }
 
         private void OnCreateCharacterResp(IMessage msg)
@@ -53,15 +58,20 @@ namespace MyGame
 
         private void OnLoginResp(IMessage msg)
         {
-            if (msg is not UserLoginResponse message) return;
-            
-            if (message.Result == RESULT.Success)
+            if (msg is not UserLoginResponse message)
             {
-                var userModel = this.GetModel<IUserModel>();
-                this.GetModel<IUserModel>().UserId = message.Userinfo.UserId;
-                this.GetModel<IUserModel>().PlayerId = message.Userinfo.Player.PlayerId;
-                userModel.SetCharacters(message.Userinfo.Player.Characters);
+                return;
             }
+            
+            if (message.Result != RESULT.Success)
+            {
+                return;
+            }
+            
+            var userModel = this.GetModel<IUserModel>();
+            this.GetModel<IUserModel>().UserId = message.Userinfo.UserId;
+            this.GetModel<IUserModel>().PlayerId = message.Userinfo.Player.PlayerId;
+            userModel.SetCharacters(message.Userinfo.Player.Characters);
             
         }
     }

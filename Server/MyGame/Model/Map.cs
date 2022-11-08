@@ -37,7 +37,7 @@ namespace MyGame.Model
             sender.SendMessage(PacketId.MapCharacterEnterResponse, response);
         }
 
-        private void SendCharacterEnterMap(NetConnection sender, CharacterInfo info)
+        private void SendCharacterEnterMap(NetConnection sender, NCharacterInfo info)
         {
             MapCharacterEnterResponse response = new MapCharacterEnterResponse();
             response.MapId = m_mapConfig.ID;
@@ -45,7 +45,7 @@ namespace MyGame.Model
             sender.SendMessage(PacketId.MapCharacterEnterResponse, response);
         }
 
-        private void SendCharacterLeaveMap(NetConnection sender, CharacterInfo info)
+        private void SendCharacterLeaveMap(NetConnection sender, NCharacterInfo info)
         {
             MapCharacterLeaveResponse response = new MapCharacterLeaveResponse();
             response.EntityId = info.EntityId;

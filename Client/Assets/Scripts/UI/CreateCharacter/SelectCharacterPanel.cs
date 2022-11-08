@@ -4,7 +4,6 @@ using MyGame.Proto;
 using Network;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectCharacterPanel : PanelBase
@@ -15,7 +14,7 @@ public class SelectCharacterPanel : PanelBase
     public List<GameObject> CharacterGos;
 
     private int m_selectedIdx = -1;
-    private List<Character> m_characters;
+    private List<NCharacterInfo> m_characters;
 
     private void Start()
     {

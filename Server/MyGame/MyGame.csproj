@@ -79,6 +79,7 @@
     <Compile Include="Manager\DataManager.cs" />
     <Compile Include="Manager\MapManager.cs" />
     <Compile Include="MessageService\IMessageService.cs" />
+    <Compile Include="MessageService\MapMessageService.cs" />
     <Compile Include="MessageService\UserMessageService.cs" />
     <Compile Include="Model.Context.cs">
       <AutoGen>True</AutoGen>
