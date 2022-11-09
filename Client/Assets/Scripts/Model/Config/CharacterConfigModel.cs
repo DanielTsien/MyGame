@@ -6,7 +6,7 @@ namespace MyGame
 {
     public interface ICharacterConfigModel : IModel
     {
-        
+        CharacterConfig Get(int id);
     }
     
     public class CharacterConfigModel : ModelBase, ICharacterConfigModel
@@ -16,6 +16,11 @@ namespace MyGame
         {
             string json = File.ReadAllText("Data/Character.txt");
             m_characters = JsonConvert.DeserializeObject<Dictionary<int, CharacterConfig>>(json);
+        }
+
+        public CharacterConfig Get(int id)
+        {
+            return m_characters[id];
         }
     }
 }

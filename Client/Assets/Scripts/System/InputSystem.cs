@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace;
 using UnityEngine;
 
 namespace MyGame
@@ -14,11 +15,14 @@ namespace MyGame
     
     public interface IInputSystem : ISystem
     {
-
+        void SetController(GameObject character);
     }
     
     public class InputSystem : SystemBase,  IInputSystem
     {
+        private Vector2 m_dir;
+        private GameObject m_character;
+        
         protected override void OnInit()
         {
             var go = GameObject.Instantiate(new GameObject(nameof(UnityInputListener)));
@@ -28,9 +32,44 @@ namespace MyGame
             updateBehaviour.OnFixedUpdate += OnFixedUpdate;
         }
 
+        public void SetController(GameObject character)
+        {
+            m_character = character;
+        }
+
         private void OnFixedUpdate()
         {
-            
+            if (m_character == null)
+            {
+                return;
+            }
+            MoveOperate();
+        }
+
+        private void MoveOperate()
+        {
+            m_dir = Vector2.zero;
+            if (Input.GetKey(KeyCode.W))
+            {
+                m_dir += Vector2.up;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                m_dir += Vector2.down;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                m_dir += Vector2.left;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                m_dir += Vector2.right;
+            }
+
+            if (m_dir != Vector2.zero)
+            {
+                
+            }
         }
     }
 }

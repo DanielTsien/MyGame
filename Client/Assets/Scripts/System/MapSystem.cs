@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using DefaultNamespace;
 using Google.Protobuf;
 using MyGame.Proto;
 using Network;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace MyGame
@@ -35,14 +37,17 @@ namespace MyGame
                     {
                         EnterMap(message.MapId);
                     }
-                    m_characters.Clear();
+
+                    ClearCharacters();
                     this.GetModel<IUserModel>().CurCharacterInfo = character;
                 }
             }
             
             foreach (var character in message.Characters)
             {
+                CreateCharacter(character);
                 m_characters[character.Id] = character;
+                
             }
         }
         
@@ -54,7 +59,24 @@ namespace MyGame
         private void EnterMap(int mapId)
         {
             CurMapId = mapId;
-            SceneManager.LoadScene(this.GetModel<IMapConfigModel>().GetById(mapId).Resource);
+            SceneManager.LoadScene(this.GetModel<IMapConfigModel>().Get(mapId).Resource);
+        }
+
+        private void ClearCharacters()
+        {
+            m_characters.Clear();
+        }
+        
+        private void CreateCharacter(NCharacterInfo characterInfo)
+        {
+            var cfg = this.GetModel<ICharacterConfigModel>().Get(characterInfo.ConfigId);
+            var go = GameObject.Instantiate(Resources.Load<GameObject>(cfg.Resource));
+            if (characterInfo.Id == this.GetModel<IUserModel>().CurCharacterInfo.Id)
+            {
+                this.GetSystem<IInputSystem>().SetController(go);
+            }
+            
+            
         }
     }
 }

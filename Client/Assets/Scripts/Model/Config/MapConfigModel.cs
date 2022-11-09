@@ -6,7 +6,7 @@ namespace MyGame
 {
     public interface IMapConfigModel : IModel
     {
-        MapConfig GetById(int id);
+        MapConfig Get(int id);
     }
     
     public class MapConfigModel : ModelBase, IMapConfigModel
@@ -18,7 +18,7 @@ namespace MyGame
             m_maps = JsonConvert.DeserializeObject<Dictionary<int, MapConfig>>(json);
         }
 
-        public MapConfig GetById(int id)
+        public MapConfig Get(int id)
         {
             return m_maps[id];
         }
