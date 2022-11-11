@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using DefaultNamespace;
+using Entities;
+using EntityComponent;
 using Google.Protobuf;
 using MyGame.Proto;
 using Network;
@@ -70,6 +71,14 @@ namespace MyGame
         private void CreateCharacter(NCharacterInfo characterInfo)
         {
             var cfg = this.GetModel<ICharacterConfigModel>().Get(characterInfo.ConfigId);
+
+            var entity = new Entity(characterInfo.EntityId);
+
+            var transComp = new TransformComponent();
+            transComp.Position = characterInfo.Entity.Position;
+            
+            entity.AddComponent(transComp);
+            
             var go = GameObject.Instantiate(Resources.Load<GameObject>(cfg.Resource));
             if (characterInfo.Id == this.GetModel<IUserModel>().CurCharacterInfo.Id)
             {

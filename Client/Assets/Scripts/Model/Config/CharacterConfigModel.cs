@@ -14,7 +14,7 @@ namespace MyGame
         public Dictionary<int, CharacterConfig> m_characters = null;
         protected override void OnInit()
         {
-            string json = File.ReadAllText("Data/Character.txt");
+            string json = File.ReadAllText("Assets/Config/Character.txt");
             m_characters = JsonConvert.DeserializeObject<Dictionary<int, CharacterConfig>>(json);
         }
 

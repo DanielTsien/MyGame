@@ -14,7 +14,7 @@ namespace MyGame
         public Dictionary<int, MapConfig> m_maps = null;
         protected override void OnInit()
         {
-            string json = File.ReadAllText("Data/Map.txt");
+            string json = File.ReadAllText("Assets/Config/Map.txt");
             m_maps = JsonConvert.DeserializeObject<Dictionary<int, MapConfig>>(json);
         }
 
