@@ -75,7 +75,7 @@ namespace MyGame
             var entity = new Entity(characterInfo.EntityId);
 
             var transComp = new TransformComponent();
-            transComp.Position = characterInfo.Entity.Position;
+            //transComp.Position = characterInfo.Entity.Position;
             
             entity.AddComponent(transComp);
             

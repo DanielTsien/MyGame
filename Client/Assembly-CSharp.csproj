@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Model\Base\IGetModel.cs" />
      <Compile Include="Assets\Scripts\Protobuf\Entity.cs" />
      <Compile Include="Assets\Scripts\Entities\Entity.cs" />
+     <Compile Include="Assets\Scripts\Utilities\Vector3Int.cs" />
      <Compile Include="Assets\Scripts\Event\Base\EventSystem.cs" />
      <Compile Include="Assets\Scripts\Utilities\UGUIExtension.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
@@ -109,7 +110,6 @@
      <Compile Include="Assets\Scripts\Network\PacketParser.cs" />
      <Compile Include="Assets\Scripts\Model\Config\MapConfigModel.cs" />
      <Compile Include="Assets\Scripts\Singleton\Singleton.cs" />
-     <Compile Include="Assets\Scripts\Utilities\Vector3Int.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
@@ -844,6 +844,10 @@
      </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{8e399d07-fc4a-7ecd-7881-f923d075ebd1}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
     <ProjectReference Include="spine-unity.csproj">
       <Project>{ead7a9e8-f873-f5b7-1b4d-6e7800e3a064}</Project>
       <Name>spine-unity</Name>
