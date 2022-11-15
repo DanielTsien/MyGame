@@ -27,19 +27,21 @@ namespace Editor.SkillEditor
             UnscaledTime,
             Manual
         }
-        
+
         ///<summary>Raised when any skill starts playing.</summary>
         public static event Action<Skill> OnSkillStarted;
+
         ///<summary>Raised when any skill stops playing.</summary>
         public static event Action<Skill> OnSkillStopped;
-        
-        
+
+
         ///<summary>Raised when a cutscene section has been reached.</summary>
         public event Action<Section> OnSectionReached;
+
         ///<summary>Raised when a global message has been send by this skill.</summary>
         public event Action<string, object> OnGlobalMessageSend;
-        
-        
+
+
         ///<summary>Raised when the skill is stopped. Important: Subscribers are cleared once the event is raised.</summary>
         public event Action OnStop;
 
@@ -49,31 +51,32 @@ namespace Editor.SkillEditor
         private bool _playOnStart;
         private bool _explicitActiveLayers;
         private LayerMask _activeLayers = -1;
-        
+
         public List<SkillTrack> tracks = new();
-        
+
         private float _length = 20f;
         private float _viewTimeMin = 0f;
         private float _viewTimeMax = 21f;
-        
-        
+
+
         private float _currentTime;
         private float _playTimeMin;
         private float _playTimeMax;
-        
+
         private List<IDirectableTimePointer> timePointers;
         private List<IDirectableTimePointer> unsortedStartTimePointers;
         private Dictionary<GameObject, bool> affectedLayerGOStates;
-        private static Dictionary<string, Skill> allSkills = new ();
+        private static Dictionary<string, Skill> allSkills = new();
         private bool preInitialized;
         private bool _isReSampleFrame;
-        
-        public UpdateMode updateMode 
+
+        public UpdateMode updateMode
         {
             get { return _updateMode; }
             set { _updateMode = value; }
         }
-        public StopMode defaultStopMode 
+
+        public StopMode defaultStopMode
         {
             get { return _defaultStopMode; }
             set { _defaultStopMode = value; }
@@ -85,84 +88,102 @@ namespace Editor.SkillEditor
             set { _playOnStart = value; }
         }
 
-        public bool explicitActiveLayers 
+        public bool explicitActiveLayers
         {
             get { return _explicitActiveLayers; }
             set { _explicitActiveLayers = value; }
         }
+
         public LayerMask activeLayers
         {
             get { return _activeLayers; }
             set { _activeLayers = value; }
         }
-        public float currentTime 
+
+        public float currentTime
         {
             get { return _currentTime; }
             set { _currentTime = Mathf.Clamp(value, 0, length); }
         }
-        
-        public float length 
+
+        public float length
         {
             get { return _length; }
             set { _length = Mathf.Max(value, 0.1f); }
         }
-        public float viewTimeMin 
+
+        public float viewTimeMin
         {
             get { return _viewTimeMin; }
-            set { if ( viewTimeMax > 0 ) _viewTimeMin = Mathf.Min(value, viewTimeMax - 0.25f); }
+            set
+            {
+                if (viewTimeMax > 0) _viewTimeMin = Mathf.Min(value, viewTimeMax - 0.25f);
+            }
         }
-        public float viewTimeMax 
+
+        public float viewTimeMax
         {
             get { return _viewTimeMax; }
             set { _viewTimeMax = Mathf.Max(value, viewTimeMin + 0.25f, 0); }
         }
-        public float playTimeMin 
+
+        public float playTimeMin
         {
             get { return _playTimeMin; }
             set { _playTimeMin = Mathf.Clamp(value, 0, playTimeMax); }
         }
-        public float playTimeMax 
+
+        public float playTimeMax
         {
             get { return _playTimeMax; }
             set { _playTimeMax = Mathf.Clamp(value, playTimeMin, length); }
         }
-        
-        public float playbackSpeed 
+
+        public float playbackSpeed
         {
             get { return _playbackSpeed; }
             set { _playbackSpeed = value; }
         }
-        
+
         public List<IDirectable> directables { get; private set; }
-        
+
         ///<summary>Is skill playing? (Note: it can be paused and isActive still be true)</summary>
         public bool isActive { get; private set; }
+
         ///<summary>Is skill paused?</summary>
         public bool isPaused { get; private set; }
+
         ///<summary>The last sampled time</summary>
         public float previousTime { get; private set; }
+
         ///<summary>internal use. will be true when Sampling due to ReSample call </summary>
         bool IDirector.isReSampleFrame => _isReSampleFrame;
+
         ///<summary>internal use. check this null for UnityObject comparer</summary>
         GameObject IDirector.context => this != null ? this.gameObject : null;
+
         ///<summary>The tracks</summary>
         IEnumerable<IDirectable> IDirector.children => tracks.Cast<IDirectable>();
+
         ///<summary>The remaining playing time.</summary>
         public float remainingTime => playTimeMax - currentTime;
 
-#region UNTIY CALLBACK
-        protected void Awake() 
+        #region UNTIY CALLBACK
+
+        protected void Awake()
         {
             Validate();
             allSkills[name] = this;
         }
-        protected void Start() 
+
+        protected void Start()
         {
             if (playOnStart)
             {
                 Play();
             }
         }
+
         protected void OnDestroy()
         {
             if (isActive)
@@ -203,22 +224,27 @@ namespace Editor.SkillEditor
                     Sample();
                     return;
                 }
+
                 UpdateSkill(Time.fixedDeltaTime);
             }
         }
-#endregion
+
+        #endregion
 
 
         public IEnumerable<GameObject> GetAffectedActors()
         {
             throw new System.NotImplementedException();
         }
-        
+
         ///<summary>Get the start/end times of all directables, optionally excluding a specific directable</summary>
-        public float[] GetPointerTimes() {
-            if ( timePointers == null ) {
+        public float[] GetPointerTimes()
+        {
+            if (timePointers == null)
+            {
                 InitializeTimePointers();
             }
+
             return timePointers.Select(t => t.time).ToArray();
         }
 
@@ -248,7 +274,7 @@ namespace Editor.SkillEditor
                 Debug.LogWarning("Skill is already Running.", gameObject);
                 return;
             }
-            
+
             playTimeMin = 0; //for mathf.clamp setter
 
             playTimeMax = endTime;
@@ -259,41 +285,51 @@ namespace Editor.SkillEditor
             {
                 currentTime = playTimeMin;
             }
-            
+
             isActive = true;
             isPaused = false;
-            
+
             OnStop = callback ?? OnStop;
-            
+
             Sample(); //immediately do a preliminary sample first at wherever the currentTime currently is at.
 
             SendGlobalMessage("OnCutsceneStarted", this);
             OnSkillStarted?.Invoke(this);
         }
-        
-        public void Stop() { Stop(defaultStopMode); }
-        public void Stop(StopMode stopMode) {
 
-            if ( !isActive ) {
+        public void Stop()
+        {
+            Stop(defaultStopMode);
+        }
+
+        public void Stop(StopMode stopMode)
+        {
+
+            if (!isActive)
+            {
                 return;
             }
 
             isActive = false;
             isPaused = false;
 
-            if ( stopMode == StopMode.Skip ) {
+            if (stopMode == StopMode.Skip)
+            {
                 Sample(playTimeMax);
             }
 
-            if ( stopMode == StopMode.Rewind ) {
+            if (stopMode == StopMode.Rewind)
+            {
                 Sample(playTimeMin);
             }
 
-            if ( stopMode == StopMode.Hold ) {
+            if (stopMode == StopMode.Hold)
+            {
                 Sample();
             }
 
-            if ( stopMode == StopMode.SkipRewindNoUndo ) {
+            if (stopMode == StopMode.SkipRewindNoUndo)
+            {
                 Sample(playTimeMax);
                 RewindNoUndo();
             }
@@ -301,12 +337,13 @@ namespace Editor.SkillEditor
             SendGlobalMessage("OnCutsceneStopped", this);
             OnSkillStopped?.Invoke(this);
 
-            if ( OnStop != null ) {
+            if (OnStop != null)
+            {
                 OnStop();
                 OnStop = null;
             }
         }
-        
+
         public void Pause() => isPaused = true;
         public void Resume() => isPaused = false;
 
@@ -329,40 +366,46 @@ namespace Editor.SkillEditor
             previousTime = currentTime; //this is why no undo is happening
             Sample();
         }
-        
+
         public void Sample() => Sample(currentTime);
+
         public void Sample(float time)
         {
             currentTime = time;
 
             //ignore same minmax times
-            if ( ( currentTime == 0 || currentTime == length ) && previousTime == currentTime ) {
+            if ((currentTime == 0 || currentTime == length) && previousTime == currentTime)
+            {
                 return;
             }
 
             //Initialize time pointers if required.
-            if ( !preInitialized && currentTime > 0 && previousTime == 0 ) {
+            if (!preInitialized && currentTime > 0 && previousTime == 0)
+            {
                 InitializeTimePointers();
             }
 
             //Sample started
-            if ( currentTime > 0 && currentTime < length && ( previousTime == 0 || previousTime == length ) ) {
+            if (currentTime > 0 && currentTime < length && (previousTime == 0 || previousTime == length))
+            {
                 OnSampleStarted();
             }
 
             //Sample pointers
-            if ( timePointers != null ) {
+            if (timePointers != null)
+            {
                 Internal_SamplePointers(currentTime, previousTime);
             }
 
             //Sample ended
-            if ( ( currentTime == 0 || currentTime == length ) && previousTime > 0 && previousTime < length ) {
+            if ((currentTime == 0 || currentTime == length) && previousTime > 0 && previousTime < length)
+            {
                 OnSampleEnded();
             }
 
             previousTime = currentTime;
         }
-        
+
         //Samples the initialized pointers.
         void Internal_SamplePointers(float currentTime, float previousTime)
         {
@@ -428,10 +471,10 @@ namespace Editor.SkillEditor
                 _isReSampleFrame = true;
 
 #if UNITY_EDITOR
-                List<CutsceneUtility.ChangedParameterCallbacks> cache = null;
+                List<SkillEditorUtility.ChangedParameterCallbacks> cache = null;
                 if (!Prefs.autoKey)
                 {
-                    cache = CutsceneUtility.changedParameterCallbacks.Values.ToList();
+                    cache = SkillEditorUtility.changedParameterCallbacks.Values.ToList();
                 }
 #endif
 
@@ -494,8 +537,8 @@ namespace Editor.SkillEditor
                 }
             }
         }
-        
-             //Initialize the time pointers (in/out). Bottom to top.
+
+        //Initialize the time pointers (in/out). Bottom to top.
         //Time pointers dectate all directables execution order. All pointers are collapsed into a list and ordered by their time.
         //Reverse() is used for in case pointers have same time. This is mostly true for groups and tracks.
         //(Group Enter -> Track Enter -> Clip Enter | Clip Exit -> Track Exit -> Group Exit)
@@ -543,39 +586,39 @@ namespace Editor.SkillEditor
 
             timePointers = timePointers.OrderBy(p => p.time).ToList();
         }
-        
-         //When Sample begins
-         void OnSampleStarted()
-         {
-             SetLayersActive();
-             if (DirectorCamera.current == null)
-             {
-                 Debug.LogWarning(
-                     "Director Camera is null. Have you disabled the AutoCreateDirectorCamera in Preferences?");
-             }
 
-             if (DirectorGUI.current)
-             {
-                 DirectorGUI.current.enabled = true;
-             }
+        //When Sample begins
+        void OnSampleStarted()
+        {
+            SetLayersActive();
+            if (DirectorCamera.current == null)
+            {
+                Debug.LogWarning(
+                    "Director Camera is null. Have you disabled the AutoCreateDirectorCamera in Preferences?");
+            }
 
-             for (var i = 0; i < directables.Count; i++)
-             {
-                 try
-                 {
-                     directables[i].RootEnabled();
-                 }
-                 catch (System.Exception e)
-                 {
-                     Debug.LogException(e, gameObject);
-                 }
-             }
+            if (DirectorGUI.current)
+            {
+                DirectorGUI.current.enabled = true;
+            }
+
+            for (var i = 0; i < directables.Count; i++)
+            {
+                try
+                {
+                    directables[i].RootEnabled();
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogException(e, gameObject);
+                }
+            }
 #if UNITY_EDITOR
-             transform.hideFlags = HideFlags.NotEditable;
+            transform.hideFlags = HideFlags.NotEditable;
 #endif
-         }
+        }
 
-         //When Sample ends
+        //When Sample ends
         void OnSampleEnded()
         {
             RestoreLayersActive();
@@ -599,7 +642,7 @@ namespace Editor.SkillEditor
             transform.hideFlags = HideFlags.None;
 #endif
         }
-        
+
 
         //use of active layers to toggle root object on or off during skill
         void SetLayersActive()
@@ -631,20 +674,21 @@ namespace Editor.SkillEditor
                 }
             }
         }
-        
+
         ///<summary>Update the skill by delta</summary>
-        void UpdateSkill(float delta) {
+        void UpdateSkill(float delta)
+        {
 
             //update time
             delta *= playbackSpeed;
             currentTime += delta;
 
-            if ( currentTime >= playTimeMax ) 
+            if (currentTime >= playTimeMax)
             {
                 Stop();
                 return;
             }
-            
+
             //finally sample
             Sample();
         }
@@ -723,13 +767,16 @@ namespace Editor.SkillEditor
         public void SendGlobalMessage(string message, object value)
         {
             this.gameObject.SendMessage(message, value, SendMessageOptions.DontRequireReceiver);
-            foreach ( var actor in GetAffectedActors() ) {
-                if ( actor != null ) {
+            foreach (var actor in GetAffectedActors())
+            {
+                if (actor != null)
+                {
                     actor.SendMessage(message, value, SendMessageOptions.DontRequireReceiver);
                 }
             }
 
-            if ( OnGlobalMessageSend != null ) {
+            if (OnGlobalMessageSend != null)
+            {
                 OnGlobalMessageSend(message, value);
             }
 
@@ -759,23 +806,32 @@ namespace Editor.SkillEditor
 
             track.actor = newActor;
         }
-        
+
         ///<summary>Providing a path to the element in the order of Group->Track->Clip, like for example ("MyGroup/MyTrack/MyClip"), returns that element.</summary>
-        public T FindElement<T>(string path) where T : IDirectable { return (T)FindElement(path); }
+        public T FindElement<T>(string path) where T : IDirectable
+        {
+            return (T) FindElement(path);
+        }
+
         ///<summary>Providing a path to the element in the order of Group->Track->Clip, like for example ("MyGroup/MyTrack/MyClip"), returns that element.</summary>
-        public IDirectable FindElement(string path) {
+        public IDirectable FindElement(string path)
+        {
             var split = path.Split('/');
             var result = tracks.FirstOrDefault(g => g.name.ToLower() == split[0].ToLower()) as IDirectable;
-            if ( result != null ) {
-                for ( var i = 1; i < split.Length; i++ ) {
+            if (result != null)
+            {
+                for (var i = 1; i < split.Length; i++)
+                {
                     result = result.FindChild(split[i]);
-                    if ( result == null ) {
+                    if (result == null)
+                    {
                         break;
                     }
                 }
             }
 
-            if ( result == null ) {
+            if (result == null)
+            {
                 Debug.LogWarning(string.Format("Cutscene element path to '{0}', was not found", path));
             }
 
@@ -783,38 +839,45 @@ namespace Editor.SkillEditor
         }
 
         //...
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format("'{0}' Cutscene", name);
         }
-        
+
         ///<summary>Get all names of SendGlobalMessage ActionClips</summary>
-        public string[] GetDefinedEventNames() {
+        public string[] GetDefinedEventNames()
+        {
             return directables.OfType<IEvent>().Select(d => d.name).ToArray();
         }
 
         ///<summary>By default cutscene is initialized when it starts playing. You can pre-initialize it if you want so for performance in case there is any lag when cutscene is started.</summary>
-        public void PreInitialize() {
+        public void PreInitialize()
+        {
             InitializeTimePointers();
             preInitialized = true;
         }
 
 
         ///<summary>Render the cutscene to an image sequence in runtime and get a Texture2D[] of the rendered frames. This operation will take several frames to complete. Use the callback parameter to get the result when rendering is done.</summary>
-        public void RenderCutscene(int width, int height, int frameRate, System.Action<Texture2D[]> callback) {
+        public void RenderCutscene(int width, int height, int frameRate, System.Action<Texture2D[]> callback)
+        {
 
-            if ( !Application.isPlaying ) {
+            if (!Application.isPlaying)
+            {
                 Debug.LogError("Rendering Cutscene with RenderCutscene function is only meant for runtime", this);
                 return;
             }
 
-            if ( isActive ) {
-                Debug.LogWarning("You called RenderCutscene to an actively playing Cutscene. The cutscene will now Stop.", this);
+            if (isActive)
+            {
+                Debug.LogWarning(
+                    "You called RenderCutscene to an actively playing Cutscene. The cutscene will now Stop.", this);
                 Stop();
             }
 
             StartCoroutine(Internal_RenderCutscene(width, height, frameRate, callback));
         }
-        
+
         //runtime rendering to Texture2D[]
         IEnumerator Internal_RenderCutscene(int width, int height, int frameRate, Action<Texture2D[]> callback)
         {
@@ -832,5 +895,115 @@ namespace Editor.SkillEditor
 
             callback(renderSequence.ToArray());
         }
+
+
+        ///----------------------------------------------------------------------------------------------
+        ///---------------------------------------UNITY EDITOR-------------------------------------------
+#if UNITY_EDITOR
+
+        [ContextMenu("Reset")] //override
+        void Reset()
+        {
+            
+        }
+
+        [ContextMenu("Copy Component")] //override
+        void CopyComponent()
+        {
+        }
+
+        [ContextMenu("Remove Component")] //override
+        void RemoveComponent()
+        {
+            Debug.LogWarning("Removing the Cutscene Component is not possible. Please delete the GameObject instead");
+        }
+
+        [ContextMenu("Show Transforms")]
+        void ShowTransforms()
+        {
+            Prefs.showTransforms = true;
+        }
+
+        [ContextMenu("Hide Transforms")]
+        void HideTransforms()
+        {
+            Prefs.showTransforms = false;
+        }
+
+        //UNITY CALLBACK
+        protected void OnValidate()
+        {
+            if (!UnityEditor.EditorUtility.IsPersistent(this) && !Application.isPlaying &&
+                !UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Validate();
+            }
+            // UnityEditor.SceneManagement.EditorSceneManager.preventCrossSceneReferences = false;
+        }
+
+        //UNITY CALLBACK
+        protected void OnApplicationQuit()
+        {
+            if (currentTime > 0)
+            {
+                Stop(StopMode.Rewind);
+            }
+        }
+
+        //UNITY CALLBACK
+        protected void OnDrawGizmos()
+        {
+            var l = Prefs.gizmosLightness;
+            Gizmos.color = new Color(l, l, l);
+            Gizmos.DrawSphere(transform.position, 0.025f);
+            Gizmos.color = Color.white;
+
+            if (SkillEditorUtility.cutsceneInEditor == this)
+            {
+                for (var i = 0; i < directables.Count; i++)
+                {
+                    var directable = directables[i];
+                    directable.DrawGizmos(SkillEditorUtility.selectedObject == directable);
+                }
+            }
+        }
+
+
+        public static Skill Create(Transform parent = null)
+        {
+            var go = Instantiate(new GameObject("Skill")) ;
+            var skill = go.AddComponent<Skill>();
+            if (parent != null)
+            {
+                skill.transform.SetParent(parent, false);
+            }
+
+            skill.transform.localPosition = Vector3.zero;
+            skill.transform.localRotation = Quaternion.identity;
+            return skill;
+        }
+        
+        ///<summary>Add a group to the cutscene.</summary>
+        public T AddTrack<T>(GameObject targetActor = null) where T : SkillTrack { return (T)AddTrack(typeof(T), targetActor); }
+        public SkillTrack AddTrack(System.Type type, GameObject targetActor = null) {
+
+            if ( !type.IsSubclassOf(typeof(SkillTrack)) || type.IsAbstract ) {
+                return null;
+            }
+            
+            var newTrack = new GameObject(type.Name).AddComponent(type) as SkillTrack;
+            UnityEditor.Undo.RegisterCreatedObjectUndo(newTrack.gameObject, "Add Track");
+            UnityEditor.Undo.SetTransformParent(newTrack.transform, transform, "Add Track");
+            UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Add Track");
+            newTrack.transform.localPosition = Vector3.zero;
+            newTrack.actor = targetActor;
+            tracks.Add(newTrack);
+            Validate();
+            
+            CutsceneUtility.selectedObject = newTrack;
+            return newTrack;
+        }
+#endif
+
     }
 }

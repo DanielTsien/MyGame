@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Editor.SkillEditor;
 using Slate;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class SkillEditorWindow : EditorWindow
 
@@ -32,7 +32,7 @@ public class SkillEditorWindow : EditorWindow
         ///----------------------------------------------------------------------------------------------
 
         public static SkillEditorWindow current;
-        public static event System.Action OnStopInEditor;
+        public static event Action OnStopInEditor;
 
         private Skill _skill;
         private int _skillID;
@@ -66,14 +66,13 @@ public class SkillEditorWindow : EditorWindow
         [System.NonSerialized] private Dictionary<int, ActionClipWrapper> clipWrappers;
         [System.NonSerialized] private Dictionary<SkillActionClip, ActionClipWrapper> clipWrappersMap;
         [System.NonSerialized] private EditorPlaybackState editorPlaybackState = EditorPlaybackState.Stoped;
-        [System.NonSerialized] private Cutscene.WrapMode editorPlaybackWrapMode = Cutscene.WrapMode.Loop;
         [System.NonSerialized] private ActionClipWrapper interactingClip;
         [System.NonSerialized] private bool isMovingScrubCarret;
         [System.NonSerialized] private bool isMovingEndCarret;
         [System.NonSerialized] private bool isMouseButton2Down;
         [System.NonSerialized] private Vector2 scrollPos;
         [System.NonSerialized] private float totalHeight;
-        [System.NonSerialized] private CutsceneTrack pickedTrack;
+        [System.NonSerialized] private SkillTrack pickedTrack;
         [System.NonSerialized] private CutsceneGroup pickedGroup;
         [System.NonSerialized] private float lastStartPlayTime;
         [System.NonSerialized] private float editorPreviousTime;
@@ -97,7 +96,7 @@ public class SkillEditorWindow : EditorWindow
         [System.NonSerialized] private List<GuideLine> pendingGuides;
         [System.NonSerialized] private System.Action postWindowsGUI;
 
-        [System.NonSerialized] private CutsceneTrack copyTrack;
+        [System.NonSerialized] private SkillTrack copyTrack;
 
 
         [System.NonSerialized] private float timeInfoStart;
@@ -107,7 +106,7 @@ public class SkillEditorWindow : EditorWindow
 
         ///----------------------------------------------------------------------------------------------
 
-        //The current cutscene reference
+        //The current skill reference
         public Skill Skill {
             get
             {
@@ -127,7 +126,7 @@ public class SkillEditorWindow : EditorWindow
 
         ///----------------------------------------------------------------------------------------------
 
-        //The length of the cutscene reference
+        //The length of the skill reference
         public float length {
             get { return Skill.length; }
             set { Skill.length = value; }
@@ -169,7 +168,7 @@ public class SkillEditorWindow : EditorWindow
             get { return Slate.Styles.whiteTexture; }
         }
 
-        //Is cutscene reference an asset in project?
+        //Is skill reference an asset in project?
         private bool isCutsceneAsset {
             get { return Skill != null && UnityEditor.EditorUtility.IsPersistent(Skill); }
         }
@@ -210,8 +209,8 @@ public class SkillEditorWindow : EditorWindow
             return ( Mathf.Round(time / Prefs.snapInterval) * Prefs.snapInterval );
         }
 
-        //Do action safely (stop cutscene, do, resample)
-        void SafeDoAction(System.Action call) {
+        //Do action safely (stop skill, do, resample)
+        void SafeDoAction(Action call) {
             var time = Skill.currentTime;
             Stop(true);
             call();
@@ -358,18 +357,18 @@ public class SkillEditorWindow : EditorWindow
         //Set a new view when a script is selected in Unity's tab
         void OnSelectionChange() {
             if ( Selection.activeGameObject != null ) {
-                var cut = Selection.activeGameObject.GetComponent<Cutscene>();
-                if ( cut != null && Skill != cut ) {
-                    InitializeAll(cut);
+                var skill = Selection.activeGameObject.GetComponent<Skill>();
+                if ( skill != null && Skill != skill ) {
+                    InitializeAll(skill);
                 }
             }
         }
 
-        //Before scene is saved we need to stop so that cutscene changes are reverted.
+        //Before scene is saved we need to stop so that skill changes are reverted.
         void OnWillSaveScene(UnityEngine.SceneManagement.Scene scene, string path) {
             if ( Skill != null && Skill.currentTime > 0 ) {
                 Stop(true);
-                Debug.LogWarning("Scene Saved while a cutscene was in preview mode. Cutscene was reverted before saving the scene along with changes it affected.");
+                Debug.LogWarning("Scene Saved while a skill was in preview mode. Skill was reverted before saving the scene along with changes it affected.");
             }
         }
 
@@ -387,7 +386,7 @@ public class SkillEditorWindow : EditorWindow
             //set the new
             if ( newSkill != null ) {
                 Skill = newSkill;
-                CutsceneUtility.selectedObject = null;
+                SkillEditorUtility.selectedObject = null;
                 multiSelection = null;
                 InitClipWrappers();
                 if ( !Application.isPlaying ) {
@@ -448,7 +447,7 @@ public class SkillEditorWindow : EditorWindow
         }
 
         //Play button pressed or otherwise started
-        public void Play(Cutscene.WrapMode wrapMode = Cutscene.WrapMode.Loop, System.Action callback = null) {
+        public void Play(Action callback = null) {
 
             titleContent = new GUIContent("SLATE", Styles.cutsceneIconClose);
 
@@ -458,8 +457,7 @@ public class SkillEditorWindow : EditorWindow
                 Skill.currentTime = temp;
                 return;
             }
-
-            editorPlaybackWrapMode = wrapMode;
+            
             editorPlaybackState = EditorPlaybackState.PlayingForwards;
             editorPreviousTime = Time.realtimeSinceStartup;
             lastStartPlayTime = Skill.currentTime;
@@ -532,7 +530,7 @@ public class SkillEditorWindow : EditorWindow
 
         ///<summary>Steps time forward to the next key time</summary>
         void StepForward() {
-            var keyable = CutsceneUtility.selectedObject as IKeyable;
+            var keyable = SkillEditorUtility.selectedObject as IKeyable;
             if ( keyable != null ) {
                 var time = keyable.animationData.GetKeyNext(keyable.RootTimeToLocalTimeUnclamped());
                 Skill.currentTime = time + keyable.startTime;
@@ -547,7 +545,7 @@ public class SkillEditorWindow : EditorWindow
 
         ///<summary>Steps time backwards to the previous key time</summary>
         void StepBackward() {
-            var keyable = CutsceneUtility.selectedObject as IKeyable;
+            var keyable = SkillEditorUtility.selectedObject as IKeyable;
             if ( keyable != null ) {
                 var time = keyable.animationData.GetKeyPrevious(keyable.RootTimeToLocalTimeUnclamped());
                 Skill.currentTime = time + keyable.startTime;
@@ -560,10 +558,10 @@ public class SkillEditorWindow : EditorWindow
             Skill.currentTime = Skill.GetPointerTimes().LastOrDefault(t => t < Skill.currentTime - 0.01f);
         }
 
-        //Sample the cutscene
+        //Sample the skill
         void OnEditorUpdate() {
 
-            //if cutscene playmode active, it will sample and update itself.
+            //if skill playmode active, it will sample and update itself.
             if ( Skill == null || Skill.isActive ) {
                 return;
             }
@@ -587,15 +585,8 @@ public class SkillEditorWindow : EditorWindow
 
             //Playback.
             if ( Skill.currentTime >= length && editorPlaybackState == EditorPlaybackState.PlayingForwards ) {
-                if ( editorPlaybackWrapMode == Cutscene.WrapMode.Once ) {
-                    Stop(true);
-                    return;
-                }
-                if ( editorPlaybackWrapMode == Cutscene.WrapMode.Loop ) {
-                    Skill.Sample(0);
-                    Skill.Sample(delta);
-                    return;
-                }
+                Stop(true);
+                return;
             }
 
             if ( Skill.currentTime <= 0 && editorPlaybackState == EditorPlaybackState.PlayingBackwards ) {
@@ -642,17 +633,17 @@ public class SkillEditorWindow : EditorWindow
             if ( Skill.directables != null ) {
                 for ( var i = 0; i < Skill.directables.Count; i++ ) {
                     var directable = Skill.directables[i];
-                    directable.SceneGUI(CutsceneUtility.selectedObject == directable);
+                    directable.SceneGUI(SkillEditorUtility.selectedObject == directable);
                 }
             }
             //
 
-            //No need to show tools of cutscene object, plus handles are shown per clip when required
-            Tools.hidden = ( Selection.activeObject == Skill || Selection.activeGameObject == Skill.gameObject ) && CutsceneUtility.selectedObject != null;
+            //No need to show tools of skill object, plus handles are shown per clip when required
+            Tools.hidden = ( Selection.activeObject == Skill || Selection.activeGameObject == Skill.gameObject ) && SkillEditorUtility.selectedObject != null;
 
-            //Cutscene Root info and gizmos
+            //Skill Root info and gizmos
             Handles.color = Prefs.gizmosColor;
-            Handles.Label(Skill.transform.position + new Vector3(0, 0.4f, 0), "Cutscene Root");
+            Handles.Label(Skill.transform.position + new Vector3(0, 0.4f, 0), "Skill Root");
             Handles.DrawLine(Skill.transform.position + Skill.transform.forward, Skill.transform.position + Skill.transform.forward * -1);
             Handles.DrawLine(Skill.transform.position + Skill.transform.right, Skill.transform.position + Skill.transform.right * -1);
             Handles.color = Color.white;
@@ -749,8 +740,8 @@ public class SkillEditorWindow : EditorWindow
             doRecordUndo |= e.type == EventType.DragPerform;
             if ( doRecordUndo ) {
                 //Skill.groupsRoot.gameObject
-                //Undo.RegisterFullObjectHierarchyUndo(Skill.groupsRoot.gameObject, "Cutscene Change");
-                Undo.RecordObject(Skill, "Cutscene Change");
+                //Undo.RegisterFullObjectHierarchyUndo(Skill.groupsRoot.gameObject, "Skill Change");
+                Undo.RecordObject(Skill, "Skill Change");
                 willDirty = true;
             }
 
@@ -801,7 +792,7 @@ public class SkillEditorWindow : EditorWindow
             //clean selection and hotcontrols
             if ( e.type == EventType.MouseDown && e.button == 0 && GUIUtility.hotControl == 0 ) {
                 if ( centerRect.Contains(mousePosition) ) {
-                    CutsceneUtility.selectedObject = null;
+                    SkillEditorUtility.selectedObject = null;
                     multiSelection = null;
                 }
                 GUIUtility.keyboardControl = 0;
@@ -809,13 +800,13 @@ public class SkillEditorWindow : EditorWindow
             }
 
             //just some info for the user to drag/drop gameobject in editor
-            if ( showDragDropInfo && Skill.groups.Find(g => g.GetType() == typeof(ActorGroup)) == null ) {
-                var label = "Drag & Drop GameObjects or Prefabs in this window to create Actor Groups";
-                var size = new GUIStyle("label").CalcSize(new GUIContent(label));
-                var notificationRect = new Rect(0, 0, size.x, size.y);
-                notificationRect.center = new Vector2(( screenWidth / 2 ) + ( LEFT_MARGIN / 2 ), ( screenHeight / 2 ) + TOP_MARGIN);
-                GUI.Label(notificationRect, label);
-            }
+            // if ( showDragDropInfo && Skill.tracks.Find(g => g.GetType() == typeof(ActorGroup)) == null ) {
+            //     var label = "Drag & Drop GameObjects or Prefabs in this window to create Actor Groups";
+            //     var size = new GUIStyle("label").CalcSize(new GUIContent(label));
+            //     var notificationRect = new Rect(0, 0, size.x, size.y);
+            //     notificationRect.center = new Vector2(( screenWidth / 2 ) + ( LEFT_MARGIN / 2 ), ( screenHeight / 2 ) + TOP_MARGIN);
+            //     GUI.Label(notificationRect, label);
+            // }
 
             //repaint?
             if ( e.type == EventType.MouseDrag || e.type == EventType.MouseUp || GUI.changed ) {
@@ -826,7 +817,7 @@ public class SkillEditorWindow : EditorWindow
             if ( willDirty ) {
                 willDirty = false;
                 EditorUtility.SetDirty(Skill);
-                foreach ( var o in Skill.GetComponentsInChildren(typeof(IDirectable), true).Cast<Object>() ) {
+                foreach ( var o in Skill.GetComponentsInChildren(typeof(IDirectable), true).Cast<UnityEngine.Object>() ) {
                     EditorUtility.SetDirty(o);
                 }
             }
@@ -894,14 +885,14 @@ public class SkillEditorWindow : EditorWindow
 
                 //key at scrubber
                 if ( e.keyCode == KeyCode.K ) {
-                    var keyable = CutsceneUtility.selectedObject as IKeyable;
+                    var keyable = SkillEditorUtility.selectedObject as IKeyable;
                     if ( keyable != null ) { keyable.TryAddIdentityKey(keyable.RootTimeToLocalTime()); }
                     e.Use();
                 }
 
                 //split at scrubber
                 if ( e.keyCode == KeyCode.S ) {
-                    var clip = CutsceneUtility.selectedObject as ActionClip;
+                    var clip = SkillEditorUtility.selectedObject as SkillActionClip;
                     if ( clip != null ) {
                         var wrapper = clipWrappersMap[clip];
                         if ( wrapper != null ) { wrapper.Split(Skill.currentTime); }
@@ -911,7 +902,7 @@ public class SkillEditorWindow : EditorWindow
 
                 //strech fit
                 if ( e.keyCode == KeyCode.F ) {
-                    var clip = CutsceneUtility.selectedObject as ActionClip;
+                    var clip = SkillEditorUtility.selectedObject as SkillActionClip;
                     if ( clip != null ) {
                         var wrapper = clipWrappersMap[clip];
                         if ( wrapper != null ) { wrapper.StretchFit(); }
@@ -921,7 +912,7 @@ public class SkillEditorWindow : EditorWindow
 
                 //clean off range keys
                 if ( e.keyCode == KeyCode.C ) {
-                    var clip = CutsceneUtility.selectedObject as ActionClip;
+                    var clip = SkillEditorUtility.selectedObject as SkillActionClip;
                     if ( clip != null ) {
                         var wrapper = clipWrappersMap[clip];
                         if ( wrapper != null ) { wrapper.CleanKeysOffRange(); }
@@ -935,16 +926,16 @@ public class SkillEditorWindow : EditorWindow
                         SafeDoAction(() =>
                            {
                                foreach ( var act in multiSelection.Select(b => b.action).ToArray() ) {
-                                   ( act.parent as CutsceneTrack ).DeleteAction(act);
+                                   ( act.parent as SkillTrack ).DeleteAction(act);
                                }
                                InitClipWrappers();
                                multiSelection = null;
                            });
                         e.Use();
                     } else {
-                        var clip = CutsceneUtility.selectedObject as ActionClip;
+                        var clip = SkillEditorUtility.selectedObject as SkillActionClip;
                         if ( clip != null ) {
-                            SafeDoAction(() => { ( clip.parent as CutsceneTrack ).DeleteAction(clip); InitClipWrappers(); });
+                            SafeDoAction(() => { ( clip.parent as SkillTrack ).DeleteAction(clip); InitClipWrappers(); });
                             e.Use();
                         }
                     }
@@ -1018,21 +1009,21 @@ public class SkillEditorWindow : EditorWindow
 
             if ( !isAboutButtonPressed ) {
                 GUI.backgroundColor = new Color(0.8f, 0.8f, 1, 1f);
-                if ( GUILayout.Button("New Cutscene", GUILayout.Height(40)) ) {
-                    InitializeAll(Commands.CreateCutscene());
+                if ( GUILayout.Button("New Skill", GUILayout.Height(40)) ) {
+                    InitializeAll(SkillEditorUtility.CreateSkill());
                 }
 
-                if ( GUILayout.Button("Open Cutscene", GUILayout.Height(40)) ) {
+                if ( GUILayout.Button("Open Skill", GUILayout.Height(40)) ) {
                     GenericMenu.MenuFunction2 SelectCutscene = (object cut) =>
                     {
-                        Selection.activeObject = (Cutscene)cut;
-                        EditorGUIUtility.PingObject((Cutscene)cut);
-                        InitializeAll((Cutscene)cut);
+                        Selection.activeObject = (Skill)cut;
+                        EditorGUIUtility.PingObject((Skill)cut);
+                        InitializeAll((Skill)cut);
                     };
 
-                    var cutscenes = FindObjectsOfType<Cutscene>();
+                    var cutscenes = FindObjectsOfType<Skill>();
                     var menu = new GenericMenu();
-                    foreach ( Cutscene cut in cutscenes ) {
+                    foreach ( Skill cut in cutscenes ) {
                         menu.AddItem(new GUIContent(string.Format("[{0}]", cut.name)), cut == Skill, SelectCutscene, cut);
                     }
                     menu.ShowAsContext();
@@ -1097,14 +1088,13 @@ public class SkillEditorWindow : EditorWindow
                         }
 
                         if ( Skill.GetAffectedActors().Contains(go) ) {
-                            ShowNotification(new GUIContent(string.Format("GameObject '{0}' is already in the cutscene", o.name)));
+                            ShowNotification(new GUIContent(string.Format("GameObject '{0}' is already in the skill", o.name)));
                             continue;
                         }
 
                         DragAndDrop.AcceptDrag();
-                        var newGroup = Skill.AddGroup<ActorGroup>(go);
-                        newGroup.AddTrack<ActorActionTrack>("Action Track");
-                        CutsceneUtility.selectedObject = newGroup;
+                        var newTrack = Skill.AddTrack<SkillTrack>(go);
+                        SkillEditorUtility.selectedObject = newTrack;
                     }
                 }
             }
@@ -1126,13 +1116,13 @@ public class SkillEditorWindow : EditorWindow
             if ( GUILayout.Button(string.Format("[{0}]", Skill.name), EditorStyles.toolbarDropDown, GUILayout.Width(100)) ) {
                 GenericMenu.MenuFunction2 SelectCutscene = (object cut) =>
                 {
-                    Selection.activeObject = (Cutscene)cut;
-                    EditorGUIUtility.PingObject((Cutscene)cut);
+                    Selection.activeObject = (Skill)cut;
+                    EditorGUIUtility.PingObject((Skill)cut);
                 };
 
-                var cutscenes = FindObjectsOfType<Cutscene>();
+                var cutscenes = FindObjectsOfType<Skill>();
                 var menu = new GenericMenu();
-                foreach ( Cutscene cut in cutscenes ) {
+                foreach ( Skill cut in cutscenes ) {
                     menu.AddItem(new GUIContent(string.Format("[{0}]", cut.name)), cut == Skill, SelectCutscene, cut);
                 }
                 menu.ShowAsContext();
@@ -1167,7 +1157,7 @@ public class SkillEditorWindow : EditorWindow
             if ( !Prefs.autoKey ) {
                 var wasEnabled = GUI.enabled;
                 GUI.enabled = true;
-                var changedParams = CutsceneUtility.changedParameterCallbacks;
+                var changedParams = SkillEditorUtility.changedParameterCallbacks;
                 var hasChangedParams = changedParams != null && changedParams.Count > 0;
                 GUI.color = hasChangedParams ? Color.white : Color.clear;
                 GUILayout.BeginHorizontal(EditorStyles.toolbarButton);
@@ -1189,11 +1179,6 @@ public class SkillEditorWindow : EditorWindow
                 GUI.enabled = wasEnabled;
             }
             GUILayout.FlexibleSpace();
-
-
-            GUI.color = Color.white.WithAlpha(0.3f);
-            GUILayout.Label(string.Format("<size=9>SLATE Version {0}</size>", Cutscene.VERSION_NUMBER.ToString("0.00")));
-            GUI.color = Color.white;
 
             if ( GUILayout.Button(Slate.Styles.gearIcon, EditorStyles.toolbarButton, GUILayout.Width(26)) ) {
                 PreferencesWindow.Show(new Rect(screenWidth - 5 - 400, TOOLBAR_HEIGHT + 5, 400, screenHeight - TOOLBAR_HEIGHT - 50));
@@ -1232,7 +1217,7 @@ public class SkillEditorWindow : EditorWindow
                     var menu = new GenericMenu();
                     menu.AddItem(new GUIContent("Set To Last Clip Time"), false, () =>
                         {
-                            var lastClip = Skill.directables.Where(d => d is ActionClip).OrderBy(d => d.endTime).LastOrDefault();
+                            var lastClip = Skill.directables.Where(d => d is SkillActionClip).OrderBy(d => d.endTime).LastOrDefault();
                             if ( lastClip != null ) {
                                 length = lastClip.endTime;
                             }
@@ -1322,7 +1307,7 @@ public class SkillEditorWindow : EditorWindow
 
             if ( !isProSkin ) { GUI.contentColor = Color.black.WithAlpha(0.7f); }
 
-            //Cutscene shows the gui
+            //Skill shows the gui
             GUILayout.BeginArea(topLeftRect);
 
             GUILayout.BeginVertical();
@@ -1519,13 +1504,13 @@ public class SkillEditorWindow : EditorWindow
             var collapseAllRect = Rect.MinMaxRect(leftRect.x + 5, leftRect.y + 4, 20, leftRect.y + 20 - 1);
             var searchRect = Rect.MinMaxRect(leftRect.x + 20, leftRect.y + 4, leftRect.xMax - 18, leftRect.y + 20 - 1);
             var searchCancelRect = Rect.MinMaxRect(searchRect.xMax, searchRect.y, leftRect.xMax - 4, searchRect.yMax);
-            var anyExpanded = Skill.groups.Any(g => !g.isCollapsed);
+            var anyExpanded = Skill.tracks.Any(g => !g.isCollapsed);
             AddCursorRect(collapseAllRect, MouseCursor.Link);
             GUI.color = Color.white.WithAlpha(0.5f);
             if ( GUI.Button(collapseAllRect, anyExpanded ? "▼" : "►", (GUIStyle)"label") ) {
-                foreach ( var group in Skill.groups ) {
-                    group.isCollapsed = anyExpanded;
-                }
+                // foreach ( var track in Skill.tracks ) {
+                //     track.isCollapsed = anyExpanded;
+                // }
             }
             GUI.color = Color.white;
             searchString = EditorGUI.TextField(searchRect, searchString, (GUIStyle)"ToolbarSeachTextField");
@@ -1538,7 +1523,7 @@ public class SkillEditorWindow : EditorWindow
 
             //begin area for left Rect
             GUI.BeginGroup(leftRect);
-            ShowListGroups(e, ref nextYPos);
+            //ShowListGroups(e, ref nextYPos);
             GUI.EndGroup();
 
             //store total height required
@@ -1549,9 +1534,9 @@ public class SkillEditorWindow : EditorWindow
             var addButtonY = totalHeight + TOP_MARGIN + TOOLBAR_HEIGHT + 20;
             var addRect = Rect.MinMaxRect(leftRect.xMin + 10, addButtonY, leftRect.xMax - 10, addButtonY + 20);
             GUI.color = Color.white.WithAlpha(0.5f);
-            if ( GUI.Button(addRect, "Add Actor Group") ) {
-                var newGroup = Skill.AddGroup<ActorGroup>(null).AddTrack<ActorActionTrack>();
-                CutsceneUtility.selectedObject = newGroup;
+            if ( GUI.Button(addRect, "Add Track") ) {
+                var newTrack = Skill.AddTrack<SkillTrack>();
+                SkillEditorUtility.selectedObject = newTrack;
             }
 
             //clear picks
@@ -1563,237 +1548,6 @@ public class SkillEditorWindow : EditorWindow
             GUI.enabled = true;
             GUI.color = Color.white;
         }
-
-        //...
-        void ShowListGroups(Event e, ref float nextYPos) {
-
-            //GROUPS
-            for ( int g = 0; g < Skill.groups.Count; g++ ) {
-                var group = Skill.groups[g];
-
-                if ( IsFilteredOutBySearch(group, searchString) ) {
-                    group.isCollapsed = true;
-                    continue;
-                }
-
-                var groupRect = new Rect(4, nextYPos, leftRect.width - GROUP_RIGHT_MARGIN - 4, GROUP_HEIGHT - 3);
-                this.AddCursorRect(groupRect, pickedGroup == null ? MouseCursor.Link : MouseCursor.MoveArrow);
-                nextYPos += GROUP_HEIGHT;
-
-                //highligh?
-                var groupSelected = ( ReferenceEquals(group, CutsceneUtility.selectedObject) || group == pickedGroup );
-                GUI.color = groupSelected ? LIST_SELECTION_COLOR : GROUP_COLOR;
-                GUI.Box(groupRect, string.Empty, Styles.headerBoxStyle);
-                GUI.color = Color.white;
-
-
-                //GROUP CONTROLS
-                var plusClicked = false;
-                GUI.color = isProSkin ? Color.white.WithAlpha(0.5f) : new Color(0.2f, 0.2f, 0.2f);
-                var plusRect = new Rect(groupRect.xMax - 14, groupRect.y + 5, 8, 8);
-                if ( GUI.Button(plusRect, Slate.Styles.plusIcon, GUIStyle.none) ) { plusClicked = true; }
-                if ( !group.isActive ) {
-                    var disableIconRect = new Rect(plusRect.xMin - 20, groupRect.y + 1, 16, 16);
-                    if ( GUI.Button(disableIconRect, Styles.hiddenIcon, GUIStyle.none) ) { group.isActive = true; }
-                }
-                if ( group.isLocked ) {
-                    var lockIconRect = new Rect(plusRect.xMin - ( group.isActive ? 20 : 36 ), groupRect.y + 1, 16, 16);
-                    if ( GUI.Button(lockIconRect, Styles.lockIcon, GUIStyle.none) ) { group.isLocked = false; }
-                }
-
-                GUI.color = isProSkin ? Color.yellow : Color.white;
-                GUI.color = group.isActive ? GUI.color : Color.grey;
-                var foldRect = new Rect(groupRect.x + 2, groupRect.y + 1, 20, groupRect.height);
-                var isVirtual = group.referenceMode == CutsceneGroup.ActorReferenceMode.UseInstanceHideOriginal;
-                group.isCollapsed = !EditorGUI.Foldout(foldRect, !group.isCollapsed, string.Format("<b>{0} {1}</b>", group.name, isVirtual ? "(Ref)" : string.Empty));
-                GUI.color = Color.white;
-                //Actor Object Field
-                if ( group.actor == null ) {
-                    var oRect = Rect.MinMaxRect(groupRect.xMin + 20, groupRect.yMin + 1, groupRect.xMax - 20, groupRect.yMax - 1);
-                    group.actor = (GameObject)UnityEditor.EditorGUI.ObjectField(oRect, group.actor, typeof(GameObject), true);
-                }
-                ///---
-
-                //CONTEXT
-                if ( ( e.type == EventType.ContextClick && groupRect.Contains(e.mousePosition) ) || plusClicked ) {
-                    var menu = new GenericMenu();
-                    foreach ( var _info in EditorTools.GetTypeMetaDerivedFrom(typeof(CutsceneTrack)) ) {
-                        var info = _info;
-                        if ( info.attachableTypes == null || !info.attachableTypes.Contains(group.GetType()) ) {
-                            continue;
-                        }
-
-                        var canAdd = !info.isUnique || ( group.tracks.Find(track => track.GetType() == info.type) == null );
-                        var finalPath = string.IsNullOrEmpty(info.category) ? info.name : info.category + "/" + info.name;
-                        if ( canAdd ) {
-                            menu.AddItem(new GUIContent("Add Track/" + finalPath), false, () => { group.AddTrack(info.type); });
-                        } else {
-                            menu.AddDisabledItem(new GUIContent("Add Track/" + finalPath));
-                        }
-                    }
-                    if ( group.CanAddTrack(copyTrack) ) {
-                        menu.AddItem(new GUIContent("Paste Track"), false, () => { group.DuplicateTrack(copyTrack); });
-                    } else {
-                        menu.AddDisabledItem(new GUIContent("Paste Track"));
-                    }
-                    menu.AddItem(new GUIContent("Disable Group"), !group.isActive, () => { group.isActive = !group.isActive; });
-                    menu.AddItem(new GUIContent("Lock Group"), group.isLocked, () => { group.isLocked = !group.isLocked; });
-
-                    if ( !( group is DirectorGroup ) ) {
-                        menu.AddItem(new GUIContent("Select Actor (Double Click)"), false, () => { Selection.activeObject = group.actor; });
-                        menu.AddItem(new GUIContent("Replace Actor"), false, () => { group.actor = null; });
-                        menu.AddItem(new GUIContent("Duplicate"), false, () =>
-                            {
-                                Skill.DuplicateGroup(group);
-                                InitClipWrappers();
-                            });
-                        menu.AddSeparator("/");
-                        menu.AddItem(new GUIContent("Delete Group"), false, () =>
-                            {
-                                if ( EditorUtility.DisplayDialog("Delete Group", "Are you sure?", "YES", "NO!") ) {
-                                    Skill.DeleteGroup(group);
-                                    InitClipWrappers();
-                                }
-                            });
-                    }
-                    menu.ShowAsContext();
-                    e.Use();
-                }
-
-
-                //REORDERING
-                if ( e.type == EventType.MouseDown && e.button == 0 && groupRect.Contains(e.mousePosition) ) {
-                    CutsceneUtility.selectedObject = group;
-                    if ( !( group is DirectorGroup ) ) {
-                        pickedGroup = group;
-                    }
-                    if ( e.clickCount == 2 ) {
-                        Selection.activeGameObject = group.actor;
-                    }
-                    e.Use();
-                }
-
-                if ( pickedGroup != null && pickedGroup != group && !( group is DirectorGroup ) ) {
-                    if ( groupRect.Contains(e.mousePosition) ) {
-                        var markRect = new Rect(groupRect.x, ( Skill.groups.IndexOf(pickedGroup) < g ) ? groupRect.yMax - 2 : groupRect.y, groupRect.width, 2);
-                        GUI.color = Color.grey;
-                        GUI.DrawTexture(markRect, Styles.whiteTexture);
-                        GUI.color = Color.white;
-                    }
-
-                    if ( e.rawType == EventType.MouseUp && e.button == 0 && groupRect.Contains(e.mousePosition) ) {
-                        Skill.groups.Remove(pickedGroup);
-                        Skill.groups.Insert(g, pickedGroup);
-                        Skill.Validate();
-                        pickedGroup = null;
-                        e.Use();
-                    }
-                }
-
-                //SHOW TRACKS (?)
-                if ( !group.isCollapsed ) {
-                    ShowListTracks(e, group, ref nextYPos);
-                    //draw vertical graphic on left side of nested track rects
-                    GUI.color = groupSelected ? LIST_SELECTION_COLOR : GROUP_COLOR;
-                    var verticalRect = Rect.MinMaxRect(groupRect.x, groupRect.yMax, groupRect.x + 3, nextYPos - 2);
-                    GUI.DrawTexture(verticalRect, Styles.whiteTexture);
-                    GUI.color = Color.white;
-                }
-            }
-        }
-
-        //...
-        void ShowListTracks(Event e, CutsceneGroup group, ref float nextYPos) {
-
-            //TRACKS
-            for ( int t = 0; t < group.tracks.Count; t++ ) {
-                var track = group.tracks[t];
-                var yPos = nextYPos;
-
-                var trackRect = new Rect(10, yPos, leftRect.width - TRACK_RIGHT_MARGIN - 10, track.finalHeight);
-                nextYPos += track.finalHeight + TRACK_MARGINS;
-
-                //GRAPHICS
-                GUI.color = ColorUtility.Grey(isProSkin ? ( track.isActive ? 0.25f : 0.2f ) : ( track.isActive ? 0.9f : 0.8f ));
-                GUI.DrawTexture(trackRect, whiteTexture);
-                GUI.color = Color.white.WithAlpha(0.25f);
-                GUI.Box(trackRect, string.Empty, (GUIStyle)"flow node 0");
-                if ( ReferenceEquals(track, CutsceneUtility.selectedObject) || track == pickedTrack ) {
-                    GUI.color = LIST_SELECTION_COLOR;
-                    GUI.DrawTexture(trackRect, whiteTexture);
-                }
-
-                //custom color indicator
-                if ( track.isActive && track.color != Color.white && track.color.a > 0.2f ) {
-                    GUI.color = track.color;
-                    var colorRect = new Rect(trackRect.xMax + 1, trackRect.yMin, 2, track.finalHeight);
-                    GUI.DrawTexture(colorRect, whiteTexture);
-                }
-                GUI.color = Color.white;
-                //
-
-                //
-                GUI.BeginGroup(trackRect);
-                track.OnTrackInfoGUI(trackRect);
-                GUI.EndGroup();
-                //
-
-                AddCursorRect(trackRect, pickedTrack == null ? MouseCursor.Link : MouseCursor.MoveArrow);
-
-                //CONTEXT
-                if ( e.type == EventType.ContextClick && trackRect.Contains(e.mousePosition) ) {
-                    var menu = new GenericMenu();
-                    menu.AddItem(new GUIContent("Disable Track"), !track.isActive, () => { track.isActive = !track.isActive; });
-                    menu.AddItem(new GUIContent("Lock Track"), track.isLocked, () => { track.isLocked = !track.isLocked; });
-                    menu.AddItem(new GUIContent("Copy"), false, () => { copyTrack = track; });
-                    if ( track.GetType().RTGetAttribute<UniqueElementAttribute>(true) == null ) {
-                        menu.AddItem(new GUIContent("Duplicate"), false, () =>
-                            {
-                                group.DuplicateTrack(track);
-                                InitClipWrappers();
-                            });
-                    } else {
-                        menu.AddDisabledItem(new GUIContent("Duplicate"));
-                    }
-                    menu.AddSeparator("/");
-                    menu.AddItem(new GUIContent("Delete Track"), false, () =>
-                        {
-                            if ( EditorUtility.DisplayDialog("Delete Track", "Are you sure?", "YES", "NO!") ) {
-                                group.DeleteTrack(track);
-                                InitClipWrappers();
-                            }
-                        });
-                    menu.ShowAsContext();
-                    e.Use();
-                }
-
-                //REORDERING
-                if ( e.type == EventType.MouseDown && e.button == 0 && trackRect.Contains(e.mousePosition) ) {
-                    CutsceneUtility.selectedObject = track;
-                    pickedTrack = track;
-                    e.Use();
-                }
-
-                if ( pickedTrack != null && pickedTrack != track && ReferenceEquals(pickedTrack.parent, group) ) {
-                    if ( trackRect.Contains(e.mousePosition) ) {
-                        var markRect = new Rect(trackRect.x, ( group.tracks.IndexOf(pickedTrack) < t ) ? trackRect.yMax - 2 : trackRect.y, trackRect.width, 2);
-                        GUI.color = Color.grey;
-                        GUI.DrawTexture(markRect, Styles.whiteTexture);
-                        GUI.color = Color.white;
-                    }
-
-                    if ( e.rawType == EventType.MouseUp && e.button == 0 && trackRect.Contains(e.mousePosition) ) {
-                        group.tracks.Remove(pickedTrack);
-                        group.tracks.Insert(t, pickedTrack);
-                        Skill.Validate();
-                        pickedTrack = null;
-                        e.Use();
-                    }
-                }
-            }
-        }
-
-
         ///----------------------------------------------------------------------------------------------
 
 
@@ -1828,315 +1582,11 @@ public class SkillEditorWindow : EditorWindow
 
             //master sections
             var sectionsRect = Rect.MinMaxRect(Mathf.Max(TimeToPos(viewTimeMin), TimeToPos(0)), 3, TimeToPos(viewTimeMax), 18);
-            if ( Skill.directorGroup != null ) { //it never should
-                ShowGroupSections(Skill.directorGroup, sectionsRect);
-            }
+
 
             //Begin Windows
             BeginWindows();
-
-            //GROUPS
-            for ( int g = 0; g < Skill.groups.Count; g++ ) {
-                var group = Skill.groups[g];
-
-                if ( IsFilteredOutBySearch(group, searchString) ) {
-                    group.isCollapsed = true;
-                    continue;
-                }
-
-                var groupRect = Rect.MinMaxRect(Mathf.Max(TimeToPos(viewTimeMin), TimeToPos(0)), nextYPos, TimeToPos(viewTimeMax), nextYPos + GROUP_HEIGHT);
-                nextYPos += GROUP_HEIGHT;
-
-                //if collapsed, just show a heat minimap of clips.
-                if ( group.isCollapsed ) {
-                    GUI.color = Color.black.WithAlpha(0.15f);
-                    var collapseRect = Rect.MinMaxRect(groupRect.xMin + 2, groupRect.yMin + 2, groupRect.xMax, groupRect.yMax - 4);
-                    GUI.DrawTexture(collapseRect, Styles.whiteTexture);
-                    GUI.color = Color.grey.WithAlpha(0.5f);
-                    foreach ( var track in group.tracks ) {
-                        foreach ( var clip in track.clips ) {
-                            var start = TimeToPos(clip.startTime);
-                            var end = TimeToPos(clip.endTime);
-                            GUI.DrawTexture(Rect.MinMaxRect(start + 0.5f, collapseRect.y + 2, end - 0.5f, collapseRect.yMax - 2), Styles.whiteTexture);
-                        }
-                    }
-                    GUI.color = Color.white;
-                    continue;
-                }
-
-
-                //TRACKS
-                for ( int t = 0; t < group.tracks.Count; t++ ) {
-                    var track = group.tracks[t];
-                    var yPos = nextYPos;
-                    var trackPosRect = Rect.MinMaxRect(Mathf.Max(TimeToPos(viewTimeMin), TimeToPos(track.startTime)), yPos, TimeToPos(viewTimeMax), yPos + track.finalHeight);
-                    var trackTimeRect = Rect.MinMaxRect(Mathf.Max(viewTimeMin, track.startTime), 0, viewTimeMax, 0);
-                    nextYPos += track.finalHeight + TRACK_MARGINS;
-
-                    //GRAPHICS
-                    GUI.color = Color.black.WithAlpha(isProSkin ? 0.06f : 0.1f);
-                    GUI.DrawTexture(trackPosRect, whiteTexture);
-                    Handles.color = ColorUtility.Grey(isProSkin ? 0.15f : 0.4f);
-                    Handles.DrawLine(new Vector2(TimeToPos(viewTimeMin), trackPosRect.y + 1), new Vector2(trackPosRect.xMax, trackPosRect.y + 1));
-                    Handles.DrawLine(new Vector2(TimeToPos(viewTimeMin), trackPosRect.yMax), new Vector2(trackPosRect.xMax, trackPosRect.yMax));
-                    if ( track.showCurves ) {
-                        Handles.DrawLine(new Vector2(trackPosRect.x, trackPosRect.y + track.defaultHeight), new Vector2(trackPosRect.xMax, trackPosRect.y + track.defaultHeight));
-                    }
-                    Handles.color = Color.white;
-                    if ( viewTimeMin < 0 ) { //just visual clarity
-                        GUI.Box(Rect.MinMaxRect(TimeToPos(viewTimeMin), trackPosRect.yMin, TimeToPos(0), trackPosRect.yMax), string.Empty);
-                    }
-                    if ( track.startTime > track.parent.startTime || track.endTime < track.parent.endTime ) {
-                        Handles.color = Color.white;
-                        GUI.color = Color.black.WithAlpha(0.2f);
-                        if ( track.startTime > track.parent.startTime ) {
-                            var tStart = TimeToPos(track.startTime);
-                            var r = Rect.MinMaxRect(TimeToPos(0), yPos, tStart, yPos + track.finalHeight);
-                            GUI.DrawTexture(r, whiteTexture);
-                            GUI.DrawTextureWithTexCoords(r, Styles.stripes, new Rect(0, 0, r.width / 7, r.height / 7));
-                            var a = new Vector2(tStart, trackPosRect.yMin);
-                            var b = new Vector2(a.x, trackPosRect.yMax);
-                            Handles.DrawLine(a, b);
-                        }
-                        if ( track.endTime < track.parent.endTime ) {
-                            var tEnd = TimeToPos(track.endTime);
-                            var r = Rect.MinMaxRect(tEnd, yPos, TimeToPos(length), yPos + track.finalHeight);
-                            GUI.DrawTexture(r, whiteTexture);
-                            GUI.DrawTextureWithTexCoords(r, Styles.stripes, new Rect(0, 0, r.width / 7, r.height / 7));
-                            var a = new Vector2(tEnd, trackPosRect.yMin);
-                            var b = new Vector2(a.x, trackPosRect.yMax);
-                            Handles.DrawLine(a, b);
-                        }
-                        GUI.color = Color.white;
-                        Handles.color = Color.white;
-                    }
-                    GUI.backgroundColor = Color.white;
-
-                    //highlight selected track
-                    if ( ReferenceEquals(CutsceneUtility.selectedObject, track) ) {
-                        GUI.color = Color.grey;
-                        GUI.Box(trackPosRect.ExpandBy(0, 2), string.Empty, Styles.hollowFrameHorizontalStyle);
-                        GUI.color = Color.white;
-                    }
-                    //
-
-                    if ( track.isLocked ) {
-                        if ( e.isMouse && trackPosRect.Contains(e.mousePosition) ) {
-                            e.Use();
-                        }
-                    }
-
-                    //...
-                    var cursorTime = SnapTime(PosToTime(mousePosition.x));
-                    track.OnTrackTimelineGUI(trackPosRect, trackTimeRect, cursorTime, TimeToPos);
-                    //...
-
-                    if ( !track.isActive || track.isLocked ) {
-
-                        postWindowsGUI += () =>
-                        {
-                            //overlay dark stripes for disabled tracks
-                            if ( !track.isActive ) {
-                                GUI.color = Color.black.WithAlpha(0.2f);
-                                GUI.DrawTexture(trackPosRect, whiteTexture);
-                                GUI.DrawTextureWithTexCoords(trackPosRect, Styles.stripes, new Rect(0, 0, ( trackPosRect.width / 5 ), ( trackPosRect.height / 5 )));
-                                GUI.color = Color.white;
-                            }
-
-                            //overlay light stripes for locked tracks
-                            if ( track.isLocked ) {
-                                GUI.color = Color.black.WithAlpha(0.15f);
-                                GUI.DrawTextureWithTexCoords(trackPosRect, Styles.stripes, new Rect(0, 0, trackPosRect.width / 20, trackPosRect.height / 20));
-                                GUI.color = Color.white;
-                            }
-
-                            if ( isProSkin ) {
-                                string overlayLabel = null;
-                                if ( !track.isActive && track.isLocked ) {
-                                    overlayLabel = "DISABLED & LOCKED";
-                                } else {
-                                    if ( !track.isActive ) { overlayLabel = "DISABLED"; }
-                                    if ( track.isLocked ) { overlayLabel = "LOCKED"; }
-                                }
-                                var size = Styles.centerLabel.CalcSize(new GUIContent(overlayLabel));
-                                var bgLabelRect = new Rect(0, 0, size.x, size.y);
-                                bgLabelRect.center = trackPosRect.center;
-                                GUI.Label(trackPosRect, string.Format("<b>{0}</b>", overlayLabel), Styles.centerLabel);
-                                GUI.color = Color.white;
-                            }
-                        };
-                    }
-
-
-                    //ACTION CLIPS
-                    for ( int a = 0; a < track.clips.Count; a++ ) {
-                        var action = track.clips[a];
-                        var ID = UID(g, t, a);
-                        ActionClipWrapper clipWrapper = null;
-
-                        if ( !clipWrappers.TryGetValue(ID, out clipWrapper) || clipWrapper.action != action ) {
-                            InitClipWrappers();
-                            clipWrapper = clipWrappers[ID];
-                        }
-
-                        //find and store next/previous clips to wrapper
-                        var nextClip = a < track.clips.Count - 1 ? track.clips[a + 1] : null;
-                        var previousClip = a != 0 ? track.clips[a - 1] : null;
-                        clipWrapper.nextClip = nextClip;
-                        clipWrapper.previousClip = previousClip;
-
-
-                        //get the action box rect
-                        var clipRect = clipWrapper.rect;
-
-                        //modify it
-                        clipRect.y = yPos;
-                        clipRect.width = Mathf.Max(action.length / viewTime * centerRect.width, 6);
-                        clipRect.height = track.defaultHeight;
-
-
-                        //get the action time and pos
-                        var xTime = action.startTime;
-                        var xPos = clipRect.x;
-
-                        if ( interactingClip != null && ReferenceEquals(interactingClip.action, action) && interactingClip.isDragging ) {
-
-                            var lastTime = xTime;
-                            xTime = PosToTime(xPos + leftRect.width);
-                            xTime = SnapTime(xTime);
-                            xTime = Mathf.Clamp(xTime, 0, maxTime - 0.1f);
-
-                            //handle multisection. Limit xmin, xmax by their bound rect
-                            if ( multiSelection != null && multiSelection.Count > 1 ) {
-                                var delta = xTime - lastTime;
-                                var boundMin = Mathf.Min(multiSelection.Select(b => b.action.startTime).ToArray());
-                                if ( boundMin + delta < 0 ) {
-                                    xTime -= delta;
-                                    delta = 0;
-                                }
-
-                                foreach ( var cw in multiSelection ) {
-                                    if ( cw.action != action ) {
-                                        cw.action.startTime += delta;
-                                    }
-                                }
-                            }
-
-                            //clamp and cross blend between other nearby clips
-                            if ( multiSelection == null || multiSelection.Count < 1 ) {
-                                var preCursorClip = track.clips.LastOrDefault(x => x != action && x.startTime < cursorTime);
-                                var postCursorClip = track.clips.FirstOrDefault(x => x != action && x.endTime > cursorTime);
-
-                                //Shift/Ripple clips
-                                //when shifting track clips always clamp to previous clip and no need to clamp to next
-                                if ( e.shift ) {
-                                    preCursorClip = previousClip;
-                                    postCursorClip = null;
-                                }
-
-                                var preTime = preCursorClip != null ? preCursorClip.endTime : 0;
-                                var postTime = postCursorClip != null ? postCursorClip.startTime : maxTime + action.length;
-
-                                //Magnet snapping when dragging clip
-                                if ( Prefs.magnetSnapping && !e.control ) {
-                                    var snapStart = MagnetSnapTime(xTime, magnetSnapTimesCache);
-                                    var snapEnd = MagnetSnapTime(xTime + action.length, magnetSnapTimesCache);
-                                    if ( snapStart != null && snapEnd != null ) {
-                                        var distStart = Mathf.Abs(snapStart.Value - xTime);
-                                        var distEnd = Mathf.Abs(snapEnd.Value - ( xTime + action.length ));
-                                        var bestTime = distEnd < distStart ? snapEnd.Value : snapStart.Value;
-                                        pendingGuides.Add(new GuideLine(bestTime, Color.white));
-                                        xTime = distEnd < distStart ? snapEnd.Value - action.length : snapStart.Value;
-                                    } else {
-                                        if ( snapEnd != null ) {
-                                            pendingGuides.Add(new GuideLine(snapEnd.Value, Color.white));
-                                            xTime = snapEnd.Value - action.length;
-                                        }
-                                        if ( snapStart != null ) {
-                                            pendingGuides.Add(new GuideLine(snapStart.Value, Color.white));
-                                            xTime = snapStart.Value;
-                                        }
-                                    }
-                                }
-
-
-                                //expand possible time if crossblendable
-                                if ( action.CanCrossBlend(preCursorClip) ) { preTime -= Mathf.Min(action.length / 2, preCursorClip.length / 2); }
-                                if ( action.CanCrossBlend(postCursorClip) ) { postTime += Mathf.Min(action.length / 2, postCursorClip.length / 2); }
-
-                                //does it fit?
-                                if ( action.length > postTime - preTime ) {
-                                    xTime = lastTime;
-                                }
-
-                                if ( xTime != lastTime ) {
-                                    xTime = Mathf.Clamp(xTime, preTime, postTime - action.length);
-                                    //Shift all the next clips along with this one if shift is down
-                                    if ( e.shift ) {
-                                        foreach ( var cw in clipWrappers.Values.Where(c => c.action.parent == action.parent && c.action != action && c.action.startTime > lastTime) ) {
-                                            cw.action.startTime += xTime - lastTime;
-                                        }
-                                    }
-                                }
-                            }
-
-                            //Apply xTime
-                            action.startTime = xTime;
-                        }
-
-                        //apply xPos
-                        clipRect.x = TimeToPos(xTime);
-
-
-                        //dont draw if outside of view range and not selected
-                        var isSelected = ReferenceEquals(CutsceneUtility.selectedObject, action) || ( multiSelection != null && multiSelection.Select(b => b.action).Contains(action) );
-                        var isVisible = Rect.MinMaxRect(0, scrollPos.y, centerRect.width, centerRect.height).Overlaps(clipRect);
-                        if ( !isSelected && !isVisible ) {
-                            clipWrapper.rect = default(Rect); //we basicaly "nullify" the rect. Too much trouble to work with nullable rect.
-                            continue;
-                        }
-
-                        //draw selection graphics rect
-                        if ( isSelected ) {
-                            var selRect = clipRect.ExpandBy(2);
-                            GUI.color = HIGHLIGHT_COLOR;
-                            GUI.DrawTexture(selRect, Slate.Styles.whiteTexture);
-                            GUI.color = Color.white;
-                        }
-
-                        //determine color and draw clip
-                        var color = Color.white;
-                        color = action.isValid ? color : new Color(1, 0.3f, 0.3f);
-                        color = track.isActive ? color : Color.grey;
-                        GUI.color = color;
-                        GUI.Box(clipRect, string.Empty, Styles.clipBoxHorizontalStyle);
-                        clipWrapper.rect = GUI.Window(ID, clipRect, ActionClipWindow, string.Empty, GUIStyle.none);
-                        if ( !isProSkin ) { GUI.color = Color.white.WithAlpha(0.5f); GUI.Box(clipRect, string.Empty); GUI.color = Color.white; }
-                        GUI.color = Color.white;
-
-                        //forward external Clip GUI
-                        var nextPosX = TimeToPos(nextClip != null ? nextClip.startTime : viewTimeMax);
-                        var prevPosX = TimeToPos(previousClip != null ? previousClip.endTime : viewTimeMin);
-                        var extRectLeft = Rect.MinMaxRect(prevPosX, clipRect.yMin, clipRect.xMin, clipRect.yMax);
-                        var extRectRight = Rect.MinMaxRect(clipRect.xMax, clipRect.yMin, nextPosX, clipRect.yMax);
-                        action.ShowClipGUIExternal(extRectLeft, extRectRight);
-
-                        //draw info text outside if clip is too small
-                        if ( clipRect.width <= 20 ) {
-                            GUI.Label(extRectRight, string.Format("<size=9>{0}</size>", action.info));
-                        }
-                    }
-                }
-
-                //highligh selected group
-                if ( ReferenceEquals(CutsceneUtility.selectedObject, group) ) {
-                    var r = Rect.MinMaxRect(groupRect.xMin, groupRect.yMin, groupRect.xMax, nextYPos);
-                    GUI.color = Color.grey;
-                    GUI.Box(r, string.Empty, Styles.hollowFrameHorizontalStyle);
-                    GUI.color = Color.white;
-                }
-            }
-
+            
             EndWindows();
 
             //call postwindow delegate
@@ -2155,7 +1605,7 @@ public class SkillEditorWindow : EditorWindow
             GUI.Box(bgRect, string.Empty, Styles.shadowBorderStyle);
             GUI.color = Color.white;
 
-            //darken the time after cutscene length
+            //darken the time after skill length
             if ( viewTimeMax > length ) {
                 var endPos = Mathf.Max(TimeToPos(length) + leftRect.width, centerRect.xMin);
                 var darkRect = Rect.MinMaxRect(endPos, centerRect.yMin, centerRect.xMax, centerRect.yMax);
@@ -2293,7 +1743,7 @@ public class SkillEditorWindow : EditorWindow
                     foreach ( var cw in clipWrappers.Values.Where(c => c.action.startTime >= lastTime) ) {
                         if ( cw.action.isLocked ) { continue; }
                         var max = cw.previousClip != null ? cw.previousClip.endTime : 0;
-                        if ( cw.action.CanCrossBlend(cw.previousClip) ) { max -= Mathf.Min(cw.previousClip.length / 2, cw.action.length / 2); }
+                        if ( cw.action.CanCrossBlend(cw.previousClip) ) { max -= Mathf.Min((int) (cw.previousClip.length / 2), (int) (cw.action.length / 2)); }
                         cw.action.startTime += newTime - lastTime;
                         cw.action.startTime = Mathf.Max(cw.action.startTime, max);
                     }
@@ -2312,7 +1762,7 @@ public class SkillEditorWindow : EditorWindow
                             }
                             curve.UpdateTangentsFromMode();
                         }
-                        CutsceneUtility.RefreshAllAnimationEditorsOf(propTrack.animationData);
+                        SkillEditorUtility.RefreshAllAnimationEditorsOf(propTrack.animationData);
                     }
                     //
                 }
@@ -2368,7 +1818,7 @@ public class SkillEditorWindow : EditorWindow
                 if ( bigEnough ) {
                     multiSelection = clipWrappers.Values.Where(b => r.Overlaps(b.rect) && !b.action.isLocked).ToList();
                     if ( multiSelection.Count == 1 ) {
-                        CutsceneUtility.selectedObject = multiSelection[0].action;
+                        SkillEditorUtility.selectedObject = multiSelection[0].action;
                         multiSelection = null;
                     }
                 }
@@ -2436,7 +1886,7 @@ public class SkillEditorWindow : EditorWindow
 
 
 
-        //ActionClip window callback. Its ID is based on the UID function that is based on the index path to the action.
+        //SkillActionClip window callback. Its ID is based on the UID function that is based on the index path to the action.
         //The ID of the window is also the same as the ID to use for for clipWrappers dictionary as key to get the clipWrapper for the action that represents this window
         void ActionClipWindow(int id) {
             ActionClipWrapper wrapper = null;
@@ -2449,7 +1899,7 @@ public class SkillEditorWindow : EditorWindow
         ///----------------------------------------------------------------------------------------------
 
 
-        //A wrapper of an ActionClip placed in cutscene
+        //A wrapper of an SkillActionClip placed in skill
         class ActionClipWrapper
         {
 
@@ -2469,8 +1919,8 @@ public class SkillEditorWindow : EditorWindow
             public float preScaleSubclipOffset;
             public float preScaleSubclipSpeed;
 
-            public ActionClip previousClip;
-            public ActionClip nextClip;
+            public SkillActionClip previousClip;
+            public SkillActionClip nextClip;
 
             private Event e;
             private int windowID;
@@ -2489,8 +1939,8 @@ public class SkillEditorWindow : EditorWindow
             private Rect controlRectIn;
             private Rect controlRectOut;
 
-            private CutsceneEditor editor {
-                get { return CutsceneEditor.current; }
+            private SkillEditorWindow editor {
+                get { return SkillEditorWindow.current; }
             }
 
             private List<ActionClipWrapper> multiSelection {
@@ -2583,7 +2033,7 @@ public class SkillEditorWindow : EditorWindow
                             multiSelection.Add(this);
                         }
                     } else {
-                        CutsceneUtility.selectedObject = action;
+                        SkillEditorUtility.selectedObject = action;
                         if ( multiSelection != null && !multiSelection.Select(cw => cw.action).Contains(action) ) {
                             multiSelection = null;
                         }
@@ -2591,7 +2041,7 @@ public class SkillEditorWindow : EditorWindow
 
                     if ( e.clickCount == 2 ) {
                         //do this with reflection to get the declaring actor in case action has 'new' declaration. This is only done in Shot right now.
-                        Selection.activeObject = action.GetType().GetProperty("actor").GetValue(action, null) as Object;
+                        Selection.activeObject = action.GetType().GetProperty("actor").GetValue(action, null) as UnityEngine.Object;
                     }
                 }
 
@@ -2772,7 +2222,7 @@ public class SkillEditorWindow : EditorWindow
                     curve.UpdateTangentsFromMode();
                 }
 
-                CutsceneUtility.RefreshAllAnimationEditorsOf(action.animationData);
+                SkillEditorUtility.RefreshAllAnimationEditorsOf(action.animationData);
 
                 if ( action is ISubClipContainable ) {
                     if ( trim ) {
@@ -2795,7 +2245,7 @@ public class SkillEditorWindow : EditorWindow
 
 
             ///<summary>Split the clip in two, at specified local time</summary>
-            public ActionClip Split(float time) {
+            public SkillActionClip Split(float time) {
 
                 if ( !action.IsTimeWithinClip(time) ) {
                     return null;
@@ -2807,15 +2257,15 @@ public class SkillEditorWindow : EditorWindow
                     }
                 }
 
-                CutsceneUtility.CopyClip(action);
-                var copy = CutsceneUtility.PasteClip((CutsceneTrack)action.parent, time);
+                SkillEditorUtility.CopyClip(action);
+                var copy = SkillEditorUtility.PasteClip((SkillTrack)action.parent, time);
                 copy.startTime = time;
                 copy.endTime = action.endTime;
                 action.endTime = time;
                 copy.blendIn = 0;
                 action.blendOut = 0;
-                CutsceneUtility.selectedObject = null;
-                CutsceneUtility.FlushCopy();
+                SkillEditorUtility.selectedObject = null;
+                SkillEditorUtility.FlushCopy();
 
                 var delta = action.length;
                 if ( hasParameters ) {
@@ -2823,7 +2273,7 @@ public class SkillEditorWindow : EditorWindow
                         curve.OffsetCurveTime(-delta);
                         curve.RemoveNegativeKeys();
                     }
-                    CutsceneUtility.RefreshAllAnimationEditorsOf(action.animationData);
+                    SkillEditorUtility.RefreshAllAnimationEditorsOf(action.animationData);
                 }
 
                 if ( copy is ISubClipContainable ) {
@@ -2852,7 +2302,7 @@ public class SkillEditorWindow : EditorWindow
                     foreach ( var curve in action.GetCurvesAll() ) {
                         curve.OffsetCurveTime(delta);
                     }
-                    CutsceneUtility.RefreshAllAnimationEditorsOf(action.animationData);
+                    SkillEditorUtility.RefreshAllAnimationEditorsOf(action.animationData);
                 }
 
                 if ( action is ISubClipContainable ) {
@@ -2877,7 +2327,7 @@ public class SkillEditorWindow : EditorWindow
                         curve.RemoveKeysOffRange(0, action.length);
                         curve.UpdateTangentsFromMode();
                     }
-                    CutsceneUtility.RefreshAllAnimationEditorsOf(action.animationData);
+                    SkillEditorUtility.RefreshAllAnimationEditorsOf(action.animationData);
                 }
             }
 
@@ -2899,7 +2349,7 @@ public class SkillEditorWindow : EditorWindow
                         editor.SafeDoAction(() =>
                            {
                                foreach ( var act in multiSelection.Select(b => b.action).ToArray() ) {
-                                   ( act.parent as CutsceneTrack ).DeleteAction(act);
+                                   ( act.parent as SkillTrack ).DeleteAction(act);
                                }
                                editor.InitClipWrappers();
                                multiSelection = null;
@@ -2911,14 +2361,14 @@ public class SkillEditorWindow : EditorWindow
                     return;
                 }
 
-                menu.AddItem(new GUIContent("Copy Clip"), false, () => { CutsceneUtility.CopyClip(action); });
-                menu.AddItem(new GUIContent("Cut Clip"), false, () => { CutsceneUtility.CutClip(action); });
+                menu.AddItem(new GUIContent("Copy Clip"), false, () => { SkillEditorUtility.CopyClip(action); });
+                menu.AddItem(new GUIContent("Cut Clip"), false, () => { SkillEditorUtility.CutClip(action); });
 
                 if ( allowScale ) {
                     menu.AddItem(new GUIContent("Fit Clip (F)"), false, () => { StretchFit(); });
                     if ( action.length > 0 ) {
                         menu.AddItem(new GUIContent("Split At Cursor"), false, () => { Split(snapedPointerTime); });
-                        menu.AddItem(new GUIContent("Split At Scrubber (S)"), false, () => { Split(editor.cutscene.currentTime); });
+                        menu.AddItem(new GUIContent("Split At Scrubber (S)"), false, () => { Split(editor.Skill.currentTime); });
                     }
                 }
 
@@ -2943,7 +2393,7 @@ public class SkillEditorWindow : EditorWindow
                 {
                     editor.SafeDoAction(() =>
                     {
-                        ( action.parent as CutsceneTrack ).DeleteAction(action);
+                        ( action.parent as SkillTrack ).DeleteAction(action);
                         editor.InitClipWrappers();
                     });
                 });

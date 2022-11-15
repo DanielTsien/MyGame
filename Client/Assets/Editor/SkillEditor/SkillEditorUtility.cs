@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Editor.SkillEditor;
 using Slate;
 using UnityEditor;
 using UnityEngine;
@@ -155,6 +156,14 @@ public static class SkillEditorUtility
     {
         var json = EditorPrefs.GetString("Slate_CopyDirectableValuesJSON");
         return !string.IsNullOrEmpty(json);
+    }
+    
+    [MenuItem("Tools/SkillEditor/Create/New Skill", false, 500)]
+    public static Skill CreateSkill() {
+        var skill = Skill.Create();
+        SkillEditorWindow.ShowWindow(skill);
+        Selection.activeObject = skill;
+        return skill;
     }
 }
 #endif
