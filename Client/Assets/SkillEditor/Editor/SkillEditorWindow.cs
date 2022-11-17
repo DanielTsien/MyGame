@@ -3,14 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Editor.SkillEditor;
+using SkillEditor;
 using Slate;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using ColorUtility = Slate.ColorUtility;
 
 public class SkillEditorWindow : EditorWindow
-
-    {
+{
 
         enum EditorPlaybackState
         {
@@ -64,7 +65,7 @@ public class SkillEditorWindow : EditorWindow
 
 
         [System.NonSerialized] private Dictionary<int, ActionClipWrapper> clipWrappers;
-        [System.NonSerialized] private Dictionary<SkillActionClip, ActionClipWrapper> clipWrappersMap;
+        [System.NonSerialized] private Dictionary<SkillClip, ActionClipWrapper> clipWrappersMap;
         [System.NonSerialized] private EditorPlaybackState editorPlaybackState = EditorPlaybackState.Stoped;
         [System.NonSerialized] private ActionClipWrapper interactingClip;
         [System.NonSerialized] private bool isMovingScrubCarret;
@@ -165,7 +166,7 @@ public class SkillEditorWindow : EditorWindow
 
         //A white texture
         private static Texture2D whiteTexture {
-            get { return Slate.Styles.whiteTexture; }
+            get { return Styles.whiteTexture; }
         }
 
         //Is skill reference an asset in project?
@@ -248,7 +249,7 @@ public class SkillEditorWindow : EditorWindow
 
         //Cache an array of snap times for clip (clip times are excluded)
         //Saved in property .magnetSnapTimesCache
-        void CacheMagnetSnapTimes(SkillActionClip clip = null) {
+        void CacheMagnetSnapTimes(SkillClip clip = null) {
             var result = new List<float>();
             result.Add(0);
             result.Add(length);
@@ -289,7 +290,7 @@ public class SkillEditorWindow : EditorWindow
         ///<summary>Opens the editor :)</summary>
         public static void ShowWindow() { ShowWindow(null); }
         public static void ShowWindow(Skill newSkill) {
-            var window = EditorWindow.GetWindow(typeof(SkillEditorWindow)) as SkillEditorWindow;
+            var window = GetWindow(typeof(SkillEditorWindow)) as SkillEditorWindow;
             window.InitializeAll(newSkill);
             window.Show();
         }
@@ -320,7 +321,7 @@ public class SkillEditorWindow : EditorWindow
 #endif
 
             Tools.hidden = false;
-            titleContent = new GUIContent("SLATE", Styles.cutsceneIconOpen);
+            titleContent = new GUIContent("SkillEditor", Styles.cutsceneIconOpen);
             wantsMouseMove = true;
             autoRepaintOnSceneChange = true;
             minSize = new Vector2(500, 250);
@@ -413,7 +414,7 @@ public class SkillEditorWindow : EditorWindow
 
             Skill.Validate();
             clipWrappers = new Dictionary<int, ActionClipWrapper>();
-            clipWrappersMap = new Dictionary<SkillActionClip, ActionClipWrapper>();
+            clipWrappersMap = new Dictionary<SkillClip, ActionClipWrapper>();
 
             for (int t = 0; t < Skill.tracks.Count; t++)
             {
@@ -439,17 +440,17 @@ public class SkillEditorWindow : EditorWindow
             }
         }
 
-        //An integer UID out of list indeces (group, track, action clip)
+        //An integer UID out of list indeces (track, action clip)
         int UID(int t, int a) {
             var T = t.ToString("D3");
-            var C= a.ToString("D4");
-            return int.Parse(T + C);
+            var A = a.ToString("D4");
+            return int.Parse(T + A);
         }
 
         //Play button pressed or otherwise started
         public void Play(Action callback = null) {
 
-            titleContent = new GUIContent("SLATE", Styles.cutsceneIconClose);
+            titleContent = new GUIContent("SkillEditor", Styles.cutsceneIconClose);
 
             if ( Application.isPlaying ) {
                 var temp = Skill.currentTime == length ? 0 : Skill.currentTime;
@@ -467,7 +468,7 @@ public class SkillEditorWindow : EditorWindow
         //Play reverse button pressed
         public void PlayReverse() {
 
-            titleContent = new GUIContent("SLATE", Styles.cutsceneIconClose);
+            titleContent = new GUIContent("SkillEditor", Styles.cutsceneIconClose);
 
             if ( Application.isPlaying ) {
                 var temp = Skill.currentTime == 0 ? length : Skill.currentTime;
@@ -489,7 +490,7 @@ public class SkillEditorWindow : EditorWindow
         //Pause button pressed
         public void Pause() {
 
-            titleContent = new GUIContent("SLATE", Styles.cutsceneIconOpen);
+            titleContent = new GUIContent("SkillEditor", Styles.cutsceneIconOpen);
 
             if ( Application.isPlaying ) {
                 if ( Skill.isActive ) {
@@ -508,7 +509,7 @@ public class SkillEditorWindow : EditorWindow
         //Stop button pressed or otherwise reset the scrubbing/previewing
         public void Stop(bool forceRewind) {
 
-            titleContent = new GUIContent("SLATE", Styles.cutsceneIconOpen);
+            titleContent = new GUIContent("SkillEditor", Styles.cutsceneIconOpen);
 
             if ( Application.isPlaying ) {
                 if ( Skill.isActive ) {
@@ -688,8 +689,8 @@ public class SkillEditorWindow : EditorWindow
         }
 
         //...
-        void OnGUI() {
-
+        void OnGUI()
+        {
             GUI.skin.label.richText = true;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
             EditorStyles.label.richText = true;
@@ -699,20 +700,23 @@ public class SkillEditorWindow : EditorWindow
             mousePosition = e.mousePosition;
             current = this;
 
-            if ( Skill == null || isAboutButtonPressed ) {
+            if (Skill == null || isAboutButtonPressed)
+            {
                 ShowWelcome();
                 return;
             }
 
             //avoid edit when compiling
-            if ( EditorApplication.isCompiling ) {
+            if (EditorApplication.isCompiling)
+            {
                 Stop(true);
                 ShowNotification(new GUIContent("Compiling\n...Please wait..."));
                 return;
             }
 
             //handle undo/redo shortcuts
-            if ( e.type == EventType.ValidateCommand && e.commandName == "UndoRedoPerformed" ) {
+            if (e.type == EventType.ValidateCommand && e.commandName == "UndoRedoPerformed")
+            {
                 GUIUtility.hotControl = 0;
                 GUIUtility.keyboardControl = 0;
                 multiSelection = null;
@@ -723,22 +727,35 @@ public class SkillEditorWindow : EditorWindow
             }
 
             //prefab editing is not allowed
-            if ( isCutsceneAsset ) {
-                ShowNotification(new GUIContent("Editing Prefab Assets is not allowed\nPlease add an instance in the scene, or open the prefab for editing"));
+            if (isCutsceneAsset)
+            {
+                ShowNotification(new GUIContent(
+                    "Editing Prefab Assets is not allowed\nPlease add an instance in the scene, or open the prefab for editing"));
                 return;
             }
 
             //remove notifications quickly
-            if ( e.type == EventType.MouseDown ) { RemoveNotification(); }
+            if (e.type == EventType.MouseDown)
+            {
+                RemoveNotification();
+            }
 
             //button 2 seems buggy
-            if ( e.button == 2 && e.type == EventType.MouseDown ) { isMouseButton2Down = true; }
-            if ( e.button == 2 && e.rawType == EventType.MouseUp ) { isMouseButton2Down = false; }
+            if (e.button == 2 && e.type == EventType.MouseDown)
+            {
+                isMouseButton2Down = true;
+            }
+
+            if (e.button == 2 && e.rawType == EventType.MouseUp)
+            {
+                isMouseButton2Down = false;
+            }
 
             //Record Undo and dirty? This is an overal fallback. Certain actions register undo as well.
-            var doRecordUndo = e.rawType == EventType.MouseDown && ( e.button == 0 || e.button == 1 );
+            var doRecordUndo = e.rawType == EventType.MouseDown && (e.button == 0 || e.button == 1);
             doRecordUndo |= e.type == EventType.DragPerform;
-            if ( doRecordUndo ) {
+            if (doRecordUndo)
+            {
                 //Skill.groupsRoot.gameObject
                 //Undo.RegisterFullObjectHierarchyUndo(Skill.groupsRoot.gameObject, "Skill Change");
                 Undo.RecordObject(Skill, "Skill Change");
@@ -746,8 +763,10 @@ public class SkillEditorWindow : EditorWindow
             }
 
             //reorder clips lists for better UI. This is strictly a UI thing.
-            if ( interactingClip == null && e.type == EventType.Layout ) {
-                foreach ( var track in Skill.tracks ) {
+            if (interactingClip == null && e.type == EventType.Layout)
+            {
+                foreach (var track in Skill.tracks)
+                {
                     track.clips = track.clips.OrderBy(a => a.startTime).ToList();
                 }
             }
@@ -755,8 +774,10 @@ public class SkillEditorWindow : EditorWindow
             //make the layout rects
             topLeftRect = new Rect(0, TOOLBAR_HEIGHT, LEFT_MARGIN, TOP_MARGIN);
             topMiddleRect = new Rect(LEFT_MARGIN, TOOLBAR_HEIGHT, screenWidth - LEFT_MARGIN - RIGHT_MARGIN, TOP_MARGIN);
-            leftRect = new Rect(0, TOOLBAR_HEIGHT + TOP_MARGIN, LEFT_MARGIN, screenHeight - TOOLBAR_HEIGHT - TOP_MARGIN + scrollPos.y);
-            centerRect = new Rect(LEFT_MARGIN, TOP_MARGIN + TOOLBAR_HEIGHT, screenWidth - LEFT_MARGIN - RIGHT_MARGIN, screenHeight - TOOLBAR_HEIGHT - TOP_MARGIN + scrollPos.y);
+            leftRect = new Rect(0, TOOLBAR_HEIGHT + TOP_MARGIN, LEFT_MARGIN,
+                screenHeight - TOOLBAR_HEIGHT - TOP_MARGIN + scrollPos.y);
+            centerRect = new Rect(LEFT_MARGIN, TOP_MARGIN + TOOLBAR_HEIGHT, screenWidth - LEFT_MARGIN - RIGHT_MARGIN,
+                screenHeight - TOOLBAR_HEIGHT - TOP_MARGIN + scrollPos.y);
 
             //...
             DoKeyboardShortcuts();
@@ -768,7 +789,8 @@ public class SkillEditorWindow : EditorWindow
 
 
             //Dirty and Resample flags?
-            if ( e.rawType == EventType.MouseUp && e.button == 0 ) {
+            if (e.rawType == EventType.MouseUp && e.button == 0)
+            {
                 willDirty = true;
                 willResample = true;
             }
@@ -778,7 +800,7 @@ public class SkillEditorWindow : EditorWindow
             var scrollRect1 = Rect.MinMaxRect(0, centerRect.yMin, screenWidth, screenHeight - 5);
             var scrollRect2 = Rect.MinMaxRect(0, centerRect.yMin, screenWidth, totalHeight + 150);
             scrollPos = GUI.BeginScrollView(scrollRect1, scrollPos, scrollRect2);
-            ShowGroupsAndTracksList(leftRect);
+            ShowTracksList(leftRect);
             ShowTimeLines(centerRect);
             GUI.EndScrollView();
             ///---
@@ -790,11 +812,14 @@ public class SkillEditorWindow : EditorWindow
             //Final stuff...
 
             //clean selection and hotcontrols
-            if ( e.type == EventType.MouseDown && e.button == 0 && GUIUtility.hotControl == 0 ) {
-                if ( centerRect.Contains(mousePosition) ) {
+            if (e.type == EventType.MouseDown && e.button == 0 && GUIUtility.hotControl == 0)
+            {
+                if (centerRect.Contains(mousePosition))
+                {
                     SkillEditorUtility.selectedObject = null;
                     multiSelection = null;
                 }
+
                 GUIUtility.keyboardControl = 0;
                 showDragDropInfo = false;
             }
@@ -809,35 +834,44 @@ public class SkillEditorWindow : EditorWindow
             // }
 
             //repaint?
-            if ( e.type == EventType.MouseDrag || e.type == EventType.MouseUp || GUI.changed ) {
+            if (e.type == EventType.MouseDrag || e.type == EventType.MouseUp || GUI.changed)
+            {
                 willRepaint = true;
             }
 
             //dirty?
-            if ( willDirty ) {
+            if (willDirty)
+            {
                 willDirty = false;
                 EditorUtility.SetDirty(Skill);
-                foreach ( var o in Skill.GetComponentsInChildren(typeof(IDirectable), true).Cast<UnityEngine.Object>() ) {
+                foreach (var o in Skill.GetComponentsInChildren(typeof(IDirectable), true).Cast<UnityEngine.Object>())
+                {
                     EditorUtility.SetDirty(o);
                 }
             }
 
             //resample?
-            if ( willResample ) {
+            if (willResample)
+            {
                 willResample = false;
                 //delaycall so that other gui controls are finalized before resample.
-                EditorApplication.delayCall += () => { if ( Skill != null ) Skill.ReSample(); };
+                EditorApplication.delayCall += () =>
+                {
+                    if (Skill != null) Skill.ReSample();
+                };
             }
 
             //hack to show modal popup windows
-            if ( onDoPopup != null ) {
+            if (onDoPopup != null)
+            {
                 var temp = onDoPopup;
                 onDoPopup = null;
                 QuickPopup.Show(temp);
             }
 
             //if a prefab darken whole UI
-            if ( isCutsceneAsset ) {
+            if (isCutsceneAsset)
+            {
                 GUI.color = Color.black.WithAlpha(0.5f);
                 GUI.DrawTexture(new Rect(0, 0, screenWidth, screenHeight), whiteTexture);
                 GUI.color = Color.white;
@@ -854,7 +888,10 @@ public class SkillEditorWindow : EditorWindow
             GUI.backgroundColor = Color.white;
             GUI.skin = null;
 
-            if ( viewTimeMax == 0 ) { GUI.Label(centerRect, "<size=40>Welcome to the dark side!\n:-)</size>", Styles.centerLabel); }
+            if (viewTimeMax == 0)
+            {
+                GUI.Label(centerRect, "<size=40>Welcome to the dark side!\n:-)</size>", Styles.centerLabel);
+            }
         }
 
         ///----------------------------------------------------------------------------------------------
@@ -892,7 +929,7 @@ public class SkillEditorWindow : EditorWindow
 
                 //split at scrubber
                 if ( e.keyCode == KeyCode.S ) {
-                    var clip = SkillEditorUtility.selectedObject as SkillActionClip;
+                    var clip = SkillEditorUtility.selectedObject as SkillClip;
                     if ( clip != null ) {
                         var wrapper = clipWrappersMap[clip];
                         if ( wrapper != null ) { wrapper.Split(Skill.currentTime); }
@@ -902,7 +939,7 @@ public class SkillEditorWindow : EditorWindow
 
                 //strech fit
                 if ( e.keyCode == KeyCode.F ) {
-                    var clip = SkillEditorUtility.selectedObject as SkillActionClip;
+                    var clip = SkillEditorUtility.selectedObject as SkillClip;
                     if ( clip != null ) {
                         var wrapper = clipWrappersMap[clip];
                         if ( wrapper != null ) { wrapper.StretchFit(); }
@@ -912,7 +949,7 @@ public class SkillEditorWindow : EditorWindow
 
                 //clean off range keys
                 if ( e.keyCode == KeyCode.C ) {
-                    var clip = SkillEditorUtility.selectedObject as SkillActionClip;
+                    var clip = SkillEditorUtility.selectedObject as SkillClip;
                     if ( clip != null ) {
                         var wrapper = clipWrappersMap[clip];
                         if ( wrapper != null ) { wrapper.CleanKeysOffRange(); }
@@ -933,7 +970,7 @@ public class SkillEditorWindow : EditorWindow
                            });
                         e.Use();
                     } else {
-                        var clip = SkillEditorUtility.selectedObject as SkillActionClip;
+                        var clip = SkillEditorUtility.selectedObject as SkillClip;
                         if ( clip != null ) {
                             SafeDoAction(() => { ( clip.parent as SkillTrack ).DeleteAction(clip); InitClipWrappers(); });
                             e.Use();
@@ -994,7 +1031,7 @@ public class SkillEditorWindow : EditorWindow
                 isAboutButtonPressed = false;
             }
 
-            var label = string.Format("<size=30><b>{0}</b></size>", "Welcome to SLATE!");
+            var label = string.Format("<size=30><b>{0}</b></size>", "Welcome to SkillEditor!");
             var size = new GUIStyle("label").CalcSize(new GUIContent(label));
             var titleRect = new Rect(0, 0, size.x, size.y);
             titleRect.center = new Vector2(screenWidth / 2, size.y + 180);
@@ -1010,7 +1047,7 @@ public class SkillEditorWindow : EditorWindow
             if ( !isAboutButtonPressed ) {
                 GUI.backgroundColor = new Color(0.8f, 0.8f, 1, 1f);
                 if ( GUILayout.Button("New Skill", GUILayout.Height(40)) ) {
-                    InitializeAll(SkillEditorUtility.CreateSkill());
+                    InitializeAll(SkillEditor.Commands.CreateSkill());
                 }
 
                 if ( GUILayout.Button("Open Skill", GUILayout.Height(40)) ) {
@@ -1030,27 +1067,12 @@ public class SkillEditorWindow : EditorWindow
                 }
                 GUI.backgroundColor = Color.white;
             }
+            
 
-            if ( GUILayout.Button("Website", GUILayout.Height(40)) ) {
-                Help.BrowseURL("https://slate.paradoxnotion.com");
-            }
-
-            if ( GUILayout.Button("Documentation", GUILayout.Height(40)) ) {
-                Help.BrowseURL("https://slate.paradoxnotion.com/documentation");
-            }
-
-            if ( GUILayout.Button("Downloads", GUILayout.Height(40)) ) {
-                Help.BrowseURL("https://slate.paradoxnotion.com/downloads");
-            }
-
-            if ( GUILayout.Button("Support Forums", GUILayout.Height(40)) ) {
-                Help.BrowseURL("https://slate.paradoxnotion.com/forums-page");
-            }
-
-            if ( !isAboutButtonPressed && GUILayout.Button("Leave a Review", GUILayout.Height(40)) ) {
-                Help.BrowseURL("https://u3d.as/ozt");
-            }
-
+            // if ( GUILayout.Button("Documentation", GUILayout.Height(40)) ) {
+            //     Help.BrowseURL("https://slate.paradoxnotion.com/documentation");
+            // }
+            
             GUILayout.EndArea();
 
             if ( isAboutButtonPressed && Skill != null ) {
@@ -1217,7 +1239,7 @@ public class SkillEditorWindow : EditorWindow
                     var menu = new GenericMenu();
                     menu.AddItem(new GUIContent("Set To Last Clip Time"), false, () =>
                         {
-                            var lastClip = Skill.directables.Where(d => d is SkillActionClip).OrderBy(d => d.endTime).LastOrDefault();
+                            var lastClip = Skill.directables.Where(d => d is SkillClip).OrderBy(d => d.endTime).LastOrDefault();
                             if ( lastClip != null ) {
                                 length = lastClip.endTime;
                             }
@@ -1484,7 +1506,7 @@ public class SkillEditorWindow : EditorWindow
 
 
         //left - the groups and tracks info and option per group/track
-        void ShowGroupsAndTracksList(Rect leftRect) {
+        void ShowTracksList(Rect leftRect) {
 
             var e = Event.current;
 
@@ -1497,48 +1519,67 @@ public class SkillEditorWindow : EditorWindow
 
             GUI.enabled = Skill.currentTime <= 0;
 
-            //starting height && search.
-            var nextYPos = FIRST_GROUP_TOP_MARGIN;
-            var wasEnabled = GUI.enabled;
-            GUI.enabled = true;
-            var collapseAllRect = Rect.MinMaxRect(leftRect.x + 5, leftRect.y + 4, 20, leftRect.y + 20 - 1);
-            var searchRect = Rect.MinMaxRect(leftRect.x + 20, leftRect.y + 4, leftRect.xMax - 18, leftRect.y + 20 - 1);
-            var searchCancelRect = Rect.MinMaxRect(searchRect.xMax, searchRect.y, leftRect.xMax - 4, searchRect.yMax);
-            var anyExpanded = Skill.tracks.Any(g => !g.isCollapsed);
-            AddCursorRect(collapseAllRect, MouseCursor.Link);
-            GUI.color = Color.white.WithAlpha(0.5f);
-            if ( GUI.Button(collapseAllRect, anyExpanded ? "▼" : "►", (GUIStyle)"label") ) {
-                // foreach ( var track in Skill.tracks ) {
-                //     track.isCollapsed = anyExpanded;
-                // }
-            }
-            GUI.color = Color.white;
-            searchString = EditorGUI.TextField(searchRect, searchString, (GUIStyle)"ToolbarSeachTextField");
-            if ( GUI.Button(searchCancelRect, string.Empty, (GUIStyle)"ToolbarSeachCancelButton") ) {
-                searchString = string.Empty;
-                GUIUtility.keyboardControl = 0;
-            }
-            GUI.enabled = wasEnabled;
 
-
+            var nextYPos = 5f;
             //begin area for left Rect
             GUI.BeginGroup(leftRect);
-            //ShowListGroups(e, ref nextYPos);
+            
+            var trackRect = new Rect(4, nextYPos, leftRect.width - GROUP_RIGHT_MARGIN - 4, GROUP_HEIGHT - 3);
+            nextYPos += GROUP_HEIGHT;
+            GUI.color = LIST_SELECTION_COLOR;
+            GUI.Box(trackRect, string.Empty, Styles.headerBoxStyle);
+
+            GUI.color = Color.white.WithAlpha(0.5f);
+            var isPlusClicked = false;
+            var plusRect = new Rect(trackRect.xMax - 14, trackRect.y + 5, 8, 8);
+            if (GUI.Button(plusRect, Slate.Styles.plusIcon, GUIStyle.none))
+            {
+                isPlusClicked = true;
+            }
+
+            if (isPlusClicked || (e.type == EventType.ContextClick && trackRect.Contains(e.mousePosition)))
+            {
+                var menu = new GenericMenu();
+                foreach (var _info in EditorTools.GetTypeMetaDerivedFrom(typeof(SkillTrack)))
+                {
+                    var info = _info;
+                    var canAdd = !info.isUnique;
+                    var finalPath = string.IsNullOrEmpty(info.category) ? info.name : info.category + "/" + info.name;
+                    if (canAdd)
+                    {
+                        menu.AddItem(new GUIContent("Add Track/" + finalPath), false,
+                            () => { Skill.AddTrack(info.type); });
+                    }
+                    else
+                    {
+                        menu.AddDisabledItem(new GUIContent("Add Track/" + finalPath));
+                    }
+                }
+
+                menu.AddDisabledItem(new GUIContent("Paste Track"));
+                menu.ShowAsContext();
+                e.Use();
+            }
+            
+            var foldRect = new Rect(trackRect.x + 2, trackRect.y + 1, 20, trackRect.height);
+            GUI.color = Color.yellow;
+            EditorGUI.Foldout(foldRect, true, Skill.name);
+            GUI.color = Color.white;
+            
+            
+            ShowTracks(e, ref nextYPos);
+            //draw vertical graphic on left side of nested track rects
+            GUI.color = LIST_SELECTION_COLOR;
+            var verticalRect = Rect.MinMaxRect(trackRect.x, trackRect.yMax, trackRect.x + 3, nextYPos - 2);
+            GUI.DrawTexture(verticalRect, Styles.whiteTexture);
+            GUI.color = Color.white;
+            
+            
             GUI.EndGroup();
 
             //store total height required
             totalHeight = nextYPos;
-
-
-            //Simple button to add empty group for convenience
-            var addButtonY = totalHeight + TOP_MARGIN + TOOLBAR_HEIGHT + 20;
-            var addRect = Rect.MinMaxRect(leftRect.xMin + 10, addButtonY, leftRect.xMax - 10, addButtonY + 20);
-            GUI.color = Color.white.WithAlpha(0.5f);
-            if ( GUI.Button(addRect, "Add Track") ) {
-                var newTrack = Skill.AddTrack<SkillTrack>();
-                SkillEditorUtility.selectedObject = newTrack;
-            }
-
+            
             //clear picks
             if ( e.rawType == EventType.MouseUp ) {
                 pickedGroup = null;
@@ -1548,6 +1589,93 @@ public class SkillEditorWindow : EditorWindow
             GUI.enabled = true;
             GUI.color = Color.white;
         }
+
+        void ShowTracks(Event e, ref float nextYPos)
+        {
+            //TRACKS
+            for (int t = 0; t < Skill.tracks.Count; t++)
+            {
+                var track = Skill.tracks[t];
+                var yPos = nextYPos;
+
+                var trackRect = new Rect(10, yPos, leftRect.width - TRACK_RIGHT_MARGIN - 10, track.finalHeight);
+                nextYPos += track.finalHeight + TRACK_MARGINS;
+
+                //GRAPHICS
+                GUI.color = ColorUtility.Grey(isProSkin
+                    ? (track.isActive ? 0.25f : 0.2f)
+                    : (track.isActive ? 0.9f : 0.8f));
+                GUI.DrawTexture(trackRect, whiteTexture);
+                GUI.color = Color.white.WithAlpha(0.25f);
+                GUI.Box(trackRect, string.Empty, (GUIStyle) "flow node 0");
+                if (ReferenceEquals(track, SkillEditorUtility.selectedObject) || track == pickedTrack)
+                {
+                    GUI.color = LIST_SELECTION_COLOR;
+                    GUI.DrawTexture(trackRect, whiteTexture);
+                }
+
+                //custom color indicator
+                if (track.isActive && track.color != Color.white && track.color.a > 0.2f)
+                {
+                    GUI.color = track.color;
+                    var colorRect = new Rect(trackRect.xMax + 1, trackRect.yMin, 2, track.finalHeight);
+                    GUI.DrawTexture(colorRect, whiteTexture);
+                }
+
+                GUI.color = Color.white;
+                //
+
+                //
+                GUI.BeginGroup(trackRect);
+                track.OnTrackInfoGUI(trackRect);
+                GUI.EndGroup();
+                //
+
+                AddCursorRect(trackRect, pickedTrack == null ? MouseCursor.Link : MouseCursor.MoveArrow);
+
+                //CONTEXT
+                if (e.type == EventType.ContextClick && trackRect.Contains(e.mousePosition))
+                {
+                    var menu = new GenericMenu();
+                    menu.AddItem(new GUIContent("Disable Track"), !track.isActive,
+                        () => { track.isActive = !track.isActive; });
+                    menu.AddItem(new GUIContent("Copy"), false, () => { copyTrack = track; });
+                    if (track.GetType().RTGetAttribute<UniqueElementAttribute>(true) == null)
+                    {
+                        menu.AddItem(new GUIContent("Duplicate"), false, () =>
+                        {
+                            Skill.DuplicateTrack(track);
+                            InitClipWrappers();
+                        });
+                    }
+                    else
+                    {
+                        menu.AddDisabledItem(new GUIContent("Duplicate"));
+                    }
+
+                    menu.AddSeparator("/");
+                    menu.AddItem(new GUIContent("Delete Track"), false, () =>
+                    {
+                        if (EditorUtility.DisplayDialog("Delete Track", "Are you sure?", "YES", "NO!"))
+                        {
+                            Skill.DeleteTrack(track);
+                            InitClipWrappers();
+                        }
+                    });
+                    menu.ShowAsContext();
+                    e.Use();
+                }
+
+                //REORDERING
+                if (e.type == EventType.MouseDown && e.button == 0 && trackRect.Contains(e.mousePosition))
+                {
+                    SkillEditorUtility.selectedObject = track;
+                    pickedTrack = track;
+                    e.Use();
+                }
+            }
+        }
+
         ///----------------------------------------------------------------------------------------------
 
 
@@ -1578,15 +1706,288 @@ public class SkillEditorWindow : EditorWindow
             GUI.BeginGroup(centerRect);
 
             //starting height
-            var nextYPos = FIRST_GROUP_TOP_MARGIN;
-
-            //master sections
-            var sectionsRect = Rect.MinMaxRect(Mathf.Max(TimeToPos(viewTimeMin), TimeToPos(0)), 3, TimeToPos(viewTimeMax), 18);
-
-
+            var nextYPos = FIRST_GROUP_TOP_MARGIN + 5;
+            
             //Begin Windows
             BeginWindows();
             
+            //TRACKS
+            for (int t = 0; t < Skill.tracks.Count; t++)
+            {
+                var track = Skill.tracks[t];
+                var yPos = nextYPos;
+                var trackPosRect = Rect.MinMaxRect(Mathf.Max(TimeToPos(viewTimeMin), TimeToPos(0)), yPos,
+                    TimeToPos(viewTimeMax), yPos + track.finalHeight);
+                var trackTimeRect = Rect.MinMaxRect(Mathf.Max(viewTimeMin, 0), 0, viewTimeMax, 0);
+                nextYPos += track.finalHeight + TRACK_MARGINS;
+
+                //GRAPHICS
+                GUI.color = Color.black.WithAlpha(isProSkin ? 0.06f : 0.1f);
+                GUI.DrawTexture(trackPosRect, whiteTexture);
+                Handles.color = ColorUtility.Grey(isProSkin ? 0.15f : 0.4f);
+                Handles.DrawLine(new Vector2(TimeToPos(viewTimeMin), trackPosRect.y + 1),
+                    new Vector2(trackPosRect.xMax, trackPosRect.y + 1));
+                Handles.DrawLine(new Vector2(TimeToPos(viewTimeMin), trackPosRect.yMax),
+                    new Vector2(trackPosRect.xMax, trackPosRect.yMax));
+                if (track.showCurves)
+                {
+                    Handles.DrawLine(new Vector2(trackPosRect.x, trackPosRect.y + track.defaultHeight),
+                        new Vector2(trackPosRect.xMax, trackPosRect.y + track.defaultHeight));
+                }
+
+                Handles.color = Color.white;
+                if (viewTimeMin < 0)
+                {
+                    //just visual clarity
+                    GUI.Box(Rect.MinMaxRect(TimeToPos(viewTimeMin), trackPosRect.yMin, TimeToPos(0), trackPosRect.yMax),
+                        string.Empty);
+                }
+
+                GUI.backgroundColor = Color.white;
+
+                //highlight selected track
+                if (ReferenceEquals(SkillEditorUtility.selectedObject, track))
+                {
+                    GUI.color = Color.grey;
+                    GUI.Box(trackPosRect.ExpandBy(0, 2), string.Empty, Styles.hollowFrameHorizontalStyle);
+                    GUI.color = Color.white;
+                }
+
+                //...
+                var cursorTime = SnapTime(PosToTime(mousePosition.x));
+                track.OnTrackTimelineGUI(trackPosRect, trackTimeRect, cursorTime, TimeToPos);
+                //...
+
+                if (track.isActive)
+                {
+                    postWindowsGUI += () =>
+                    {
+                        //overlay dark stripes for disabled tracks
+                        if (!track.isActive)
+                        {
+                            GUI.color = Color.black.WithAlpha(0.2f);
+                            GUI.DrawTexture(trackPosRect, whiteTexture);
+                            GUI.DrawTextureWithTexCoords(trackPosRect, Styles.stripes,
+                                new Rect(0, 0, (trackPosRect.width / 5), (trackPosRect.height / 5)));
+                            GUI.color = Color.white;
+                        }
+                        string overlayLabel = null;
+                        if (!track.isActive)
+                        {
+                            overlayLabel = "DISABLED";
+                        }
+
+                        var size = Styles.centerLabel.CalcSize(new GUIContent(overlayLabel));
+                        var bgLabelRect = new Rect(0, 0, size.x, size.y);
+                        bgLabelRect.center = trackPosRect.center;
+                        GUI.Label(trackPosRect, string.Format("<b>{0}</b>", overlayLabel), Styles.centerLabel);
+                        GUI.color = Color.white;
+                    };
+                }
+
+
+                //ACTION CLIPS
+                for (int a = 0; a < track.clips.Count; a++)
+                {
+                    var action = track.clips[a];
+                    var ID = UID(t, a);
+                    ActionClipWrapper clipWrapper = null;
+
+                    if (!clipWrappers.TryGetValue(ID, out clipWrapper) || clipWrapper.action != action)
+                    {
+                        InitClipWrappers();
+                        clipWrapper = clipWrappers[ID];
+                    }
+
+                    //find and store next/previous clips to wrapper
+                    var nextClip = a < track.clips.Count - 1 ? track.clips[a + 1] : null;
+                    var previousClip = a != 0 ? track.clips[a - 1] : null;
+                    clipWrapper.nextClip = nextClip;
+                    clipWrapper.previousClip = previousClip;
+
+
+                    //get the action box rect
+                    var clipRect = clipWrapper.rect;
+
+                    //modify it
+                    clipRect.y = yPos;
+                    clipRect.width = Mathf.Max(action.length / viewTime * centerRect.width, 6);
+                    clipRect.height = track.defaultHeight;
+
+
+                    //get the action time and pos
+                    var xTime = action.startTime;
+                    var xPos = clipRect.x;
+
+                    if (interactingClip != null && ReferenceEquals(interactingClip.action, action) &&
+                        interactingClip.isDragging)
+                    {
+
+                        var lastTime = xTime;
+                        xTime = PosToTime(xPos + leftRect.width);
+                        xTime = SnapTime(xTime);
+                        xTime = Mathf.Clamp(xTime, 0, maxTime - 0.1f);
+
+                        //handle multisection. Limit xmin, xmax by their bound rect
+                        if (multiSelection != null && multiSelection.Count > 1)
+                        {
+                            var delta = xTime - lastTime;
+                            var boundMin = Mathf.Min(multiSelection.Select(b => b.action.startTime).ToArray());
+                            if (boundMin + delta < 0)
+                            {
+                                xTime -= delta;
+                                delta = 0;
+                            }
+
+                            foreach (var cw in multiSelection)
+                            {
+                                if (cw.action != action)
+                                {
+                                    cw.action.startTime += delta;
+                                }
+                            }
+                        }
+
+                        //clamp and cross blend between other nearby clips
+                        if (multiSelection == null || multiSelection.Count < 1)
+                        {
+                            var preCursorClip = track.clips.LastOrDefault(x => x != action && x.startTime < cursorTime);
+                            var postCursorClip = track.clips.FirstOrDefault(x => x != action && x.endTime > cursorTime);
+
+                            //Shift/Ripple clips
+                            //when shifting track clips always clamp to previous clip and no need to clamp to next
+                            if (e.shift)
+                            {
+                                preCursorClip = previousClip;
+                                postCursorClip = null;
+                            }
+
+                            var preTime = preCursorClip != null ? preCursorClip.endTime : 0;
+                            var postTime = postCursorClip != null ? postCursorClip.startTime : maxTime + action.length;
+
+                            //Magnet snapping when dragging clip
+                            if (Prefs.magnetSnapping && !e.control)
+                            {
+                                var snapStart = MagnetSnapTime(xTime, magnetSnapTimesCache);
+                                var snapEnd = MagnetSnapTime(xTime + action.length, magnetSnapTimesCache);
+                                if (snapStart != null && snapEnd != null)
+                                {
+                                    var distStart = Mathf.Abs(snapStart.Value - xTime);
+                                    var distEnd = Mathf.Abs(snapEnd.Value - (xTime + action.length));
+                                    var bestTime = distEnd < distStart ? snapEnd.Value : snapStart.Value;
+                                    pendingGuides.Add(new GuideLine(bestTime, Color.white));
+                                    xTime = distEnd < distStart ? snapEnd.Value - action.length : snapStart.Value;
+                                }
+                                else
+                                {
+                                    if (snapEnd != null)
+                                    {
+                                        pendingGuides.Add(new GuideLine(snapEnd.Value, Color.white));
+                                        xTime = snapEnd.Value - action.length;
+                                    }
+
+                                    if (snapStart != null)
+                                    {
+                                        pendingGuides.Add(new GuideLine(snapStart.Value, Color.white));
+                                        xTime = snapStart.Value;
+                                    }
+                                }
+                            }
+
+
+                            //expand possible time if crossblendable
+                            if (action.CanCrossBlend(preCursorClip))
+                            {
+                                preTime -= Mathf.Min(action.length / 2, preCursorClip.length / 2);
+                            }
+
+                            if (action.CanCrossBlend(postCursorClip))
+                            {
+                                postTime += Mathf.Min(action.length / 2, postCursorClip.length / 2);
+                            }
+
+                            //does it fit?
+                            if (action.length > postTime - preTime)
+                            {
+                                xTime = lastTime;
+                            }
+
+                            if (xTime != lastTime)
+                            {
+                                xTime = Mathf.Clamp(xTime, preTime, postTime - action.length);
+                                //Shift all the next clips along with this one if shift is down
+                                if (e.shift)
+                                {
+                                    foreach (var cw in clipWrappers.Values.Where(c =>
+                                                 c.action.parent == action.parent && c.action != action &&
+                                                 c.action.startTime > lastTime))
+                                    {
+                                        cw.action.startTime += xTime - lastTime;
+                                    }
+                                }
+                            }
+                        }
+
+                        //Apply xTime
+                        action.startTime = xTime;
+                    }
+
+                    //apply xPos
+                    clipRect.x = TimeToPos(xTime);
+
+
+                    //dont draw if outside of view range and not selected
+                    var isSelected = ReferenceEquals(SkillEditorUtility.selectedObject, action) ||
+                                     (multiSelection != null && multiSelection.Select(b => b.action).Contains(action));
+                    var isVisible = Rect.MinMaxRect(0, scrollPos.y, centerRect.width, centerRect.height)
+                        .Overlaps(clipRect);
+                    if (!isSelected && !isVisible)
+                    {
+                        clipWrapper.rect =
+                            default(Rect); //we basicaly "nullify" the rect. Too much trouble to work with nullable rect.
+                        continue;
+                    }
+
+                    //draw selection graphics rect
+                    if (isSelected)
+                    {
+                        var selRect = clipRect.ExpandBy(2);
+                        GUI.color = HIGHLIGHT_COLOR;
+                        GUI.DrawTexture(selRect, Slate.Styles.whiteTexture);
+                        GUI.color = Color.white;
+                    }
+
+                    //determine color and draw clip
+                    var color = Color.white;
+                    color = action.isValid ? color : new Color(1, 0.3f, 0.3f);
+                    color = track.isActive ? color : Color.grey;
+                    GUI.color = color;
+                    GUI.Box(clipRect, string.Empty, Styles.clipBoxHorizontalStyle);
+                    clipWrapper.rect = GUI.Window(ID, clipRect, ActionClipWindow, string.Empty, GUIStyle.none);
+                    if (!isProSkin)
+                    {
+                        GUI.color = Color.white.WithAlpha(0.5f);
+                        GUI.Box(clipRect, string.Empty);
+                        GUI.color = Color.white;
+                    }
+
+                    GUI.color = Color.white;
+
+                    //forward external Clip GUI
+                    var nextPosX = TimeToPos(nextClip != null ? nextClip.startTime : viewTimeMax);
+                    var prevPosX = TimeToPos(previousClip != null ? previousClip.endTime : viewTimeMin);
+                    var extRectLeft = Rect.MinMaxRect(prevPosX, clipRect.yMin, clipRect.xMin, clipRect.yMax);
+                    var extRectRight = Rect.MinMaxRect(clipRect.xMax, clipRect.yMin, nextPosX, clipRect.yMax);
+                    action.ShowClipGUIExternal(extRectLeft, extRectRight);
+
+                    //draw info text outside if clip is too small
+                    if (clipRect.width <= 20)
+                    {
+                        GUI.Label(extRectRight, string.Format("<size=9>{0}</size>", action.info));
+                    }
+                }
+            }
+
             EndWindows();
 
             //call postwindow delegate
@@ -1633,159 +2034,7 @@ public class SkillEditorWindow : EditorWindow
             }
         }
 
-
-        //Group sections...
-        void ShowGroupSections(CutsceneGroup group, Rect rect) {
-            var e = Event.current;
-            GenericMenu sectionsMenu = null;
-            if ( e.type == EventType.ContextClick && rect.Contains(e.mousePosition) ) {
-                var t = PosToTime(mousePosition.x);
-                sectionsMenu = new GenericMenu();
-                sectionsMenu.AddItem(new GUIContent("Add Section Here"), false, () => { group.sections.Add(new Section("Section", t)); });
-            }
-
-            var sections = new List<Section>(group.sections.OrderBy(s => s.time));
-            if ( sections.Count == 0 ) {
-                sections.Insert(0, new Section("No Sections", 0));
-                sections.Add(new Section("Outro", maxTime));
-            } else {
-                sections.Insert(0, new Section("Intro", 0));
-                sections.Add(new Section("Outro", maxTime));
-            }
-
-            for ( var i = 0; i < sections.Count - 1; i++ ) {
-                var section1 = sections[i];
-                var section2 = sections[i + 1];
-                var pos1 = TimeToPos(section1.time);
-                var pos2 = TimeToPos(section2.time);
-                var y = rect.y;
-
-                var sectionRect = Rect.MinMaxRect(pos1, y, pos2 - 2, y + GROUP_HEIGHT - 5);
-                var markRect = new Rect(sectionRect.x + 2, sectionRect.y + 2, 2, sectionRect.height - 4);
-                var clickRect = new Rect(0, y, 15, sectionRect.height);
-                var loopRect = Rect.MinMaxRect(Mathf.Max(sectionRect.xMax - 18, sectionRect.xMin), sectionRect.yMin + 2, sectionRect.xMax - 2, sectionRect.yMax - 2);
-
-                clickRect.center = markRect.center;
-
-                GUI.color = section1.color;
-                if ( section1.colorizeBackground ) {
-                    GUI.DrawTexture(Rect.MinMaxRect(sectionRect.xMin, sectionRect.yMax + 1, sectionRect.xMax, screenHeight + scrollPos.y), whiteTexture);
-                }
-                GUI.DrawTexture(sectionRect, whiteTexture);
-                GUI.color = Color.white.WithAlpha(0.2f);
-                GUI.DrawTexture(markRect, whiteTexture);
-                GUI.color = ( section1.color.grayscale >= 0.5 ? Color.black : Color.white ).WithAlpha(0.5f);
-                if ( section1.exitMode == Section.ExitMode.Loop ) {
-                    GUI.DrawTexture(loopRect, Styles.loopIcon);
-                    if ( section1.loopCount > 0 ) {
-                        var text = string.Format("<size=9>x {0}/{1}</size>", Mathf.Min(section1.currentLoopIteration, section1.loopCount), section1.loopCount);
-                        var loopCountRect = Rect.MinMaxRect(sectionRect.xMin, sectionRect.yMin, loopRect.xMin - 2, sectionRect.yMax);
-                        GUI.Label(loopCountRect, text, Styles.rightLabel);
-                    }
-                }
-                GUI.color = section1.color.grayscale >= 0.5 ? Color.black : Color.white;
-                GUI.Label(sectionRect, string.Format(" <i>{0}</i>", section1.name));
-                GUI.color = Color.white;
-
-
-                if ( sectionRect.Contains(e.mousePosition) ) {
-                    if ( e.type == EventType.MouseDown && e.button == 0 ) {
-                        if ( e.clickCount == 2 ) {
-                            viewTimeMin = section1.time;
-                            viewTimeMax = section2.time;
-                            e.Use();
-                        }
-                    }
-                    if ( i != 0 && e.type == EventType.ContextClick && sectionsMenu != null ) {
-                        sectionsMenu.AddItem(new GUIContent("Edit"), false, () =>
-                        {
-                            DoPopup(() =>
-                                {
-                                    section1.name = EditorGUILayout.TextField("Name", section1.name);
-                                    var previousSectionTime = sections.Last(s => s.time < section1.time && s != section1).time;
-                                    var nextSectionTime = sections.First(s => s.time > section1.time && s != section1).time;
-                                    section1.time = EditorGUILayout.Slider("Time", section1.time, previousSectionTime + 0.1f, nextSectionTime - 0.1f);
-                                    section1.exitMode = (Section.ExitMode)EditorGUILayout.EnumPopup("Exit Mode", section1.exitMode);
-                                    if ( section1.exitMode == Section.ExitMode.Loop ) {
-                                        section1.loopCount = EditorGUILayout.IntField("Loops", section1.loopCount);
-                                    }
-                                    section1.color = EditorGUILayout.ColorField("Color", section1.color);
-                                    section1.colorizeBackground = EditorGUILayout.Toggle("Colorize Background", section1.colorizeBackground);
-                                });
-                        });
-                        sectionsMenu.AddItem(new GUIContent("Focus (Double Click)"), false, () => { viewTimeMin = section1.time; viewTimeMax = section2.time; });
-                        sectionsMenu.AddSeparator("/");
-                        sectionsMenu.AddItem(new GUIContent("Delete Section"), false, () => { group.sections.Remove(section1); });
-                    }
-                }
-
-                if ( i != 0 && clickRect.Contains(e.mousePosition) ) {
-                    this.AddCursorRect(clickRect, MouseCursor.SlideArrow);
-                    if ( e.type == EventType.MouseDown && e.button == 0 ) {
-                        draggedSection = section1;
-                        e.Use();
-                    }
-                }
-            }
-
-            if ( draggedSection != null ) {
-                var lastTime = draggedSection.time;
-                var newTime = PosToTime(mousePosition.x);
-                var previousSectionTime = sections.Last(s => s.time < lastTime).time;
-                var nextSectionTime = sections.First(s => s.time > lastTime).time;
-                newTime = SnapTime(newTime);
-                newTime = Mathf.Clamp(newTime, previousSectionTime + 0.1f, nextSectionTime - 0.1f);
-                newTime = Mathf.Clamp(newTime, 0, maxTime);
-                draggedSection.time = newTime;
-
-                //shift clips if shift.
-                if ( e.shift ) {
-                    foreach ( var cw in clipWrappers.Values.Where(c => c.action.startTime >= lastTime) ) {
-                        if ( cw.action.isLocked ) { continue; }
-                        var max = cw.previousClip != null ? cw.previousClip.endTime : 0;
-                        if ( cw.action.CanCrossBlend(cw.previousClip) ) { max -= Mathf.Min((int) (cw.previousClip.length / 2), (int) (cw.action.length / 2)); }
-                        cw.action.startTime += newTime - lastTime;
-                        cw.action.startTime = Mathf.Max(cw.action.startTime, max);
-                    }
-
-                    //This is very unoptimized but PropertyTrack will be deprecated in the future.
-                    foreach ( var propTrack in Skill.directables.OfType<PropertiesTrack>() ) {
-                        if ( propTrack.isLocked ) { continue; }
-                        var curves = propTrack.GetCurvesAll();
-                        foreach ( var curve in curves ) {
-                            for ( var i = 0; i < curve.length; i++ ) {
-                                var key = curve[i];
-                                if ( key.time >= lastTime ) {
-                                    key.time += newTime - lastTime;
-                                    curve.MoveKey(i, key);
-                                }
-                            }
-                            curve.UpdateTangentsFromMode();
-                        }
-                        SkillEditorUtility.RefreshAllAnimationEditorsOf(propTrack.animationData);
-                    }
-                    //
-                }
-
-                //shift sections if shift or control
-                if ( e.shift || e.control ) {
-                    foreach ( var section in group.sections.Where(s => s != draggedSection && s.time > lastTime) ) {
-                        section.time += newTime - lastTime;
-                    }
-                }
-
-                //reset interaction and order sections
-                if ( e.rawType == EventType.MouseUp ) {
-                    draggedSection = null;
-                    group.sections = group.sections.OrderBy(s => s.time).ToList();
-                }
-            }
-
-            if ( sectionsMenu != null ) {
-                sectionsMenu.ShowAsContext();
-            }
-        }
-
+    
         //This is done in a GUILayout.Group, thus must use e.mousePosition instead of this.mousePosition
         void DoMultiSelection() {
 
@@ -1906,7 +2155,7 @@ public class SkillEditorWindow : EditorWindow
             const float CLIP_DOPESHEET_HEIGHT = 13f;
             const float SCALE_RECT_WIDTH = 5;
 
-            public SkillActionClip action;
+            public SkillClip action;
             public bool isDragging;
             public bool isScalingStart;
             public bool isScalingEnd;
@@ -1919,8 +2168,8 @@ public class SkillEditorWindow : EditorWindow
             public float preScaleSubclipOffset;
             public float preScaleSubclipSpeed;
 
-            public SkillActionClip previousClip;
-            public SkillActionClip nextClip;
+            public SkillClip previousClip;
+            public SkillClip nextClip;
 
             private Event e;
             private int windowID;
@@ -1954,7 +2203,7 @@ public class SkillEditorWindow : EditorWindow
                 set { _rect = value; }
             }
 
-            public ActionClipWrapper(SkillActionClip action) {
+            public ActionClipWrapper(SkillClip action) {
                 this.action = action;
             }
 
@@ -2245,7 +2494,7 @@ public class SkillEditorWindow : EditorWindow
 
 
             ///<summary>Split the clip in two, at specified local time</summary>
-            public SkillActionClip Split(float time) {
+            public SkillClip Split(float time) {
 
                 if ( !action.IsTimeWithinClip(time) ) {
                     return null;
@@ -2402,7 +2651,5 @@ public class SkillEditorWindow : EditorWindow
                 e.Use();
             }
         }
-
-    }
-
+}
 #endif

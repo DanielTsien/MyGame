@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Editor.SkillEditor;
+using SkillEditor;
 using Slate;
 using UnityEditor;
 using UnityEngine;
@@ -93,22 +93,22 @@ public static class SkillEditorUtility
     }
 
     ///<summary>Copy a clip</summary>
-    public static void CopyClip(SkillActionClip actionClip)
+    public static void CopyClip(SkillClip clip)
     {
-        copyJson = JsonUtility.ToJson(actionClip, false);
-        copyType = actionClip.GetType();
+        copyJson = JsonUtility.ToJson(clip, false);
+        copyType = clip.GetType();
     }
 
     ///<summary>Cut a clip</summary>
-    public static void CutClip(SkillActionClip actionClip)
+    public static void CutClip(SkillClip clip)
     {
-        copyJson = JsonUtility.ToJson(actionClip, false);
-        copyType = actionClip.GetType();
-        (actionClip.parent as SkillTrack).DeleteAction(actionClip);
+        copyJson = JsonUtility.ToJson(clip, false);
+        copyType = clip.GetType();
+        (clip.parent as SkillTrack).DeleteAction(clip);
     }
 
     ///<summary>Paste a previously copied clip. Creates a new clip with copied values within the target track.</summary>
-    public static SkillActionClip PasteClip(SkillTrack track, float time)
+    public static SkillClip PasteClip(SkillTrack track, float time)
     {
         if (copyType != null && !string.IsNullOrEmpty(copyJson))
         {
@@ -130,25 +130,25 @@ public static class SkillEditorUtility
 
 
     ///<summary>Copies the object's values to editor prefs json</summary>
-    public static void CopyClipValues(SkillActionClip actionClip)
+    public static void CopyClipValues(SkillClip clip)
     {
-        var json = JsonUtility.ToJson(actionClip);
+        var json = JsonUtility.ToJson(clip);
         EditorPrefs.SetString("Slate_CopyDirectableValuesJSON", json);
     }
 
     ///<summary>Pastes the object's values from editor prefs json</summary>
-    public static void PasteClipValues(SkillActionClip actionClip)
+    public static void PasteClipValues(SkillClip clip)
     {
         var json = EditorPrefs.GetString("Slate_CopyDirectableValuesJSON");
-        var wasStartTime = actionClip.startTime;
-        var wasEndTime = actionClip.endTime;
-        var wasBlendIn = actionClip.blendIn;
-        var wasBlendOut = actionClip.blendOut;
-        JsonUtility.FromJsonOverwrite(json, actionClip);
-        actionClip.startTime = wasStartTime;
-        actionClip.endTime = wasEndTime;
-        actionClip.blendIn = wasBlendIn;
-        actionClip.blendOut = wasBlendOut;
+        var wasStartTime = clip.startTime;
+        var wasEndTime = clip.endTime;
+        var wasBlendIn = clip.blendIn;
+        var wasBlendOut = clip.blendOut;
+        JsonUtility.FromJsonOverwrite(json, clip);
+        clip.startTime = wasStartTime;
+        clip.endTime = wasEndTime;
+        clip.blendIn = wasBlendIn;
+        clip.blendOut = wasBlendOut;
     }
 
     ///<summary>Is any object copied?</summary>
@@ -156,14 +156,6 @@ public static class SkillEditorUtility
     {
         var json = EditorPrefs.GetString("Slate_CopyDirectableValuesJSON");
         return !string.IsNullOrEmpty(json);
-    }
-    
-    [MenuItem("Tools/SkillEditor/Create/New Skill", false, 500)]
-    public static Skill CreateSkill() {
-        var skill = Skill.Create();
-        SkillEditorWindow.ShowWindow(skill);
-        Selection.activeObject = skill;
-        return skill;
     }
 }
 #endif

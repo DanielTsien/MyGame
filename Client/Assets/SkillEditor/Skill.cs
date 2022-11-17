@@ -5,7 +5,7 @@ using System.Linq;
 using Slate;
 using UnityEngine;
 
-namespace Editor.SkillEditor
+namespace SkillEditor
 {
     public class Skill : MonoBehaviour, IDirector
     {
@@ -498,41 +498,28 @@ namespace Editor.SkillEditor
         public void Validate()
         {
             directables = new List<IDirectable>();
-            foreach (IDirectable group in tracks.AsEnumerable().Reverse())
+            foreach (IDirectable track in tracks.AsEnumerable().Reverse())
             {
-                directables.Add(group);
+                directables.Add(track);
                 try
                 {
-                    group.Validate(this, null);
+                    track.Validate(this, null);
                 }
                 catch (System.Exception e)
                 {
                     Debug.LogException(e);
                 }
 
-                foreach (IDirectable track in group.children.Reverse())
+                foreach (IDirectable clip in track.children)
                 {
-                    directables.Add(track);
+                    directables.Add(clip);
                     try
                     {
-                        track.Validate(this, group);
+                        clip.Validate(this, track);
                     }
                     catch (System.Exception e)
                     {
                         Debug.LogException(e);
-                    }
-
-                    foreach (IDirectable clip in track.children)
-                    {
-                        directables.Add(clip);
-                        try
-                        {
-                            clip.Validate(this, track);
-                        }
-                        catch (System.Exception e)
-                        {
-                            Debug.LogException(e);
-                        }
                     }
                 }
             }
@@ -544,43 +531,29 @@ namespace Editor.SkillEditor
         //(Group Enter -> Track Enter -> Clip Enter | Clip Exit -> Track Exit -> Group Exit)
         void InitializeTimePointers()
         {
-
             timePointers = new List<IDirectableTimePointer>();
             unsortedStartTimePointers = new List<IDirectableTimePointer>();
 
-            foreach (IDirectable group in tracks.AsEnumerable().Reverse())
+            foreach (IDirectable track in tracks.AsEnumerable().Reverse())
             {
-                if (group.isActive && group.Initialize())
+                if (track.isActive && track.Initialize())
                 {
-                    var p1 = new StartTimePointer(group);
+                    var p1 = new StartTimePointer(track);
                     timePointers.Add(p1);
 
-                    foreach (IDirectable track in group.children.Reverse())
+                    foreach (IDirectable clip in track.children)
                     {
-                        if (track.isActive && track.Initialize())
+                        if (clip.isActive && clip.Initialize())
                         {
-                            var p2 = new StartTimePointer(track);
+                            var p2 = new StartTimePointer(clip);
                             timePointers.Add(p2);
 
-                            foreach (IDirectable clip in track.children)
-                            {
-                                if (clip.isActive && clip.Initialize())
-                                {
-                                    var p3 = new StartTimePointer(clip);
-                                    timePointers.Add(p3);
-
-                                    unsortedStartTimePointers.Add(p3);
-                                    timePointers.Add(new EndTimePointer(clip));
-                                }
-                            }
-
                             unsortedStartTimePointers.Add(p2);
-                            timePointers.Add(new EndTimePointer(track));
+                            timePointers.Add(new EndTimePointer(clip));
                         }
                     }
-
                     unsortedStartTimePointers.Add(p1);
-                    timePointers.Add(new EndTimePointer(group));
+                    timePointers.Add(new EndTimePointer(track));
                 }
             }
 
@@ -971,8 +944,9 @@ namespace Editor.SkillEditor
 
         public static Skill Create(Transform parent = null)
         {
-            var go = Instantiate(new GameObject("Skill")) ;
+            var go = new GameObject("New Skill");
             var skill = go.AddComponent<Skill>();
+
             if (parent != null)
             {
                 skill.transform.SetParent(parent, false);
@@ -985,23 +959,86 @@ namespace Editor.SkillEditor
         
         ///<summary>Add a group to the cutscene.</summary>
         public T AddTrack<T>(GameObject targetActor = null) where T : SkillTrack { return (T)AddTrack(typeof(T), targetActor); }
-        public SkillTrack AddTrack(System.Type type, GameObject targetActor = null) {
 
-            if ( !type.IsSubclassOf(typeof(SkillTrack)) || type.IsAbstract ) {
+        public SkillTrack AddTrack(System.Type type, GameObject targetActor = null)
+        {
+            if ( !CanAddTrackOfType(type) ) {
                 return null;
             }
+
+            var go = new GameObject(type.Name.SplitCamelCase());
             
-            var newTrack = new GameObject(type.Name).AddComponent(type) as SkillTrack;
-            UnityEditor.Undo.RegisterCreatedObjectUndo(newTrack.gameObject, "Add Track");
-            UnityEditor.Undo.SetTransformParent(newTrack.transform, transform, "Add Track");
-            UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Add Track");
+            //dont show in hierarchy
+            UnityEditor.Undo.RegisterCreatedObjectUndo(go, "New Track");
+            var newTrack = UnityEditor.Undo.AddComponent(go, type) as SkillTrack;
+            UnityEditor.Undo.SetTransformParent(newTrack.transform, transform, "New Track");
+            UnityEditor.Undo.RegisterCompleteObjectUndo(this, "New Track");
             newTrack.transform.localPosition = Vector3.zero;
-            newTrack.actor = targetActor;
-            tracks.Add(newTrack);
-            Validate();
+            if ( name != null ) { newTrack.name = name; }
+
+            var index = 0;
             
+            // //well thats a bit of special case. I really want CameraTrack to stay on top :)
+            // if ( tracks.FirstOrDefault() is CameraTrack ) { index = 1; }
+            
+            
+            tracks.Insert(index, newTrack);
+
+            newTrack.PostCreate(this);
+            Validate();
             CutsceneUtility.selectedObject = newTrack;
             return newTrack;
+        }
+        
+        ///<summary>Can track type be added in this skill?</summary>
+        public bool CanAddTrackOfType(Type type) {
+            if ( type == null || !type.IsSubclassOf(typeof(SkillTrack))) {
+                return false;
+            }
+            if ( type.IsDefined(typeof(UniqueElementAttribute), true) && tracks.FirstOrDefault(t => t.GetType() == type) != null ) {
+                return false;
+            }
+            
+            return true;
+        }
+        
+        ///<summary>Can track be added in this group?</summary>
+        public bool CanAddTrack(SkillTrack track) {
+            return track != null && CanAddTrackOfType(track.GetType());
+        }
+        
+        ///<summary>Duplicate the track in this skill</summary>
+        public SkillTrack DuplicateTrack(SkillTrack track) {
+
+            if ( !CanAddTrack(track) ) {
+                return null;
+            }
+
+            var newTrack = Instantiate(track);
+            UnityEditor.Undo.RegisterCreatedObjectUndo(newTrack.gameObject, "Duplicate Track");
+            UnityEditor.Undo.SetTransformParent(newTrack.transform, this.transform, "Duplicate Track");
+            UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Duplicate Track");
+            newTrack.transform.localPosition = Vector3.zero;
+            tracks.Add(newTrack);
+            Validate();
+            CutsceneUtility.selectedObject = newTrack;
+            return newTrack;
+        }
+        
+        public void DeleteTrack(SkillTrack track) {
+
+            if ( !track.gameObject.IsSafePrefabDelete() ) {
+                UnityEditor.EditorUtility.DisplayDialog("Delete Track", "This track is part of the prefab asset and can not be deleted from within the prefab instance. If you want to delete the track, please open the prefab asset for editing.", "OK");
+                return;
+            }
+
+            UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Delete Track");
+            tracks.Remove(track);
+            if ( ReferenceEquals(SkillEditorUtility.selectedObject, track) ) {
+                SkillEditorUtility.selectedObject = null;
+            }
+            UnityEditor.Undo.DestroyObjectImmediate(track.gameObject);
+            Validate();
         }
 #endif
 

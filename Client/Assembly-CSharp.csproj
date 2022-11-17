@@ -47,6 +47,7 @@
      <Compile Include="Assets\Scripts\Utility\IUtility.cs" />
      <Compile Include="Assets\Scripts\System\UserSystem.cs" />
      <Compile Include="Assets\Scripts\Protobuf\User.cs" />
+     <Compile Include="Assets\SkillEditor\SkillClip\SkillClip.cs" />
      <Compile Include="Assets\Scripts\UI\Login\LoginPanel.cs" />
      <Compile Include="Assets\Scripts\Model\Base\IGetModel.cs" />
      <Compile Include="Assets\Scripts\Protobuf\Entity.cs" />
@@ -66,9 +67,11 @@
      <Compile Include="Assets\Scripts\Protobuf\Map.cs" />
      <Compile Include="Assets\Scripts\Singleton\MonoSingleton.cs" />
      <Compile Include="Assets\Scripts\System\Base\IGetSystem.cs" />
+     <Compile Include="Assets\SkillEditor\SkillTrack\SkillTrack.cs" />
      <Compile Include="Assets\Scripts\System\Base\ISystem.cs" />
      <Compile Include="Assets\Scripts\UI\CreateCharacter\CreateCharacterPanel.cs" />
      <Compile Include="Assets\Scripts\EntityComponent\Base\IComponent.cs" />
+     <Compile Include="Assets\SkillEditor\Skill.cs" />
      <Compile Include="Assets\Scripts\System\MapSystem.cs" />
      <Compile Include="Assets\Scripts\Network\ISendNetMessage.cs" />
      <Compile Include="Assets\Scripts\Model\Config\CharacterConfigModel.cs" />
@@ -80,6 +83,7 @@
      <Compile Include="Assets\Scripts\Model\Base\IModel.cs" />
      <Compile Include="Assets\Scripts\Protobuf\Enum.cs" />
      <Compile Include="Assets\Scripts\GameStart.cs" />
+     <Compile Include="Assets\SkillEditor\SkillEditorUtility.cs" />
      <Compile Include="Assets\Scripts\Model\Config\MapConfig.cs" />
      <Compile Include="Assets\Scripts\Base\IGetArchitecture.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkSystem.cs" />
@@ -87,15 +91,19 @@
      <Compile Include="Assets\Scripts\Network\TcpSocket.cs" />
      <Compile Include="Assets\Scripts\Command\Base\ISendCommand.cs" />
      <Compile Include="Assets\Scripts\Utilities\UpdateBehaviour.cs" />
+     <Compile Include="Assets\SkillEditor\SkillClip\CollisionDetectionClip.cs" />
+     <Compile Include="Assets\SkillEditor\SkillClip\AnimationClip.cs" />
      <Compile Include="Assets\Scripts\Network\INetworkSystem.cs" />
      <Compile Include="Assets\Scripts\FootballTest.cs" />
      <Compile Include="Assets\Scripts\Protobuf\PacketId.cs" />
      <Compile Include="Assets\Scripts\Model\Base\BaseModel.cs" />
      <Compile Include="Assets\Scripts\View\CameraController.cs" />
+     <Compile Include="Assets\SkillEditor\SkillTrack\ActionTrack.cs" />
      <Compile Include="Assets\Scripts\Event\Base\IEventSystem.cs" />
      <Compile Include="Assets\Scripts\Network\ProtobufDescriptor.cs" />
      <Compile Include="Assets\Scripts\HeroTest.cs" />
      <Compile Include="Assets\Scripts\Command\Base\ICommand.cs" />
+     <Compile Include="Assets\SkillEditor\SkillClip\ActionClip.cs" />
      <Compile Include="Assets\Scripts\Base\Architecture.cs" />
      <Compile Include="Assets\Scripts\Network\NetErrorConstant.cs" />
      <Compile Include="Assets\Scripts\Event\Base\IRegistration.cs" />
@@ -114,6 +122,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
      <None Include="Assets\Map\scene_ZhuQiuChang_fight.atlas.txt" />
+     <None Include="Assets\SkillEditor\SkillData\SkillExample.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />

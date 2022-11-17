@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using SkillEditor;
 using Slate;
 using UnityEngine;
-using ColorUtility = Unity.VisualScripting.ColorUtility;
+using ActionClip = Slate.ActionClip;
 
 public class SkillTrack : MonoBehaviour, IDirectable
 {
@@ -10,7 +11,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
     [SerializeField] private Color _color = Color.white;
     [SerializeField, HideInInspector] private bool _active = true;
     [SerializeField, HideInInspector] private bool _isLocked = false;
-    [SerializeField, HideInInspector] private List<SkillActionClip> _actionClips = new ();
+    [SerializeField, HideInInspector] private List<SkillClip> _actionClips = new ();
     
     ///<summary>The actor gameobject that is attached to this track</summary>
     public GameObject actor { get; set; }
@@ -36,7 +37,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
     }
 
     ///<summary>All action clips of this track</summary>
-    public List<SkillActionClip> clips
+    public List<SkillClip> clips
     {
         get { return _actionClips; }
         set { _actionClips = value; }
@@ -58,24 +59,21 @@ public class SkillTrack : MonoBehaviour, IDirectable
     public int layerOrder { get; private set; }
 
     ///<summary>Root director</summary>
-    public IDirector root
-    {
-        get { return parent != null ? parent.root : null; }
-    }
+    public IDirector root { get; private set; }
 
-    ///<summary>Parent directable</summary>
-    public IDirectable parent { get; private set; }
-
-    ///<summary>Editor is collapsed?</summary>
-    virtual public bool isCollapsed
-    {
-        get { return parent != null ? parent.isCollapsed : false; }
-    }
+    public bool isLocked => false;
+    float IDirectable.startTime => 0;
+    float IDirectable.endTime => root.length;
+    float IDirectable.blendIn => 0f;
+    float IDirectable.blendOut => 0f;
+    bool IDirectable.canCrossBlend => false;
+    IDirectable IDirectable.parent => null;
+    public virtual bool isCollapsed => false;
 
     ///<summary>Is active and used?</summary>
-    virtual public bool isActive
+    public virtual bool isActive
     {
-        get { return parent != null ? parent.isActive && _active : false; }
+        get => _active;
         set
         {
             if (_active != value)
@@ -88,46 +86,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
             }
         }
     }
-
-    ///<summary>Editor is locked?</summary>
-    virtual public bool isLocked
-    {
-        get { return parent != null && (parent.isLocked || _isLocked); }
-        set { _isLocked = value; }
-    }
-
-    ///<summary>Start time, usually parent.startTime</summary>
-    virtual public float startTime
-    {
-        get { return parent?.startTime ?? 0; }
-        set { }
-    }
-
-    ///<summary>Start time, usually parent.endTime</summary>
-    virtual public float endTime
-    {
-        get => parent?.endTime ?? 0;
-        set { }
-    }
-
-    ///<summary>Blend in</summary>
-    virtual public float blendIn
-    {
-        get => 0f;
-        set { }
-    }
-
-    ///<summary>Blend out</summary>
-    virtual public float blendOut
-    {
-        get => 0f;
-        set { }
-    }
-
-    ///<summary>Able to cross-blend?</summary>
-    public bool canCrossBlend => false;
-
-    //when the cutscene init (once, awake)
+    
     bool IDirectable.Initialize()
     {
         return OnInitialize();
@@ -202,18 +161,18 @@ public class SkillTrack : MonoBehaviour, IDirectable
 #endif
 
     ///<summary>After creation</summary>
-    public void PostCreate(IDirectable parent)
+    public void PostCreate(IDirector root)
     {
-        this.parent = parent;
+        this.root = root;
         OnCreate();
     }
 
     ///<summary>Validate the track and it's clips</summary>
     public void Validate(IDirector root, IDirectable parent)
     {
-        this.parent = parent;
-        clips = GetComponents<SkillActionClip>().OrderBy(a => a.startTime).ToList();
-        layerOrder = parent.children.Where(t => t.GetType() == this.GetType() && t.isActive).Reverse().ToList()
+        this.root = root;
+        clips = GetComponents<SkillClip>().OrderBy(a => a.startTime).ToList();
+        layerOrder = root.children.Where(t => t.GetType() == this.GetType() && t.isActive).Reverse().ToList()
             .IndexOf(this);
         OnAfterValidate();
     }
@@ -277,29 +236,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
     }
 
     ///----------------------------------------------------------------------------------------------
-
-    ///----------------------------------------------------------------------------------------------
-    public float GetTrackWeight()
-    {
-        return this.GetWeight(root.currentTime - this.startTime, this.blendIn, this.blendOut);
-    }
-
-    public float GetTrackWeight(float time)
-    {
-        return this.GetWeight(time, this.blendIn, this.blendOut);
-    }
-
-    public float GetTrackWeight(float time, float blendInOut)
-    {
-        return this.GetWeight(time, blendInOut, blendInOut);
-    }
-
-    public float GetTrackWeight(float time, float blendIn, float blendOut)
-    {
-        return this.GetWeight(time, blendIn, blendOut);
-    }
-    ///----------------------------------------------------------------------------------------------
-
+    
 #if !UNITY_EDITOR
         ///<summary>Add an SkillActionClip to this Track</summary>
         public T AddAction<T>(float time) where T : SkillActionClip { return (T)AddAction(typeof(T), time); }
@@ -341,7 +278,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
     private int inspectedParameterIndex = -1;
     private object _icon;
     private bool _showAnimationCurves;
-    private SkillActionClip _showCurvesClip;
+    private SkillClip _showCurvesClip;
 
     [UnityEditor.InitializeOnLoadMethod]
     static void Editor_Init()
@@ -399,7 +336,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
 
             return _showCurvesClip;
         }
-        set { _showCurvesClip = (SkillActionClip) value; }
+        set { _showCurvesClip = (SkillClip) value; }
     }
 
     ///<summary>The default track height when not expanded</summary>
@@ -441,12 +378,12 @@ public class SkillTrack : MonoBehaviour, IDirectable
     }
 
     ///<summary>Add an SkillActionClip to this Track</summary>
-    public T AddAction<T>(float time) where T : SkillActionClip
+    public T AddAction<T>(float time) where T : SkillClip
     {
         return (T) AddAction(typeof(T), time);
     }
 
-    public SkillActionClip AddAction(System.Type type, float time)
+    public SkillClip AddAction(System.Type type, float time)
     {
 
         var catAtt = type.GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as CategoryAttribute;
@@ -455,7 +392,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
             name = catAtt.category + " Track";
         }
 
-        var newAction = UnityEditor.Undo.AddComponent(gameObject, type) as SkillActionClip;
+        var newAction = UnityEditor.Undo.AddComponent(gameObject, type) as SkillClip;
         UnityEditor.Undo.RegisterCompleteObjectUndo(this, "New Action");
         newAction.startTime = time;
         clips.Add(newAction);
@@ -474,7 +411,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
     }
 
     ///<summary>Remove an SkillActionClip from this Track</summary>
-    public void DeleteAction(SkillActionClip action)
+    public void DeleteAction(SkillClip action)
     {
         UnityEditor.Undo.RegisterCompleteObjectUndo(this, "Remove Action");
         clips.Remove(action);
@@ -567,18 +504,14 @@ public class SkillTrack : MonoBehaviour, IDirectable
             }
         }
 
-        if (isLocked)
+        //TODO：技能编辑器 这里看下效果，可以删除
+        if (!isLocked)
         {
             var lockRect = new Rect(0, 0, 16, 16);
             lockRect.center = curveButtonRect.center - new Vector2(curveButtonRect.width, 0);
             if (!isActive)
             {
                 lockRect.center -= new Vector2(16, 0);
-            }
-
-            if (GUI.Button(lockRect, Styles.lockIcon, GUIStyle.none))
-            {
-                isLocked = !isLocked;
             }
         }
 
@@ -739,7 +672,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
 
 
     ///<summary>The Editor GUI within the timeline rectangle</summary>
-    virtual public void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime,
+    public virtual void OnTrackTimelineGUI(Rect posRect, Rect timeRect, float cursorTime,
         System.Func<float, float> TimeToPos)
     {
         var e = Event.current;
@@ -767,7 +700,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
                 ? existing.GetType().GetCustomAttributes(typeof(CategoryAttribute), true).FirstOrDefault() as
                     CategoryAttribute
                 : null;
-            foreach (var info in EditorTools.GetTypeMetaDerivedFrom(typeof(ActionClip)))
+            foreach (var info in EditorTools.GetTypeMetaDerivedFrom(typeof(SkillClip)))
             {
 
                 if (!info.attachableTypes.Contains(this.GetType()))

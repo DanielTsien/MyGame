@@ -167,3 +167,106 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1228752152
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3948903707046251245, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_Name
+      value: Cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.53763354
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.0823956
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.440707
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7403627888813127679, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+--- !u!1 &1228752153 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3948903707046251245, guid: 386c3767b7bc0af478e9fa6c093884f3, type: 3}
+  m_PrefabInstance: {fileID: 1228752152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1228752154
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228752153}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!320 &1228752155
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228752153}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 0e68286e2931fe34589cab4335d8d6e3, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 2232244831265946866, guid: 0e68286e2931fe34589cab4335d8d6e3, type: 2}
+    value: {fileID: 1228752154}
+  - key: {fileID: -8926145446320594167, guid: 0e68286e2931fe34589cab4335d8d6e3, type: 2}
+    value: {fileID: 1228752153}
+  m_ExposedReferences:
+    m_References: []
