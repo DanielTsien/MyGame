@@ -118,7 +118,7 @@ namespace Slate.ActionClips
 #if UNITY_EDITOR
 
         protected override void OnClipGUI(Rect rect) {
-            EditorTools.DrawLoopedAudioTexture(rect, audioClip, length, clipOffset);
+            //EditorTools.DrawLoopedAudioTexture(rect, audioClip, length, clipOffset);
         }
 
 #endif

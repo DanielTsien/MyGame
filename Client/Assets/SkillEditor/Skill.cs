@@ -965,7 +965,7 @@ namespace SkillEditor
             if ( !CanAddTrackOfType(type) ) {
                 return null;
             }
-
+            
             var go = new GameObject(type.Name.SplitCamelCase());
             
             //dont show in hierarchy
@@ -974,7 +974,6 @@ namespace SkillEditor
             UnityEditor.Undo.SetTransformParent(newTrack.transform, transform, "New Track");
             UnityEditor.Undo.RegisterCompleteObjectUndo(this, "New Track");
             newTrack.transform.localPosition = Vector3.zero;
-            if ( name != null ) { newTrack.name = name; }
 
             var index = 0;
             
