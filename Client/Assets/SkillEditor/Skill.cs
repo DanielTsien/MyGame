@@ -168,6 +168,29 @@ namespace SkillEditor
         ///<summary>The remaining playing time.</summary>
         public float remainingTime => playTimeMax - currentTime;
 
+        ///<summary>The root on which groups are added for organization</summary>
+        private Transform _tracksRoot;
+        public Transform TracksRoot {
+            get
+            {
+                if ( _tracksRoot == null ) {
+                    _tracksRoot = transform.Find("__TracksRoot__");
+                    if ( _tracksRoot == null ) {
+                        _tracksRoot = new GameObject("__TracksRoot__").transform;
+                        _tracksRoot.SetParent(this.transform);
+                    }
+
+#if UNITY_EDITOR
+                    //don't show in hierarchy
+                    _tracksRoot.gameObject.hideFlags = Prefs.showTransforms ? HideFlags.None : HideFlags.HideInHierarchy;
+#endif
+                    _tracksRoot.gameObject.SetActive(false); //we dont need it or it's children active at all
+                }
+
+                return _tracksRoot;
+            }
+        }
+
         #region UNTIY CALLBACK
 
         protected void Awake()
@@ -497,6 +520,11 @@ namespace SkillEditor
 
         public void Validate()
         {
+            if (TracksRoot.transform.parent != transform)
+            {
+                TracksRoot.transform.parent = transform;
+            }
+
             directables = new List<IDirectable>();
             foreach (IDirectable track in tracks.AsEnumerable().Reverse())
             {
@@ -968,10 +996,9 @@ namespace SkillEditor
             
             var go = new GameObject(type.Name.SplitCamelCase());
             
-            //dont show in hierarchy
             UnityEditor.Undo.RegisterCreatedObjectUndo(go, "New Track");
             var newTrack = UnityEditor.Undo.AddComponent(go, type) as SkillTrack;
-            UnityEditor.Undo.SetTransformParent(newTrack.transform, transform, "New Track");
+            UnityEditor.Undo.SetTransformParent(newTrack.transform, TracksRoot, "New Track");
             UnityEditor.Undo.RegisterCompleteObjectUndo(this, "New Track");
             newTrack.transform.localPosition = Vector3.zero;
 

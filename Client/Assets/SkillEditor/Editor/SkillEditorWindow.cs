@@ -1673,6 +1673,23 @@ public class SkillEditorWindow : EditorWindow
                     pickedTrack = track;
                     e.Use();
                 }
+                
+                if ( pickedTrack != null && pickedTrack != track) {
+                    if ( trackRect.Contains(e.mousePosition) ) {
+                        var markRect = new Rect(trackRect.x, ( Skill.tracks.IndexOf(pickedTrack) < t ) ? trackRect.yMax - 2 : trackRect.y, trackRect.width, 2);
+                        GUI.color = Color.grey;
+                        GUI.DrawTexture(markRect, Styles.whiteTexture);
+                        GUI.color = Color.white;
+                    }
+
+                    if ( e.rawType == EventType.MouseUp && e.button == 0 && trackRect.Contains(e.mousePosition) ) {
+                        Skill.tracks.Remove(pickedTrack);
+                        Skill.tracks.Insert(t, pickedTrack);
+                        Skill.Validate();
+                        pickedTrack = null;
+                        e.Use();
+                    }
+                }
             }
         }
 

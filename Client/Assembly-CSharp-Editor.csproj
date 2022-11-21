@@ -43,6 +43,9 @@
   <ItemGroup>
      <Compile Include="Assets\SkillEditor\Editor\SkillEditorWindow.cs" />
      <Compile Include="Assets\SkillEditor\Editor\Commands.cs" />
+     <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillInspector.cs" />
+     <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillTrackInspector.cs" />
+     <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillClipInspector.cs" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity 2021.3.8f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

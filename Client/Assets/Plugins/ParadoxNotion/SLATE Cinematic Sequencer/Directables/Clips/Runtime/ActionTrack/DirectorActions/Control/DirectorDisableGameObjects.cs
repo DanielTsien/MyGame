@@ -11,6 +11,7 @@ namespace Slate.ActionClips
     {
 
         public List<GameObject> targetObjects = new List<GameObject>();
+        public int TestValue;
         private Dictionary<GameObject, bool> states;
 
         public override string info {
