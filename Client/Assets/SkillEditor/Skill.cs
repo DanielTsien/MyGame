@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace;
 using Slate;
 using UnityEngine;
 
@@ -69,6 +70,17 @@ namespace SkillEditor
         private static Dictionary<string, Skill> allSkills = new();
         private bool preInitialized;
         private bool _isReSampleFrame;
+
+        [SerializeField]
+        private GameObject m_actor;
+        public GameObject Actor
+        {
+            get => m_actor;
+            set
+            {
+                m_actor = value;
+            }
+        }
 
         public UpdateMode updateMode
         {
@@ -804,8 +816,6 @@ namespace SkillEditor
                     gameObject);
                 return;
             }
-
-            track.actor = newActor;
         }
 
         ///<summary>Providing a path to the element in the order of Group->Track->Clip, like for example ("MyGroup/MyTrack/MyClip"), returns that element.</summary>

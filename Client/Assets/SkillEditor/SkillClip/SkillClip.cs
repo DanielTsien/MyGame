@@ -14,17 +14,11 @@ namespace SkillEditor
         [SerializeField] [HideInInspector] private float _startTime;
         [SerializeField] [HideInInspector] private AnimationDataCollection _animationData;
 
-        public IDirector root
-        {
-            get { return parent != null ? parent.root : null; }
-        }
+        public IDirector root => parent?.root;
 
         public IDirectable parent { get; private set; }
 
-        public GameObject actor
-        {
-            get { return parent != null ? parent.actor : null; }
-        }
+        public GameObject actor => parent?.actor;
 
         IEnumerable<IDirectable> IDirectable.children
         {

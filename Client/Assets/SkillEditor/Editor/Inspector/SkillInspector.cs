@@ -13,8 +13,11 @@ namespace SkillEditor
         private static Editor m_curDirectableEditor;
         private static Dictionary<Object, Editor> m_directableEditors = new();
 
+        private SerializedProperty m_actor;
+
         private void OnEnable()
         {
+            m_actor = serializedObject.FindProperty("m_actor");
             m_skill = (Skill)target;
             m_curDirectableEditor = null;
         }
@@ -33,13 +36,23 @@ namespace SkillEditor
 
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
+            
             if ( GUILayout.Button("EDIT IN SKILL EDITOR WINDOW") ) {
                 SkillEditorWindow.ShowWindow(m_skill);
             }
             GUILayout.Space(5);
-            
+
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(m_actor);
+
             DoSkillInspector();
             DoSelectionInspector();
+            
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+            }
         }
 
         private void DoSkillInspector()

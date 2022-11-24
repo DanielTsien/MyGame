@@ -14,7 +14,7 @@ public class SkillTrack : MonoBehaviour, IDirectable
     [SerializeField, HideInInspector] private List<SkillClip> _actionClips = new ();
     
     ///<summary>The actor gameobject that is attached to this track</summary>
-    public GameObject actor { get; set; }
+    public GameObject actor => (root as Skill)?.Actor;
 
     ///<summary>The name...</summary>
     new public string name

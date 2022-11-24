@@ -2,12 +2,17 @@
 
 namespace SkillEditor
 {
-    [CustomEditor(typeof(SkillClip), true)]
+    [CustomEditor(typeof(SkillClip))]
     public class SkillClipInspector : Editor
     {
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+            CustomInspectorGUI();
+        }
+
+        protected virtual void CustomInspectorGUI()
+        {
+            
         }
     }
 }
