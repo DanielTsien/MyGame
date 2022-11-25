@@ -32,6 +32,8 @@ namespace SkillEditor
             
             m_animNames = m_skeletonAnimation.skeleton.Data.Animations.Select(anim => anim.Name).ToList();
             m_animDurations = m_skeletonAnimation.skeleton.Data.Animations.Select(anim => anim.Duration).ToList();
+
+            _selectedIndex = m_animNames.FindIndex(anim => anim == m_clip.AnimationName);
         }
 
         protected override void CustomInspectorGUI()

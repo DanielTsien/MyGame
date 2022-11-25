@@ -51,6 +51,7 @@ namespace SkillEditor
             
             if (EditorGUI.EndChangeCheck())
             {
+                m_skill.Actor = m_actor.objectReferenceValue as GameObject;
                 serializedObject.ApplyModifiedProperties();
             }
         }

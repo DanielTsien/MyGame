@@ -291,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7351450986974359436, guid: 6cd8a0e1da25c224aba98402729b6b62, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4
+      value: -0.57
       objectReference: {fileID: 0}
     - target: {fileID: 7351450986974359436, guid: 6cd8a0e1da25c224aba98402729b6b62, type: 3}
       propertyPath: m_LocalPosition.z
@@ -645,10 +645,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbe8b93ee134c669196d995ba345fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startTime: 1.5166668
+  _startTime: 1.3833334
   _animationData:
     _animatedParameters: []
-  m_effect: {fileID: 101153768}
+  m_effectGo: {fileID: 101153768}
 --- !u!1 &1033412627
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,7 +860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ccae7019c3d467c8d13ec452b6ed80f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startTime: 0.9833334
+  _startTime: 0
   _animationData:
     _animatedParameters: []
   _animationName: skill

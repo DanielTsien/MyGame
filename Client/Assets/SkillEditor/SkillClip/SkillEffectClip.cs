@@ -1,4 +1,5 @@
 ﻿using Slate;
+using UnityEditor;
 using UnityEngine;
 
 namespace SkillEditor
@@ -8,14 +9,34 @@ namespace SkillEditor
     [Attachable(typeof(ActionTrack))]
     public class SkillEffectClip : SkillClip
     {
-        [SerializeField]
-        private GameObject m_effect;
+        public override float length { get; set; } = 1f;
 
-        protected override void OnEnter()
-        {
-            var ps = m_effect.GetComponent<ParticleSystem>();
-            ps.Play(true);
+        [SerializeField]
+        private GameObject m_effectGo;
+
+        public GameObject EffectGo {
+            get
+            {
+                return m_effectGo;
+            }
+            set
+            {
+                m_effectGo = value;
+                m_ps = m_effectGo.GetComponent<ParticleSystem>();
+            }
         }
-        
+
+        private ParticleSystem m_ps;
+
+        protected override void OnUpdate(float time, float previousTime)
+        {
+            if (m_ps == null)
+            {
+                return;
+            }
+            
+            m_ps.Simulate(time, true);
+            SceneView.RepaintAll();
+        }
     }
 }
