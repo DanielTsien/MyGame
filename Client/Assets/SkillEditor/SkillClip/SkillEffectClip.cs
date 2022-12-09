@@ -1,6 +1,8 @@
-﻿using Slate;
+﻿using System.Collections.Generic;
+using Slate;
 using UnityEditor;
 using UnityEngine;
+using Utilities;
 
 namespace SkillEditor
 {
@@ -14,29 +16,66 @@ namespace SkillEditor
         [SerializeField]
         private GameObject m_effectGo;
 
-        public GameObject EffectGo {
-            get
-            {
-                return m_effectGo;
-            }
+        public GameObject EffectGo
+        {
+            get => m_effectGo;
             set
             {
+                DestroyParticleSystem();
                 m_effectGo = value;
-                m_ps = m_effectGo.GetComponent<ParticleSystem>();
             }
         }
 
-        private ParticleSystem m_ps;
+        [SerializeField]
+        private float m_speed = 1f;
+        [SerializeField]
+        private float m_interval = 1f; 
+        
+        private List<ParticleSystem> m_particleSystems = new();
 
-        protected override void OnUpdate(float time, float previousTime)
+        protected override void OnUpdate(float time)
         {
-            if (m_ps == null)
+            int index = Mathf.FloorToInt(time / m_interval);
+            for (int i = 0; i <= index; i++)
             {
-                return;
+                if (m_particleSystems.Count <= i)
+                {
+                    var ps = GetParticleSystemItem();
+                    m_particleSystems.Add(ps);
+                }
+                m_particleSystems[i].transform.position = Vector3.down * i * m_interval * m_speed;
+                m_particleSystems[i].Simulate(time - i * m_interval, true);
             }
-            
-            m_ps.Simulate(time, true);
+            for (int i = index + 1; i < m_particleSystems.Count; i++)
+            {
+                m_particleSystems[i].Simulate(0, true);
+            }
             SceneView.RepaintAll();
+        }
+
+        protected override void OnExit()
+        {
+            DestroyParticleSystem();
+        }
+        
+
+        private void DestroyParticleSystem()
+        {
+            foreach (var ps in m_particleSystems)
+            {
+                if (ps != null)
+                {
+                    DestroyImmediate(ps.gameObject);
+                }
+            }
+            m_particleSystems.Clear();
+        }
+
+        private ParticleSystem GetParticleSystemItem()
+        {
+            var go = Instantiate(m_effectGo);
+            go.transform.Reset(true);
+            return go.GetComponent<ParticleSystem>();
         }
     }
 }

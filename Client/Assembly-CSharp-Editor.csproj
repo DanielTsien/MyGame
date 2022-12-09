@@ -48,6 +48,7 @@
      <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillAnimationClipInspector.cs" />
      <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillClipInspector.cs" />
      <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillEffectClipInspector.cs" />
+     <Compile Include="Assets\SkillEditor\Editor\Inspector\SkillEditorMapSelectInspector.cs" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity 2021.3.8f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

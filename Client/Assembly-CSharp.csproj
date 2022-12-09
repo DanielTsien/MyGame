@@ -82,6 +82,7 @@
      <Compile Include="Assets\Scripts\UI\Loading\Loading.cs" />
      <Compile Include="Assets\Scripts\EntityComponent\TransformComponent.cs" />
      <Compile Include="Assets\Scripts\Model\Base\IModel.cs" />
+     <Compile Include="Assets\Scripts\Utilities\UnityUtility.cs" />
      <Compile Include="Assets\Scripts\Protobuf\Enum.cs" />
      <Compile Include="Assets\Scripts\GameStart.cs" />
      <Compile Include="Assets\SkillEditor\SkillEditorUtility.cs" />
@@ -119,11 +120,13 @@
      <Compile Include="Assets\Scripts\Network\PacketParser.cs" />
      <Compile Include="Assets\Scripts\Model\Config\MapConfigModel.cs" />
      <Compile Include="Assets\Scripts\Singleton\Singleton.cs" />
+     <Compile Include="Assets\SkillEditor\Map\SkillEditorMapSelect.cs" />
+     <Compile Include="Assets\Test\TriggerTest.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
-     <None Include="Assets\Entity\Hero\10021\1002100\model\spine_10021.atlas.txt" />
+     <None Include="Assets\Entity\Hero\10021\1002100\Model\spine_10021.atlas.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\Map\scene_ZhuQiuChang_fight.atlas.txt" />
+     <None Include="Assets\Map\Football\Model\scene_ZhuQiuChang_fight.atlas.txt" />
      <None Include="Assets\Arts\effect\shader\Rongjie_Add.shader" />
      <None Include="Assets\SkillEditor\SkillData\SkillExample.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
@@ -140,7 +143,7 @@
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\Arts\effect\shader\lizifaguang.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-     <None Include="Assets\Entity\Hero\10041\1004100\model\spine_10041.atlas.txt" />
+     <None Include="Assets\Entity\Hero\10041\1004100\Model\spine_10041.atlas.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\Config\Map.txt" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
